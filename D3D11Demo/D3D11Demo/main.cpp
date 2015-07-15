@@ -1,4 +1,5 @@
 #include "BaseDemo.h"
+#include "ShadowDemo.h"
 #pragma  comment(lib,"Common.lib")
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine, int cmdShow)
 {
@@ -10,7 +11,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	}
 #endif
 
-	BaseDemo theApp(hInstance,1024,600);
+	ShadowDemo theApp(hInstance, 1024, 600);
 	if (!theApp.Init())
 		return 0;
 	return theApp.Run();

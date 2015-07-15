@@ -18,12 +18,24 @@
     <ClInclude Include="BaseDemo.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowDemo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackballCameraController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="BaseDemo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowDemo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TrackballCameraController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

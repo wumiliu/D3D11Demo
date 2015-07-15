@@ -68,10 +68,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h" />
+    <ClInclude Include="ShadowDemo.h" />
+    <ClInclude Include="TrackballCameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseDemo.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ShadowDemo.cpp" />
+    <ClCompile Include="TrackballCameraController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
