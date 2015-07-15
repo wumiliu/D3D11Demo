@@ -70,6 +70,7 @@
     <ClCompile Include="CommonStates.cpp" />
     <ClCompile Include="D3D11App.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
+    <ClCompile Include="DXFunction.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Math\SimpleMath.cpp" />
     <ClCompile Include="Shader\ShaderBufferManager.cpp" />
@@ -84,6 +85,7 @@
     <ClInclude Include="CommonStates.h" />
     <ClInclude Include="D3D11App.h" />
     <ClInclude Include="DeviceManager.h" />
+    <ClInclude Include="DXFunction.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="HpD3D9Type.h" />
     <ClInclude Include="Math\SimpleMath.h" />

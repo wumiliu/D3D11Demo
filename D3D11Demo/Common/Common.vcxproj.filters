@@ -60,6 +60,9 @@
     <ClCompile Include="CommonStates.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="DXFunction.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseFunction.h">
@@ -111,6 +114,9 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="CommonStates.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DXFunction.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
