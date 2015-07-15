@@ -68,6 +68,8 @@
   <ItemGroup>
     <ClCompile Include="BaseFunction.cpp" />
     <ClCompile Include="CommonStates.cpp" />
+    <ClCompile Include="Cure\Curve.cpp" />
+    <ClCompile Include="Cure\spline.cpp" />
     <ClCompile Include="D3D11App.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="DXFunction.cpp" />
@@ -85,6 +87,8 @@
   <ItemGroup>
     <ClInclude Include="BaseFunction.h" />
     <ClInclude Include="CommonStates.h" />
+    <ClInclude Include="Cure\Curve.h" />
+    <ClInclude Include="Cure\spline.h" />
     <ClInclude Include="D3D11App.h" />
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="DXFunction.h" />
