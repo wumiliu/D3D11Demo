@@ -214,6 +214,12 @@ LRESULT D3D11App::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
+	case  WM_MOUSEWHEEL:
+	{
+		short zDelta = (short)HIWORD(wParam);
+		OnMouseWheel(zDelta, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		return 0;
+	}
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
