@@ -96,6 +96,10 @@ DeviceManager::DeviceManager()
 
 DeviceManager::~DeviceManager()
 {
+
+	SAFE_RELEASE(m_pImmediateContext);
+	SAFE_RELEASE(m_pDXGIFactory);
+	//SAFE_RELEASE(m_pd3dDevice);
 }
 
 DeviceManager* DeviceManager::GetInstancePtr()

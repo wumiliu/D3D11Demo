@@ -26,6 +26,22 @@ SwapChain::SwapChain()
 
 SwapChain::~SwapChain()
 {
+	SAFE_RELEASE(m_pSwapChain);
+	SAFE_RELEASE(mSRV);
+	SAFE_RELEASE(texEx);
+	SAFE_RELEASE(m_depthStencilBuffer);
+	SAFE_RELEASE(m_renderTargetView);
+	SAFE_RELEASE(m_depthStencilView);
+	
+#if defined(DEBUG) || defined(_DEBUG)
+	ID3D11Debug *d3dDebug;
+	HRESULT hr = m_pd3dDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&d3dDebug));
+	if (SUCCEEDED(hr))
+	{
+		hr = d3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+	}
+	if (d3dDebug != nullptr)			d3dDebug->Release();
+#endif
 }
 
 HRESULT SwapChain::Initialize(HWND hwnd, int nWidth, int nHeigth)

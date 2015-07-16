@@ -198,7 +198,9 @@ CommonStates& CommonStates::operator= (CommonStates&& moveFrom)
 // Public destructor.
 CommonStates::~CommonStates()
 {
+
 }
+
 
 
 //--------------------------------------------------------------------------------------
@@ -367,4 +369,16 @@ ID3D11SamplerState* CommonStates::AnisotropicClamp() const
     {
         return pImpl->CreateSamplerState(D3D11_FILTER_ANISOTROPIC, D3D11_TEXTURE_ADDRESS_CLAMP, pResult);
     });
+}
+
+void DirectX::CommonStates::ReleaseAll()
+{
+	ID3D11BlendState* pState = Opaque();
+	SAFE_RELEASE(pState);
+	pState = AlphaBlend();
+	SAFE_RELEASE(pState);
+	pState = Additive();
+	SAFE_RELEASE(pState);
+	pState = NonPremultiplied();
+	SAFE_RELEASE(pState);
 }

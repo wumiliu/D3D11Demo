@@ -39,6 +39,7 @@ struct LightShader : IShaderResource
 {
 public:
 	LightShader();
+	~LightShader();
 	void SetLightBuffer(Vector3 lightDirection, Vector4 diffuseColor);
 	ID3D11Buffer* m_lightBuffer;
 	virtual void InitBuffer();

@@ -22,6 +22,9 @@ BaseDemo::BaseDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 6
 
 BaseDemo::~BaseDemo()
 {
+	SAFE_RELEASE(m_vertexBuffer);
+	SAFE_RELEASE(m_indexBuffer);
+	SAFE_RELEASE(srv);
 
 }
 
@@ -124,7 +127,7 @@ void BaseDemo::InitResource()
 		(ID3D11Resource**)&pTexture2D,
 		&srv
 		);
-
+	SAFE_RELEASE(pTexture2D);
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC; //¶¯Ì¬»º´æ
 	vertexBufferDesc.ByteWidth = sizeof(VertexPositionColorTexture) * 10000;

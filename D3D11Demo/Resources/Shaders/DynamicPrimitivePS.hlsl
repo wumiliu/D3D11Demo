@@ -8,7 +8,7 @@
 //////////////
 
 Texture2D shaderTexture;
-SamplerState SampleType;
+SamplerState SampleType: register(s0);;
 
 struct PixelInputType
 {

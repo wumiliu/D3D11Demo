@@ -230,6 +230,7 @@ void ShadowDemo::Render(Matrix worldMatrix, Matrix viewMatrix, Matrix projection
 		lightProjectionMatrix, m_CubeModel->GetTexture(), DX11RTTexturePtr->GetRTView());
 	g_objShaders.BaseShadowShader()->SetLightBuffer(m_Light.GetPosition(), m_Light.GetAmbientColor(), m_Light.GetDiffuseColor());
 	g_objShaders.BaseShadowShader()->RenderShader();
+
 	g_objShaders.BaseShadowShader()->Render(m_CubeModel->GetIndexCount());
 
 

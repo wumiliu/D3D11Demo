@@ -31,7 +31,7 @@ namespace DirectX
         CommonStates(CommonStates&& moveFrom);
         CommonStates& operator= (CommonStates&& moveFrom);
         virtual ~CommonStates();
-
+		void ReleaseAll();
         // Blend states.
         ID3D11BlendState* __cdecl Opaque() const;
         ID3D11BlendState* __cdecl AlphaBlend() const;

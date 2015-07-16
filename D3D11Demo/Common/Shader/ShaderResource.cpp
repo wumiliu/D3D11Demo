@@ -74,6 +74,10 @@ void IShaderResource::RenderShader()
 	m_deviceContext->IASetInputLayout(m_layout);
 	m_deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader, NULL, 0);
+	CommonStates states;
+	ID3D11SamplerState* LinearClamp = states.LinearClamp();
+	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
+
 }
 
 LightShader::LightShader()
@@ -106,6 +110,11 @@ void LightShader::SetLightBuffer(Vector3 lightDirection, Vector4 diffuseColor)
 	// Unlock the constant buffer.
 	m_deviceContext->Unmap(m_matrixBuffer, 0);
 	m_deviceContext->PSSetConstantBuffers(0, 1, &m_lightBuffer);
+}
+
+LightShader::~LightShader()
+{
+	SafeRelease(m_lightBuffer);
 }
 
 ShadowShader::ShadowShader()
