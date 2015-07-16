@@ -139,6 +139,7 @@ void ShadowDemo::UpdateScene(float dt)
 	}
 	// Update the position of the light.
 	m_Light.m_position = Vector3(lightPositionX, 8.0f, -5.0f);
+	printf("%f\n",dt);
 }
 
 void ShadowDemo::DrawScene()
