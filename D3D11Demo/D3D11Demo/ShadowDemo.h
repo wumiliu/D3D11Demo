@@ -48,9 +48,10 @@ protected:
 private:
 
 	std::shared_ptr<class DX11RTTexture> DX11RTTexturePtr;
-	std::shared_ptr<class ModelClass> m_CubeModel;
-	std::shared_ptr<class ModelClass> m_GroundModel;
-	std::shared_ptr<class ModelClass> m_SphereModel;
+	std::shared_ptr<class MeshRender> m_CubeModel;
+	std::shared_ptr<class MeshRender> m_GroundModel;
+	std::shared_ptr<class MeshRender> m_SphereModel;
+
 	LightClass m_Light;
 	bool bMouseDown;
 	MousePos mouseLast;

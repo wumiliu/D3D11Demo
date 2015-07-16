@@ -32,8 +32,8 @@ cbuffer LightBuffer2
 struct VertexInputType
 {
     float4 position : POSITION;
-    float2 tex : TEXCOORD0;
     float3 normal : NORMAL;
+	float2 tex : TEXCOORD0;
 };
 
 struct PixelInputType

@@ -7,6 +7,9 @@
 #include "Texture/DX11RTTexture.h"
 #include "DeviceManager.h"
 #include "TrackballCameraController.h"
+#include "MeshRender.h"
+
+
 const float SCREEN_DEPTH = 1000.0f;
 const float SCREEN_NEAR = 1.0f;
 
@@ -88,7 +91,6 @@ ShadowDemo::ShadowDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /
 	bMouseDown = false;
 }
 
-
 ShadowDemo::~ShadowDemo()
 {
 
@@ -109,49 +111,21 @@ void ShadowDemo::InitResource()
 	g_objTrackballCameraController.ProjParams(DirectX::XM_PI*0.25f, AspectHByW, 1.0f, 1000.0f);
 
 	DX11RTTexturePtr = std::make_shared<DX11RTTexture>();
-	m_CubeModel = std::make_shared<ModelClass>();
-	m_GroundModel = std::make_shared<ModelClass>();
-	m_SphereModel = std::make_shared<ModelClass>();
-	bool result;
-
-	// Initialize the cube model object.
-	result = m_CubeModel->Initialize(g_objDeviecManager.GetDevice(), "data/cube.txt", L"data\\wall01.dds");
-	if (!result)
-	{
-		return;
-	}
-	// Set the position for the cube model.
+	m_CubeModel = std::make_shared<MeshRender>();
+	m_GroundModel = std::make_shared<MeshRender>();
+	m_SphereModel = std::make_shared<MeshRender>();
+	MeshData meshData;
+	GeoGen::CreateBox(2, 2, 2, meshData);
+	bool bBuild = m_CubeModel->BuildBuffers(meshData, L"data\\wall01.dds");
 	m_CubeModel->SetPosition(-2.0f, 2.0f, 0.0f);
-
-	// Initialize the sphere model object.
-	result = m_SphereModel->Initialize(g_objDeviecManager.GetDevice(), "data/sphere.txt", L"data\\ice.dds");
-	if (!result)
-	{
-		return;
-	}
-
-	// Set the position for the sphere model.
+	GeoGen::CreateSphere(1, 50, 50, meshData);
+	bBuild = m_SphereModel->BuildBuffers(meshData, L"data\\ice.dds");
 	m_SphereModel->SetPosition(2.0f, 2.0f, 0.0f);
-
-	if (!m_GroundModel)
-	{
-		return;
-	}
-
-	// Initialize the ground model object.
-	result = m_GroundModel->Initialize(g_objDeviecManager.GetDevice(), "data/plane01.txt", L"data\\metal001.dds");
-	if (!result)
-	{
-		return;
-	}
-
-	// Set the position for the ground model.
+	GeoGen::CreateGrid(10, 10, 1,1, meshData);
+	bBuild = m_GroundModel->BuildBuffers(meshData, L"data\\metal001.dds");
 	m_GroundModel->SetPosition(0.0f, 1.0f, 0.0f);
-
-	DX11RTTexturePtr->Create(1014, 590);
-	// Setup the projection matrix.
-	float	fieldOfView = (float)XM_PI / 4.0f;
-	float	screenAspect = (float)1014 / (float)590;
+	
+	DX11RTTexturePtr->Create(mClientWidth, mClientHeight);
 }
 
 void ShadowDemo::UpdateScene(float dt)
@@ -187,7 +161,7 @@ void ShadowDemo::RenderSceneToTexture()
 		return;
 	}
 	DX11RTTexturePtr->Begin();
-	ID3D11DeviceContext*m_deviceContext = g_objDeviecManager.GetImmediateContext();
+
 	Matrix worldMatrix, lightViewMatrix, lightProjectionMatrix, translateMatrix;
 	// Generate the light view matrix based on the light's position.
 	m_Light.GenerateViewMatrix();
@@ -195,29 +169,32 @@ void ShadowDemo::RenderSceneToTexture()
 	// Get the view and orthographic matrices from the light object.
 	m_Light.GetViewMatrix(lightViewMatrix);
 	m_Light.GetProjectionMatrix(lightProjectionMatrix);
+
 	float posX, posY, posZ;
 	// Setup the translation matrix for the cube model.
 	m_CubeModel->GetPosition(posX, posY, posZ);
 	worldMatrix.Translation(Vector3(posX, posY, posZ));
-	m_CubeModel->RenderBuffers(m_deviceContext);
+	m_CubeModel->SetGPUBuffers();
 	g_objShaders.DepthShader()->SetShaderParameters(worldMatrix, lightViewMatrix, lightProjectionMatrix);
 	g_objShaders.DepthShader()->RenderShader();
-	m_CubeModel->Render(m_deviceContext);
+	m_CubeModel->Render();
+
 
 	m_SphereModel->GetPosition(posX, posY, posZ);
 	worldMatrix.Translation(Vector3(posX, posY, posZ));
-	m_SphereModel->RenderBuffers(m_deviceContext);
+	m_SphereModel->SetGPUBuffers();
 	g_objShaders.DepthShader()->SetShaderParameters(worldMatrix, lightViewMatrix, lightProjectionMatrix);
 	g_objShaders.DepthShader()->RenderShader();
-	m_SphereModel->Render(m_deviceContext);
+	m_SphereModel->Render();
+
 
 	m_GroundModel->GetPosition(posX, posY, posZ);
 	worldMatrix.Translation(Vector3(posX, posY, posZ));
-	m_GroundModel->RenderBuffers(m_deviceContext);
-
+	m_GroundModel->SetGPUBuffers();
 	g_objShaders.DepthShader()->SetShaderParameters(worldMatrix, lightViewMatrix, lightProjectionMatrix);
 	g_objShaders.DepthShader()->RenderShader();
-	m_GroundModel->Render(m_deviceContext);
+	m_GroundModel->Render();
+
 
 	DX11RTTexturePtr->End();
 
@@ -234,17 +211,11 @@ void ShadowDemo::Render(Matrix worldMatrix, Matrix viewMatrix, Matrix projection
 	float rotZ = 0.0f;
 
 
-	ID3D11DeviceContext*m_deviceContext = g_objDeviecManager.GetImmediateContext();
-
 	Matrix translateMatrix;
 	Matrix lightViewMatrix, lightProjectionMatrix;
 
-
 	// Generate the light view matrix based on the light's position.
 	m_Light.GenerateViewMatrix();
-
-
-
 	// Get the light's view and projection matrices from the light object.
 	m_Light.GetViewMatrix(lightViewMatrix);
 	m_Light.GetProjectionMatrix(lightProjectionMatrix);
@@ -253,18 +224,17 @@ void ShadowDemo::Render(Matrix worldMatrix, Matrix viewMatrix, Matrix projection
 	// Setup the translation matrix for the cube model.
 	m_CubeModel->GetPosition(posX, posY, posZ);
 	worldMatrix.Translation(Vector3(posX, posY, posZ));
-	m_CubeModel->RenderBuffers(m_deviceContext);
-
+	m_CubeModel->SetGPUBuffers();
 	g_objShaders.BaseShadowShader()->SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
 		lightProjectionMatrix, m_CubeModel->GetTexture(), DX11RTTexturePtr->GetRTView());
 	g_objShaders.BaseShadowShader()->SetLightBuffer(m_Light.GetPosition(), m_Light.GetAmbientColor(), m_Light.GetDiffuseColor());
 	g_objShaders.BaseShadowShader()->RenderShader();
 	g_objShaders.BaseShadowShader()->Render(m_CubeModel->GetIndexCount());
 
+
 	m_SphereModel->GetPosition(posX, posY, posZ);
 	worldMatrix.Translation(Vector3(posX, posY, posZ));
-
-	m_SphereModel->RenderBuffers(m_deviceContext);
+	m_SphereModel->SetGPUBuffers();
 	g_objShaders.BaseShadowShader()->SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
 		lightProjectionMatrix, m_SphereModel->GetTexture(), DX11RTTexturePtr->GetRTView());
 	g_objShaders.BaseShadowShader()->SetLightBuffer(m_Light.GetPosition(), m_Light.GetAmbientColor(), m_Light.GetDiffuseColor());
@@ -274,8 +244,7 @@ void ShadowDemo::Render(Matrix worldMatrix, Matrix viewMatrix, Matrix projection
 
 	m_GroundModel->GetPosition(posX, posY, posZ);
 	worldMatrix.Translation(Vector3(posX, posY, posZ));
-	m_GroundModel->RenderBuffers(m_deviceContext);
-
+	m_GroundModel->SetGPUBuffers();
 	g_objShaders.BaseShadowShader()->SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
 		lightProjectionMatrix, m_GroundModel->GetTexture(), DX11RTTexturePtr->GetRTView());
 	g_objShaders.BaseShadowShader()->SetLightBuffer(m_Light.GetPosition(), m_Light.GetAmbientColor(), m_Light.GetDiffuseColor());
