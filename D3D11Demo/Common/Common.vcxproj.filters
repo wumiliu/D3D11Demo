@@ -84,6 +84,12 @@
     <ClCompile Include="p3type.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MeshRender.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryGens.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseFunction.h">
@@ -159,6 +165,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="P3Primitive.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRender.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryGens.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

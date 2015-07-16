@@ -25,8 +25,8 @@ private:
 	struct VertexType
 	{
 		Vector3 position;
-		Vector2 texture;
 		Vector3 normal;
+		Vector2 texture;
 	};
 
 	struct ModelType
@@ -41,7 +41,7 @@ public:
 	ModelClass(const ModelClass&);
 	~ModelClass();
 
-	bool Initialize(ID3D11Device*, char*, WCHAR*);
+	bool Initialize(ID3D11Device*, char*, WCHAR*textureFilename);
 	void Shutdown();
 	
 	void RenderBuffers(ID3D11DeviceContext*);
