@@ -11,10 +11,12 @@ BaseDemo::BaseDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 6
 	mClientWidth = nWidth;
 	mClientHeight = nHeight;
 
-	m_Curve = AnimationCurve::Cubic(-507 + 20, 280, 507 - 20, -280);
-
-	m_Curve->AddKey(-400, -100);
-	m_Curve->AddKey(100, 200);
+	//m_Curve = AnimationCurve::Cubic(-507 + 20, 280, 507 - 20, -280);
+	m_Curve = AnimationCurve::Cubic(0, 0, mClientWidth, mClientHeight);
+	m_Curve->AddKey(300, 400);
+	m_Curve->AddKey(600, 200);
+	//m_Curve->AddKey(-400, -100);
+	//m_Curve->AddKey(100, 200);
 }
 
 BaseDemo::~BaseDemo()
@@ -97,17 +99,35 @@ void BaseDemo::DrawScene()
 	tmpY -= y;
 
 	XMMATRIX m_OrthotMat = XMMatrixOrthographicLH((float)mClientWidth, (float)mClientHeight, 0.0f, 1.0f);
+	
+	DrawPrimitiveUP(PRIMITIVE_LINESTRIP, mClientWidth, vertices, toTexSpace);
+
+
+	struct myPos
+	{
+		float x;
+		float y;
+	};
+	vector<myPos> vertices1;
+	for (int i = 0; i < mClientWidth; ++i)
+	{
+		float yval1 = m_Curve->Evaluate(i);
+		myPos pos;
+		pos.x = i;
+		pos.y = yval1;
+		vertices1.push_back(pos);
+	}
 	static int kkkkkk = 0;
 	if (kkkkkk > mClientWidth - 1)
 	{
 		kkkkkk = 0;
 	}
-	DrawPrimitiveUP(PRIMITIVE_LINESTRIP, mClientWidth, vertices,m_OrthotMat);
-	int nPosX = vertices[kkkkkk].position.x;// +nSceneWidth / 2;
-	int nPosY = vertices[kkkkkk].position.y;
-
-	ShowBlock(nPosX - 5, nPosY - 5, nPosX + 5, nPosY + 5, XMFLOAT4(DirectX::Colors::Red));
 	kkkkkk++;
+	int xPos = vertices1[kkkkkk].x;
+	int yPos = vertices1[kkkkkk].y;
+
+	ShowBlock(xPos - 5, yPos - 5, xPos + 5, yPos + 5, XMFLOAT4(DirectX::Colors::Blue));
+
 	for (int i = 0; i < m_Curve->Size(); ++i)
 	{
 		int xPos = m_Curve->Key(i) + mClientWidth / 2;
