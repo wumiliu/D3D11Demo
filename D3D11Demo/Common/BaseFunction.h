@@ -10,3 +10,4 @@ public:
 	static std::string UnicodeToANSI(const wchar_t* str);
 };
 
+

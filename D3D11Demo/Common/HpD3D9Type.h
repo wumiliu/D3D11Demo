@@ -87,6 +87,20 @@ void SafeRelease(T *t)
 	}
 }
 
-
+struct  MousePos
+{
+	int X;
+	int Y;
+	MousePos()
+	{
+		X = 0;
+		Y = 0;
+	}
+	MousePos(int x, int y)
+	{
+		X = x;
+		Y = y;
+	}
+};
 
 #endif

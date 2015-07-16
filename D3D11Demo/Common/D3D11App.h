@@ -29,7 +29,7 @@ public:
 	virtual void OnMouseUp(WPARAM btnState, int x, int y)  { }
 	virtual void OnMouseMove(WPARAM btnState, int x, int y){ }
 	virtual void OnMouseWheel(short zDelta, int x, int y){ }
-
+	virtual void OnLButtonDblClk(WPARAM btnState, int x, int y){}
 
 protected:
 	bool InitMainWindow();

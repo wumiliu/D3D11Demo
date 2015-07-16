@@ -2,6 +2,10 @@
 #include "D3D11App.h"
 #include "HpD3D9Type.h"
 #include "VertexTypes.h"
+/************************************************************************/
+/* 曲线方案demo                使用3次样条曲线                                     
+*/
+/************************************************************************/
 enum PrimitiveType
 {
 	PRIMITIVE_UNDEFINED = 0,
@@ -30,6 +34,11 @@ public:
 		VertexPositionColorTexture *pVertexs, const XMMATRIX &model = XMMatrixIdentity(), ID3D11ShaderResourceView*pTexture = NULL);
 
 
+	virtual void OnMouseDown(WPARAM btnState, int x, int y);
+	virtual void OnMouseUp(WPARAM btnState, int x, int y);
+	virtual void OnMouseMove(WPARAM btnState, int x, int y);
+	virtual void OnLButtonDblClk(WPARAM btnState, int x, int y);
+
 
 protected:
 	void InitResource();
@@ -38,5 +47,7 @@ private:
 	ID3D11Buffer	*m_indexBuffer;
 	ID3D11ShaderResourceView* srv;
 	std::shared_ptr<class AnimationCurve> m_Curve;
+	bool m_bMove;
+	int m_index;
 };
 

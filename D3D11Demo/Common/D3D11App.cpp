@@ -53,7 +53,8 @@ bool D3D11App::Init()
 bool D3D11App::InitMainWindow()
 {
 	WNDCLASS wc;
-	wc.style = CS_HREDRAW | CS_VREDRAW;
+	//CS_DBLCLKS Ë«»÷ÊÂ¼þ
+	wc.style = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
 	wc.lpfnWndProc = MainWndProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
@@ -220,6 +221,9 @@ LRESULT D3D11App::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		OnMouseWheel(zDelta, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	}
+	case  WM_LBUTTONDBLCLK:
+		OnLButtonDblClk(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		return 0;
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}

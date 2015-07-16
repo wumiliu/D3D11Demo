@@ -24,21 +24,7 @@ private:
 	Matrix m_projectionMatrix;
 };
 
-struct  MousePos
-{
-	int X;
-	int Y;
-	MousePos()
-	{
-		X = 0;
-		Y = 0;
-	}
-	MousePos(int x, int y)
-	{
-		X = x;
-		Y = y;
-	}
-};
+
 class ShadowDemo : public D3D11App
 {
 public:

@@ -78,6 +78,12 @@
     <ClCompile Include="Cure\Curve.cpp">
       <Filter>Cure</Filter>
     </ClCompile>
+    <ClCompile Include="d3dUtil.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="p3type.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseFunction.h">
@@ -145,6 +151,15 @@
     </ClInclude>
     <ClInclude Include="Cure\Curve.h">
       <Filter>Cure</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dUtil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="p3types.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="P3Primitive.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

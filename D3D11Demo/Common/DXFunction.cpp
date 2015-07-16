@@ -79,3 +79,5 @@ D3DXMATRIX* WINAPI D3DXMatrixTranslation(D3DXMATRIX *pOut, FLOAT x, FLOAT y, FLO
 	*pOut = Matrix::CreateTranslation(x, y, z);
 	return pOut;
 }
+
+
