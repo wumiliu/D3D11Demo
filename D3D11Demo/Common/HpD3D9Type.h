@@ -102,5 +102,6 @@ struct  MousePos
 		Y = y;
 	}
 };
+typedef std::vector<D3D11_INPUT_ELEMENT_DESC> LayoutVector;
 
 #endif

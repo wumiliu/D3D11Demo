@@ -99,7 +99,18 @@ DeviceManager::~DeviceManager()
 
 	SAFE_RELEASE(m_pImmediateContext);
 	SAFE_RELEASE(m_pDXGIFactory);
-	//SAFE_RELEASE(m_pd3dDevice);
+/*
+#if defined(DEBUG) || defined(_DEBUG)
+	ID3D11Debug *d3dDebug;
+	HRESULT hr = m_pd3dDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&d3dDebug));
+	if (SUCCEEDED(hr))
+	{
+		hr = d3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+	}
+	if (d3dDebug != nullptr)			d3dDebug->Release();
+#endif
+	*/
+	SAFE_RELEASE(m_pd3dDevice);
 }
 
 DeviceManager* DeviceManager::GetInstancePtr()
@@ -112,3 +123,36 @@ DeviceManager& DeviceManager::GetInstance()
 {
 	return *GetInstancePtr();
 }
+
+HRESULT DeviceManager::CreateVertexShader(ID3DBlob* shaderBuffer, ID3D11VertexShader **ppVertexShader)
+{
+	HRESULT result = m_pd3dDevice->CreateVertexShader(
+		shaderBuffer->GetBufferPointer(),
+		shaderBuffer->GetBufferSize(),
+		(ID3D11ClassLinkage *)NULL,
+		ppVertexShader);
+	return result;
+}
+
+HRESULT DeviceManager::CreatePixelShader(ID3DBlob* shaderBuffer, ID3D11PixelShader **ppPixelShader)
+{
+	HRESULT result = m_pd3dDevice->CreatePixelShader(
+		shaderBuffer->GetBufferPointer(),
+		shaderBuffer->GetBufferSize(),
+		(ID3D11ClassLinkage *)NULL,
+		ppPixelShader);
+	return result;
+}
+
+HRESULT DeviceManager::CreateInputLayout(LayoutVector vecLayout, ID3DBlob* shaderBuffer, ID3D11InputLayout **ppInputLayout)
+{
+	HRESULT result = m_pd3dDevice->CreateInputLayout(
+		&vecLayout[0],
+		vecLayout.size(),
+		shaderBuffer->GetBufferPointer(),
+		shaderBuffer->GetBufferSize(),
+		(ID3D11InputLayout**)ppInputLayout);
+	return result;
+
+}
+

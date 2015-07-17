@@ -12,6 +12,9 @@ MeshRender::MeshRender()
 
 MeshRender::~MeshRender()
 {
+	SAFE_RELEASE(m_VB);
+	SAFE_RELEASE(m_IB);
+	SAFE_RELEASE(m_ShaderResourceView);
 }
 
 bool MeshRender::BuildBuffers(const MeshData& mesh, WCHAR*textureFilename)
@@ -66,6 +69,7 @@ bool MeshRender::BuildBuffers(const MeshData& mesh, WCHAR*textureFilename)
 		(ID3D11Resource**)&pTexture2D,
 		&m_ShaderResourceView
 		);
+	SAFE_RELEASE(pTexture2D);
 	return true;
 }
 

@@ -74,7 +74,7 @@ void IShaderResource::RenderShader()
 	m_deviceContext->IASetInputLayout(m_layout);
 	m_deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	m_deviceContext->PSSetShader(m_pixelShader, NULL, 0);
-	CommonStates states;
+	CommonStates& states = g_objStates;
 	ID3D11SamplerState* LinearClamp = states.LinearClamp();
 	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
 
@@ -208,7 +208,7 @@ void ShadowShader::SetShaderParameters(Matrix world, Matrix view, Matrix proj, M
 
 void ShadowShader::Render(int indexCount)
 {
-	CommonStates states;
+	CommonStates& states = g_objStates;
 	ID3D11SamplerState* LinearClamp = states.LinearClamp();
 	ID3D11SamplerState* LinearWrap = states.LinearWrap();
 	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);

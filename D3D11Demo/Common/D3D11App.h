@@ -1,8 +1,5 @@
 #pragma once
-#include <windows.h>
-#include <d3d11.h>
-#include <string>
-#include <memory>
+#include "HpD3D9Type.h"
 #include "GameTimer.h"
 //////////////////////////////////////////////////////////////////////////
 //应用程序框架类
@@ -25,18 +22,20 @@ public:
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	// Convenience overrides for handling mouse input.
-	virtual void OnMouseDown(WPARAM btnState, int x, int y){ }
-	virtual void OnMouseUp(WPARAM btnState, int x, int y)  { }
-	virtual void OnMouseMove(WPARAM btnState, int x, int y){ }
-	virtual void OnMouseWheel(short zDelta, int x, int y){ }
-	virtual void OnLButtonDblClk(WPARAM btnState, int x, int y){}
+	virtual void OnMouseDown(WPARAM btnState, int x, int y);
+	virtual void OnMouseUp(WPARAM btnState, int x, int y);
+	virtual void OnMouseMove(WPARAM btnState, int x, int y);
+	virtual void OnMouseWheel(short zDelta, int x, int y);
+	virtual void OnLButtonDblClk(WPARAM btnState, int x, int y){};
 
+
+	DirectX::SimpleMath::Ray CalcPickingRay(int x, int y);
 protected:
 	bool InitMainWindow();
 	bool InitDirect3D();
 
 	void CalculateFrameStats();
-
+	virtual void InitResource() = 0;
 protected:
 
 	HINSTANCE mhAppInst;
@@ -60,5 +59,8 @@ protected:
 	int mClientWidthOld;
 	int mClientHeightOld;
 	std::shared_ptr<class SwapChain> SwapChainPtr;
+
+	bool bMouseDown;
+	MousePos mouseLast;
 };
 

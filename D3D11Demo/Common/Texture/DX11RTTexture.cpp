@@ -5,11 +5,22 @@ DX11RTTexture::DX11RTTexture()
 {
 	m_d3dDevice = g_objDeviecManager.GetDevice();
 	m_deviceContext = g_objDeviecManager.GetImmediateContext();
+	mDSV = NULL;
+	mRTV = NULL;
+	mSRV = NULL;
+	m_renderTargetView = NULL;
+	m_depthStencilView = NULL;
+
 }
 
 
 DX11RTTexture::~DX11RTTexture()
 {
+	SAFE_RELEASE(mDSV);
+	SAFE_RELEASE(mRTV);
+	SAFE_RELEASE(mSRV);
+	SAFE_RELEASE(m_renderTargetView);
+	SAFE_RELEASE(m_depthStencilView);
 
 }
 

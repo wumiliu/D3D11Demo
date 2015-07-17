@@ -3,6 +3,7 @@
 #include <sstream>
 #include "SwapChain.h"
 #include "DeviceManager.h"
+#include "TrackballCameraController.h"
 namespace
 {
 	// This is just used to forward Windows messages from a global window
@@ -32,6 +33,7 @@ mResizing(false)
 {
 	gd3dApp = this;
 	SwapChainPtr = std::make_shared<SwapChain>();
+	bMouseDown = false;
 }
 
 D3D11App::~D3D11App()
@@ -46,6 +48,9 @@ bool D3D11App::Init()
 
 	if (!InitDirect3D())
 		return false;
+	InitResource();
+	float AspectHByW = (float)mClientWidth / (float)mClientHeight;
+	g_objTrackballCameraController.ProjParams(DirectX::XM_PI*0.25f, AspectHByW, 1.0f, 1000.0f);
 	mTimer.Start();
 	return true;
 }
@@ -249,7 +254,7 @@ int D3D11App::Run()
 			if (!mAppPaused)
 			{
 				static DWORD timeLoop = 0;
-				const DWORD FRAME_INTERVAL = 15; //15 ∫¡√Î
+				const DWORD FRAME_INTERVAL = 30; //15 ∫¡√Î
 				DWORD timerNow = mTimer.GetTime();
 				if (timerNow < timeLoop + FRAME_INTERVAL)
 				{
@@ -317,4 +322,72 @@ void D3D11App::CalculateFrameStats()
 		timeElapsed += 1.0f;
 	}
 
+}
+
+void D3D11App::OnMouseDown(WPARAM btnState, int x, int y)
+{
+	bMouseDown = true;
+	mouseLast.X = x;
+	mouseLast.Y = y;
+}
+
+void D3D11App::OnMouseUp(WPARAM btnState, int x, int y)
+{
+	bMouseDown = false;
+	mouseLast.X = x;
+	mouseLast.Y = y;
+}
+
+void D3D11App::OnMouseMove(WPARAM btnState, int x, int y)
+{
+	if (bMouseDown)
+	{
+		MousePos _tmp(x, y);
+		x -= mouseLast.X;
+		y -= mouseLast.Y;
+		mouseLast.X = _tmp.X;
+		mouseLast.Y = _tmp.Y;
+		g_objTrackballCameraController.Rotate((float)x, (float)y);
+		printf("%d   %d\n", x, y);
+	}
+}
+
+void D3D11App::OnMouseWheel(short zDelta, int x, int y)
+{
+	g_objTrackballCameraController.Zoom(zDelta, 0);
+}
+
+DirectX::SimpleMath::Ray D3D11App::CalcPickingRay(int sx, int sy)
+{
+	XMMATRIX view = g_objTrackballCameraController.View();
+	//Õ∂”∞±‰ªª
+	Matrix P = g_objTrackballCameraController.Proj();
+
+	float vx = (+2.0f*sx / mClientWidth - 1.0f) / (P(0, 0));
+	float vy = (-2.0f*sy / mClientHeight + 1.0f) / (P(1, 1));
+	// Ray definition in view space.
+	XMVECTOR rayOrigin = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	XMVECTOR rayDir = XMVectorSet(vx, vy, 1.0f, 0.0f);
+
+	XMMATRIX invP = XMMatrixInverse(&XMMatrixDeterminant(P), P);
+
+	// Tranform ray to local space of Mesh.
+	XMMATRIX V = view;
+	XMMATRIX invView = XMMatrixInverse(&XMMatrixDeterminant(V), V);
+
+
+	XMMATRIX W = Matrix::Identity;
+	XMMATRIX invWorld = XMMatrixInverse(&XMMatrixDeterminant(W), W);
+
+	XMMATRIX toLocal = XMMatrixMultiply(invView, invWorld);
+
+
+	rayOrigin = XMVector3TransformCoord(rayOrigin, toLocal);
+	rayDir = XMVector3TransformNormal(rayDir, toLocal);
+
+	// Make the ray direction unit length for the intersection tests.
+	rayDir = XMVector3Normalize(rayDir);
+
+	DirectX::SimpleMath::Ray ray(rayOrigin, rayDir);
+	return ray;
 }

@@ -27,9 +27,16 @@ namespace DirectX
     class CommonStates
     {
     public:
-        explicit CommonStates();
-        CommonStates(CommonStates&& moveFrom);
-        CommonStates& operator= (CommonStates&& moveFrom);
+		static CommonStates* GetInstancePtr()
+		{
+			static CommonStates _instance;
+			return &_instance;
+		}
+		static CommonStates& CommonStates::GetInstance()
+		{
+			return *GetInstancePtr();
+		}
+
         virtual ~CommonStates();
 		void ReleaseAll();
         // Blend states.
@@ -62,9 +69,11 @@ namespace DirectX
         class Impl;
 
         std::shared_ptr<Impl> pImpl;
+		explicit CommonStates();
 
         // Prevent copying.
         CommonStates(CommonStates const&);
         CommonStates& operator= (CommonStates const&);
     };
 }
+#define  g_objStates CommonStates::GetInstance()

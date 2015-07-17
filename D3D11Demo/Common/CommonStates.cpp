@@ -180,25 +180,10 @@ CommonStates::CommonStates()
 }
 
 
-// Move constructor.
-CommonStates::CommonStates(CommonStates&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
-{
-}
-
-
-// Move assignment.
-CommonStates& CommonStates::operator= (CommonStates&& moveFrom)
-{
-    pImpl = std::move(moveFrom.pImpl);
-    return *this;
-}
-
-
 // Public destructor.
 CommonStates::~CommonStates()
 {
-
+	
 }
 
 

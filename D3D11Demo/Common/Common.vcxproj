@@ -86,6 +86,7 @@
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Texture\DDSTextureLoader.cpp" />
     <ClCompile Include="Texture\DX11RTTexture.cpp" />
+    <ClCompile Include="TrackballCameraController.cpp" />
     <ClCompile Include="VertexTypes.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +116,7 @@
     <ClInclude Include="Texture\DX11RTTexture.h" />
     <ClInclude Include="Texture\pch.h" />
     <ClInclude Include="Texture\PlatformHelpers.h" />
+    <ClInclude Include="TrackballCameraController.h" />
     <ClInclude Include="VertexTypes.h" />
   </ItemGroup>
   <ItemGroup>
