@@ -1,5 +1,8 @@
 #include "BaseDemo.h"
 #include "ShadowDemo.h"
+#include "LightDemo.h"
+
+
 #pragma  comment(lib,"Common.lib")
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine, int cmdShow)
 {

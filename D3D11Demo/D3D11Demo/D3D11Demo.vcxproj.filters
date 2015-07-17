@@ -24,6 +24,15 @@
     <ClInclude Include="TrackballCameraController.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="LightDemo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraTypes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -35,7 +44,7 @@
     <ClCompile Include="ShadowDemo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TrackballCameraController.cpp">
+    <ClCompile Include="LightDemo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

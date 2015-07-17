@@ -87,8 +87,6 @@ ShadowDemo::ShadowDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /
 	m_Light.m_diffuseColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light.SetLookAt(0.0f, 0.0f, 0.0f);
 	m_Light.GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
-
-	bMouseDown = false;
 }
 
 ShadowDemo::~ShadowDemo()
