@@ -24,12 +24,12 @@ void NanovgDemo::UpdateScene(float dt)
 
 void NanovgDemo::DrawScene()
 {
-
+	SwapChainPtr->Begin();
 	nvgBeginFrame(NVGcontextPtr, mClientWidth, mClientHeight, 1.0f);
 	float t = (timeGetTime() % 1501) / 1000.0f;
 	t = XM_PI *(::timeGetTime() / 1000.0f / 3);
 //	t = mTimer.TotalTime() * XM_PI;
-	SwapChainPtr->Begin();
+
 	renderDemo(NVGcontextPtr, (float)0, (float)0, (float)mClientWidth, (float)mClientHeight, (float)t, 0, &data);
 
 	nvgEndFrame(NVGcontextPtr);
