@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D3D11Demo", "D3D11Demo\D3D11Demo.vcxproj", "{B3B84BBD-1876-4F9A-80F8-16D770F3D91B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{EBCD7234-FC1D-4610-80BD-60A4FA4B633E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PickDemo", "Sample\PickDemo\PickDemo.vcxproj", "{624F020B-C7A4-4F4B-920C-9F2540E6ECF0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NanovgDemo", "Sample\NanovgDemo\NanovgDemo.vcxproj", "{C4FD7F99-10B0-47F5-98BC-7C002807F7A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{624F020B-C7A4-4F4B-920C-9F2540E6ECF0}.Debug|Win32.Build.0 = Debug|Win32
 		{624F020B-C7A4-4F4B-920C-9F2540E6ECF0}.Release|Win32.ActiveCfg = Release|Win32
 		{624F020B-C7A4-4F4B-920C-9F2540E6ECF0}.Release|Win32.Build.0 = Release|Win32
+		{C4FD7F99-10B0-47F5-98BC-7C002807F7A5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C4FD7F99-10B0-47F5-98BC-7C002807F7A5}.Debug|Win32.Build.0 = Debug|Win32
+		{C4FD7F99-10B0-47F5-98BC-7C002807F7A5}.Release|Win32.ActiveCfg = Release|Win32
+		{C4FD7F99-10B0-47F5-98BC-7C002807F7A5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
