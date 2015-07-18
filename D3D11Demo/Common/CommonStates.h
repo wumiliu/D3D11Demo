@@ -40,6 +40,7 @@ namespace DirectX
         virtual ~CommonStates();
 		void ReleaseAll();
         // Blend states.
+		ID3D11BlendState* __cdecl Add() const;
         ID3D11BlendState* __cdecl Opaque() const;
         ID3D11BlendState* __cdecl AlphaBlend() const;
         ID3D11BlendState* __cdecl Additive() const;

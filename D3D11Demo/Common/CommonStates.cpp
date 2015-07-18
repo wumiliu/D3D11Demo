@@ -37,6 +37,7 @@ public:
 
     ComPtr<ID3D11Device> device;
 
+	ComPtr<ID3D11BlendState> add;
     ComPtr<ID3D11BlendState> opaque;
     ComPtr<ID3D11BlendState> alphaBlend;
     ComPtr<ID3D11BlendState> additive;
@@ -191,6 +192,14 @@ CommonStates::~CommonStates()
 //--------------------------------------------------------------------------------------
 // Blend states
 //--------------------------------------------------------------------------------------
+
+ID3D11BlendState* __cdecl DirectX::CommonStates::Add() const
+{
+	return DemandCreate(pImpl->add, pImpl->mutex, [&](ID3D11BlendState** pResult)
+	{
+		return pImpl->CreateBlendState(D3D11_BLEND_ONE, D3D11_BLEND_ZERO, pResult);
+	});
+}
 
 ID3D11BlendState* CommonStates::Opaque() const
 {

@@ -12,6 +12,7 @@ public:
 	~D3D11RendererMesh();
 	bool BuildBuffers(const GeoGen::MeshData& mesh);
 	void         render(D3D11RendererMaterial* pMaterial);
+	void         renderHelp(D3D11RendererMaterial* pMaterial);
 
 	void Pick(DirectX::SimpleMath::Ray ray);
 private:
@@ -29,5 +30,6 @@ protected:
 	ID3D11DeviceContext		*m_deviceContext;			//设备上下文
 	ID3D11ShaderResourceView* m_ShaderResourceView;
 	UINT mPickedTriangle;
+	ID3D11BlendState *m_pBlendState;
 };
 

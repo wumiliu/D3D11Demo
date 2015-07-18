@@ -17,6 +17,13 @@ SwapChain::SwapChain()
 	m_bkgColor[1] = 0.30196078431372549019607843137255f;
 	m_bkgColor[2] = 0.47450980392156862745098039215686f;
 	m_bkgColor[3] = 1.0f;
+/*
+
+	m_bkgColor[0] = 0.0f;
+	m_bkgColor[1] = 0.0f;
+	m_bkgColor[2] = 0.0f;
+	m_bkgColor[3] = 0.0f;*/
+
 	m_bInit = false;
 	texEx = NULL;
 	mSRV = NULL;
@@ -191,6 +198,7 @@ void SwapChain::SetBackBufferRenderTarget()
 {
 	ID3D11DeviceContext*  d3dcontext = g_objDeviecManager.GetImmediateContext();
 	d3dcontext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+	d3dcontext->RSSetViewports(1, &m_viewport);
 }
 
 void SwapChain::Clear()

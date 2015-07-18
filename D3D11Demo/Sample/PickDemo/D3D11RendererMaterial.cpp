@@ -24,15 +24,15 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 {
 	if (desc.vertexShaderPath)
 	{
-		D3DCompileShader(desc.vertexShaderPath, "main", "vs_5_0", &vertexshaderBuffer);
+		D3DCompileShader(desc.vertexShaderPath, "main", "vs_4_0", &vertexshaderBuffer);
 		g_objDeviecManager.CreateVertexShader(vertexshaderBuffer, &m_vertexShader);
 	}
 	if (desc.pixelShaderPath)
 	{
 		ID3DBlob* shaderBuffer;
-		D3DCompileShader(desc.pixelShaderPath, "main", "ps_5_0", &shaderBuffer);
+		D3DCompileShader(desc.pixelShaderPath, "main", "ps_4_0", &shaderBuffer);
 		g_objDeviecManager.CreatePixelShader(shaderBuffer, &m_pixelShader[0]);
-		D3DCompileShader(desc.pixelShaderPath, "mainPick", "ps_5_0", &shaderBuffer);
+		D3DCompileShader(desc.pixelShaderPath, "mainPick", "ps_4_0", &shaderBuffer);
 		g_objDeviecManager.CreatePixelShader(shaderBuffer, &m_pixelShader[1]);
 	}
 

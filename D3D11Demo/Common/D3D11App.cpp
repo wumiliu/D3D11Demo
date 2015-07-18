@@ -258,7 +258,7 @@ int D3D11App::Run()
 				DWORD timerNow = mTimer.GetTime();
 				if (timerNow < timeLoop + FRAME_INTERVAL)
 				{
-
+					Sleep(timeLoop + FRAME_INTERVAL - timerNow);
 				}
 				else
 				{

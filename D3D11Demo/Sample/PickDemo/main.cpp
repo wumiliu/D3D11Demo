@@ -8,7 +8,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	FILE *f(NULL);
 	if (AllocConsole())
 	{
-		freopen_s(&f, "CONOUT$", "w", stdout);
+		//freopen_s(&f, "CONOUT$", "w", stdout);
+		freopen_s(&f, "CONOUT$", "w+t", stdout);// …Í«Î–¥
+		freopen_s(&f, "CONIN$", "r+t", stdin);  // …Í«Î∂¡
 	}
 #endif
 	PickDemo theApp(hInstance, 1024, 600);

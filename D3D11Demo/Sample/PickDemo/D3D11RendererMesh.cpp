@@ -3,7 +3,7 @@
 #include "Texture/DDSTextureLoader.h"
 #include "DeviceManager.h"
 #include "D3D11RendererMaterial.h"
-
+#include "CommonStates.h"
 D3D11RendererMesh::D3D11RendererMesh()
 {
 	m_d3dDevice = g_objDeviecManager.GetDevice();
@@ -14,6 +14,23 @@ D3D11RendererMesh::D3D11RendererMesh()
 	m_VB = NULL;
 	m_IB = NULL;
 	mPickedTriangle = -1;
+	D3D11_BLEND_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	desc.AlphaToCoverageEnable = FALSE;
+	desc.IndependentBlendEnable = FALSE;
+	desc.RenderTarget[0].BlendEnable = TRUE;
+	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+
+	desc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+
+	desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+
+	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	HRESULT hr = m_d3dDevice->CreateBlendState(&desc, &m_pBlendState);
 }
 
 D3D11RendererMesh::~D3D11RendererMesh()
@@ -91,7 +108,8 @@ void D3D11RendererMesh::render(D3D11RendererMaterial* pMaterial)
 	unsigned int offset;
 	stride = sizeof(VertexPositionNormalTexture);
 	offset = 0;
-
+	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
+	//m_deviceContext->OMSetBlendState(m_pBlendState, BlendFactor, 0xFFFFFFFF);
 	//1输入布局阶段
 	m_deviceContext->IASetVertexBuffers(0, 1, &m_VB, &stride, &offset);
 	m_deviceContext->IASetIndexBuffer(m_IB, DXGI_FORMAT_R32_UINT, 0);
@@ -101,17 +119,30 @@ void D3D11RendererMesh::render(D3D11RendererMaterial* pMaterial)
 	}
 	else
 	{
-		if (mPickedTriangle != -1)
-		{
-			pMaterial->setShaders(1);
-			m_deviceContext->DrawIndexed(3, 3 * mPickedTriangle, 0);
-		}
 		pMaterial->setShaders();
 		m_deviceContext->DrawIndexed(m_nIBSize, 0, 0);
-
 	}
 }
 
+
+void D3D11RendererMesh::renderHelp(D3D11RendererMaterial* pMaterial)
+{
+	if (mPickedTriangle != -1)
+	{
+		m_deviceContext->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		m_deviceContext->IASetInputLayout(pMaterial->getLayout<VertexPositionNormalTexture>());
+		unsigned int stride;
+		unsigned int offset;
+		stride = sizeof(VertexPositionNormalTexture);
+		offset = 0;
+
+		//1输入布局阶段
+		m_deviceContext->IASetVertexBuffers(0, 1, &m_VB, &stride, &offset);
+		m_deviceContext->IASetIndexBuffer(m_IB, DXGI_FORMAT_R32_UINT, 0);
+		pMaterial->setShaders(1);
+		m_deviceContext->DrawIndexed(3, 3*mPickedTriangle, 0);
+	}
+}
 
 
 void D3D11RendererMesh::Pick(DirectX::SimpleMath::Ray ray)

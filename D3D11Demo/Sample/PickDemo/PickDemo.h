@@ -14,6 +14,7 @@ public:
 	void Pick(int x, int y);
 protected:
 	void InitResource();
+	void ResetState();
 	std::shared_ptr<class D3D11RendererMesh> m_CubeModel;
 	std::shared_ptr<class D3D11RendererMaterial> m_Material;
 	ID3D11ShaderResourceView* srv;
