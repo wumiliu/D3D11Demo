@@ -14,7 +14,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	}
 #endif
 
-	ShadowDemo theApp(hInstance, 1024, 600);
+	BaseDemo theApp(hInstance, 1024, 600);
 	if (!theApp.Init())
 		return 0;
 	return theApp.Run();

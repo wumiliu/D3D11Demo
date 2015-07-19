@@ -40,6 +40,7 @@ D3D11RendererMesh::~D3D11RendererMesh()
 	SAFE_RELEASE(m_VB);
 	SAFE_RELEASE(m_IB);
 	SAFE_RELEASE(m_ShaderResourceView);
+	SAFE_RELEASE(m_pBlendState);
 }
 
 bool D3D11RendererMesh::BuildBuffers(const GeoGen::MeshData& mesh)

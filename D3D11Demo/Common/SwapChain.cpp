@@ -39,7 +39,6 @@ SwapChain::~SwapChain()
 	SAFE_RELEASE(m_depthStencilBuffer);
 	SAFE_RELEASE(m_renderTargetView);
 	SAFE_RELEASE(m_depthStencilView);
-
 }
 
 HRESULT SwapChain::Initialize(HWND hwnd, int nWidth, int nHeigth)

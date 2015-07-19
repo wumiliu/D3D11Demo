@@ -17,16 +17,16 @@ D3D11RendererMaterial::D3D11RendererMaterial(const RendererMaterialDesc& desc)
 
 D3D11RendererMaterial::~D3D11RendererMaterial()
 {
-	//SAFE_DELETE(m_vertexShader);
-	//for (uint32 i = 0; i < m_pixelShader.size();++i)
-	//{
-	//	SAFE_DELETE(m_pixelShader[i]);
-	//}
-	//SAFE_DELETE(m_geometryShader);
-	//SAFE_DELETE(m_hullShader);
-	//SAFE_DELETE(m_domainShader);
-	//SAFE_DELETE(vertexshaderBuffer);
-	//SAFE_DELETE(m_pInputLayout);
+	SAFE_RELEASE(m_vertexShader);
+	for (uint32 i = 0; i < m_pixelShader.size(); ++i)
+	{
+		SAFE_RELEASE(m_pixelShader[i]);
+	}
+	SAFE_RELEASE(m_geometryShader);
+	SAFE_RELEASE(m_hullShader);
+	SAFE_RELEASE(m_domainShader);
+	SAFE_RELEASE(vertexshaderBuffer);
+	SAFE_RELEASE(m_pInputLayout);
 
 }
 

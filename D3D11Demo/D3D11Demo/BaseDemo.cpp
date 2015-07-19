@@ -7,6 +7,7 @@
 #include "Cure/spline.h"
 #include "d3dUtil.h"
 #include "p3types.h"
+#include "CommonStates.h"
 
 BaseDemo::BaseDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/)
 	: D3D11App(hInstance)
@@ -22,10 +23,8 @@ BaseDemo::BaseDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 6
 
 BaseDemo::~BaseDemo()
 {
-	SAFE_RELEASE(m_vertexBuffer);
-	SAFE_RELEASE(m_indexBuffer);
 	SAFE_RELEASE(srv);
-
+	SAFE_RELEASE(m_vertexBuffer);
 }
 
 bool BaseDemo::Init()
@@ -128,6 +127,7 @@ void BaseDemo::InitResource()
 		&srv
 		);
 	SAFE_RELEASE(pTexture2D);
+	SAFE_RELEASE(srv);
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC; //¶¯Ì¬»º´æ
 	vertexBufferDesc.ByteWidth = sizeof(VertexPositionColorTexture) * 10000;
@@ -138,6 +138,7 @@ void BaseDemo::InitResource()
 
 	HRESULT result = S_FALSE;
 	result = m_d3dDevice->CreateBuffer(&vertexBufferDesc, NULL, &m_vertexBuffer);
+	
 
 }
 void BaseDemo::DrawPrimitiveUP(PrimitiveType PrimitiveType, unsigned int PrimitiveCount, VertexPositionColorTexture *pVertexs, const XMMATRIX &model /*= XMMatrixIdentity()*/, ID3D11ShaderResourceView*pTexture /*= NULL*/)

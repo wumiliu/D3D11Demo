@@ -21,7 +21,7 @@ PickDemo::PickDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 6
 
 PickDemo::~PickDemo()
 {
-
+	SAFE_RELEASE(srv);
 }
 
 void PickDemo::InitResource()

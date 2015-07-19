@@ -27,10 +27,14 @@ DynamicPrimitive::DynamicPrimitive(int initialBufferCapacity /*= 32*/, int maxBu
 	CreateIndexBuffer(0, 0);
 	CreateVertexBuffer(0, 0);
 
+
 }
 
 DynamicPrimitive::~DynamicPrimitive()
 {
+	SAFE_RELEASE(m_vertexBuffer);
+	SAFE_RELEASE(m_indexBuffer);
+
 }
 
 void DynamicPrimitive::CreateIndexBuffer(int nType, int nSize)

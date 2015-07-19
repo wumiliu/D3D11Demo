@@ -99,6 +99,7 @@ DeviceManager::~DeviceManager()
 
 	SAFE_RELEASE(m_pImmediateContext);
 	SAFE_RELEASE(m_pDXGIFactory);
+
 /*
 #if defined(DEBUG) || defined(_DEBUG)
 	ID3D11Debug *d3dDebug;
@@ -108,8 +109,7 @@ DeviceManager::~DeviceManager()
 		hr = d3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	}
 	if (d3dDebug != nullptr)			d3dDebug->Release();
-#endif
-	*/
+#endif*/
 	SAFE_RELEASE(m_pd3dDevice);
 }
 
