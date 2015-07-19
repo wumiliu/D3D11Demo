@@ -35,6 +35,9 @@ void PickDemo::InitResource()
 	desc.pixelShaderPath = "baseMeshPS.hlsl";
 	desc.vecPass.push_back("main");
 	desc.vecPass.push_back("mainPick");
+	desc.vecPass.push_back("mainRed");
+	desc.vecPass.push_back("mainGreen");
+	desc.vecPass.push_back("mainBlue");
 	m_Material = std::make_shared<D3D11RendererMaterial>(desc);
 
 	MeshData meshData;
@@ -87,42 +90,11 @@ void PickDemo::DrawScene()
 	SwapChainPtr->SetBackBufferRenderTarget();
 	SwapChainPtr->Clear();
 	ResetState();
+	RenderSystemAxis();
 	Matrix viewMatrix;
 	Matrix projectionMatrix;
 	viewMatrix = g_objTrackballCameraController.View();
 	projectionMatrix = g_objTrackballCameraController.Proj();
-	ID3D11SamplerState* LinearClamp = g_objStates.LinearClamp();
-	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
-	//m_deviceContext->PSSetSamplers(g_objStates.PointWrap());
-
-	m_Material->PSSetShaderResources(0,1,srv);
-	m_deviceContext->OMSetDepthStencilState(g_objStates.DepthDefault(), 1);
-	Matrix world = Matrix::CreateScale(0.5, 0.5, 0.5) * Matrix::CreateTranslation(0, 5.5f*0.5f, 0);
-
-	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
-	m_CubeModel->render(m_Material.get());
-	world *= Matrix::CreateRotationX(XM_PIDIV2);
-	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
-	m_CubeModel->render(m_Material.get());
-	
-	world = Matrix::CreateScale(0.5, 0.5, 0.5) * Matrix::CreateTranslation(0, 5.5f*0.5f, 0);
-	world *= Matrix::CreateRotationZ(-XM_PIDIV2);
-	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
-	m_CubeModel->render(m_Material.get());
-
-	//m_Material->SetShaderParameters(Matrix::CreateTranslation(0.5,0,0), viewMatrix, projectionMatrix);
-	m_CubeModel->renderHelp(m_Material.get());
-	world = Matrix::CreateScale(0.5f, 0.5f, 0.5f) * Matrix::CreateTranslation(0.0f, 2.5f*0.5f, 0.0f);
-	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
-	m_Cylinder->render(m_Material.get());
-	world *= Matrix::CreateRotationX(XM_PIDIV2);
-	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
-	m_Cylinder->render(m_Material.get());
-
-	world = Matrix::CreateScale(0.5f, 0.5f, 0.5f) * Matrix::CreateTranslation(0.0f, 2.5f*0.5f, 0.0f);
-	world *= Matrix::CreateRotationZ(-XM_PIDIV2);
-	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
-	m_Cylinder->render(m_Material.get());
 
 	g_objSprite.ResetSize(mClientWidth, mClientHeight);
 	g_objSprite.ShowBlock(100, 100, 300, 200, { 0, 0, 1, 1 }, mTimer.TotalTime());
@@ -153,4 +125,41 @@ void PickDemo::OnMouseUp(WPARAM btnState, int x, int y)
 {
 	D3D11App::OnMouseUp(btnState,x,y);
 	Pick(x, y);
+}
+
+void PickDemo::RenderSystemAxis()
+{
+	Matrix viewMatrix;
+	Matrix projectionMatrix;
+	viewMatrix = g_objTrackballCameraController.View();
+	projectionMatrix = g_objTrackballCameraController.Proj();
+	ID3D11SamplerState* LinearClamp = g_objStates.LinearClamp();
+	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
+	//m_deviceContext->PSSetSamplers(g_objStates.PointWrap());
+
+	m_Material->PSSetShaderResources(0, 1, srv);
+	m_deviceContext->OMSetDepthStencilState(g_objStates.DepthDefault(), 1);
+	Matrix world = Matrix::CreateScale(0.5, 0.5, 0.5) * Matrix::CreateTranslation(0, 5.5f*0.5f, 0);
+	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
+	m_CubeModel->render(m_Material.get(), 3);
+	world *= Matrix::CreateRotationX(XM_PIDIV2);
+	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
+	m_CubeModel->render(m_Material.get(), 4);
+
+	world = Matrix::CreateScale(0.5, 0.5, 0.5) * Matrix::CreateTranslation(0, 5.5f*0.5f, 0);
+	world *= Matrix::CreateRotationZ(-XM_PIDIV2);
+	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
+	m_CubeModel->render(m_Material.get(), 2);
+	m_CubeModel->renderHelp(m_Material.get());
+	world = Matrix::CreateScale(0.5f, 0.5f, 0.5f) * Matrix::CreateTranslation(0.0f, 2.5f*0.5f, 0.0f);
+	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
+	m_Cylinder->render(m_Material.get(), 3);
+
+	world *= Matrix::CreateRotationX(XM_PIDIV2);
+	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
+	m_Cylinder->render(m_Material.get(), 4);
+	world = Matrix::CreateScale(0.5f, 0.5f, 0.5f) * Matrix::CreateTranslation(0.0f, 2.5f*0.5f, 0.0f);
+	world *= Matrix::CreateRotationZ(-XM_PIDIV2);
+	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
+	m_Cylinder->render(m_Material.get(), 2);
 }

@@ -11,7 +11,7 @@ public:
 	D3D11RendererMesh();
 	~D3D11RendererMesh();
 	bool BuildBuffers(const GeoGen::MeshData& mesh);
-	void         render(D3D11RendererMaterial* pMaterial);
+	void         render(D3D11RendererMaterial* pMaterial,uint32 pass = 0);
 	void         renderHelp(D3D11RendererMaterial* pMaterial);
 	
 	void Pick(DirectX::SimpleMath::Ray ray);

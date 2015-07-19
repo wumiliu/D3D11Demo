@@ -12,6 +12,7 @@ public:
 	virtual void DrawScene();
 	virtual void OnMouseUp(WPARAM btnState, int x, int y);
 	void Pick(int x, int y);
+	void RenderSystemAxis();
 protected:
 	void InitResource();
 	void ResetState();

@@ -30,3 +30,23 @@ float4 mainPick(PixelInputType input) : SV_TARGET
 	float4 textureColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 	return textureColor;
 }
+
+float4 mainRed(PixelInputType input) : SV_TARGET
+{
+	float4 textureColor = { 1.0f, 0.0f, 0.0f, 1.0f };
+	return textureColor;
+}
+
+
+float4 mainGreen(PixelInputType input) : SV_TARGET
+{
+	float4 textureColor = { 0.0f, 1.0f, 0.0f, 1.0f };
+	return textureColor;
+}
+
+
+float4 mainBlue(PixelInputType input) : SV_TARGET
+{
+	float4 textureColor = { 0.0f, 0.0f, 1.0f, 1.0f };
+	return textureColor;
+}

@@ -103,7 +103,7 @@ bool D3D11RendererMesh::BuildBuffers(const GeoGen::MeshData& mesh)
 	return true;
 }
 
-void D3D11RendererMesh::render(D3D11RendererMaterial* pMaterial)
+void D3D11RendererMesh::render(D3D11RendererMaterial* pMaterial, uint32 pass)
 {
 	m_deviceContext->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_deviceContext->IASetInputLayout(pMaterial->getLayout<VertexPositionNormalTexture>());
@@ -122,7 +122,7 @@ void D3D11RendererMesh::render(D3D11RendererMaterial* pMaterial)
 	}
 	else
 	{
-		pMaterial->setShaders();
+		pMaterial->setShaders(pass);
 		m_deviceContext->DrawIndexed(m_nIBSize, 0, 0);
 	}
 
