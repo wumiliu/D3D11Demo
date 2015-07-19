@@ -69,12 +69,14 @@
   <ItemGroup>
     <ClCompile Include="D3D11RendererMaterial.cpp" />
     <ClCompile Include="D3D11RendererMesh.cpp" />
+    <ClCompile Include="DynamicPrimitive.cpp" />
     <ClCompile Include="PickDemo.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3D11RendererMaterial.h" />
     <ClInclude Include="D3D11RendererMesh.h" />
+    <ClInclude Include="DynamicPrimitive.h" />
     <ClInclude Include="PickDemo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

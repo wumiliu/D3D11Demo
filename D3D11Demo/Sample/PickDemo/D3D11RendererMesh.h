@@ -13,8 +13,10 @@ public:
 	bool BuildBuffers(const GeoGen::MeshData& mesh);
 	void         render(D3D11RendererMaterial* pMaterial);
 	void         renderHelp(D3D11RendererMaterial* pMaterial);
-
+	
 	void Pick(DirectX::SimpleMath::Ray ray);
+protected:
+	void RenderSystem();
 private:
 	std::vector<VertexPositionNormalTexture> vertices;
 	std::vector<UINT> indices;
@@ -31,5 +33,7 @@ protected:
 	ID3D11ShaderResourceView* m_ShaderResourceView;
 	UINT mPickedTriangle;
 	ID3D11BlendState *m_pBlendState;
+	bool m_bPick;
+	Matrix m_WorldMatrix;
 };
 

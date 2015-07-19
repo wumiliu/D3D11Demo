@@ -17,6 +17,16 @@ D3D11RendererMaterial::D3D11RendererMaterial(const RendererMaterialDesc& desc)
 
 D3D11RendererMaterial::~D3D11RendererMaterial()
 {
+	//SAFE_DELETE(m_vertexShader);
+	//for (uint32 i = 0; i < m_pixelShader.size();++i)
+	//{
+	//	SAFE_DELETE(m_pixelShader[i]);
+	//}
+	//SAFE_DELETE(m_geometryShader);
+	//SAFE_DELETE(m_hullShader);
+	//SAFE_DELETE(m_domainShader);
+	//SAFE_DELETE(vertexshaderBuffer);
+	//SAFE_DELETE(m_pInputLayout);
 
 }
 
@@ -30,19 +40,36 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 	if (desc.pixelShaderPath)
 	{
 		ID3DBlob* shaderBuffer;
-		D3DCompileShader(desc.pixelShaderPath, "main", "ps_4_0", &shaderBuffer);
-		g_objDeviecManager.CreatePixelShader(shaderBuffer, &m_pixelShader[0]);
-		D3DCompileShader(desc.pixelShaderPath, "mainPick", "ps_4_0", &shaderBuffer);
-		g_objDeviecManager.CreatePixelShader(shaderBuffer, &m_pixelShader[1]);
+		if (desc.vecPass.size() <= 0)
+		{
+			D3DCompileShader(desc.pixelShaderPath, "main", "ps_4_0", &shaderBuffer);
+			ID3D11PixelShader *pPixelShader;
+			g_objDeviecManager.CreatePixelShader(shaderBuffer, &pPixelShader);
+			m_pixelShader.push_back(pPixelShader);
+		}
+		else
+		{
+			ID3DBlob* shaderBuffer;
+			ID3D11PixelShader *pPixelShader;
+			for (uint32 i = 0; i < desc.vecPass.size();++i)
+			{
+				D3DCompileShader(desc.pixelShaderPath, desc.vecPass[i].c_str(), "ps_4_0", &shaderBuffer);
+				g_objDeviecManager.CreatePixelShader(shaderBuffer, &pPixelShader);
+				m_pixelShader.push_back(pPixelShader);
+			}
+		}
 	}
 
 	g_objDeviecManager.CreateConstantBuffer<MatrixBufferShader>(&m_matrixBuffer);
 }
 
-void D3D11RendererMaterial::setShaders(int i)
+void D3D11RendererMaterial::setShaders(uint32 i)
 {
 	g_objDeviecManager.GetImmediateContext()->VSSetShader(m_vertexShader, NULL, 0);
-	g_objDeviecManager.GetImmediateContext()->PSSetShader(m_pixelShader[i], NULL, 0);
+	if (i < m_pixelShader.size())
+	{
+		g_objDeviecManager.GetImmediateContext()->PSSetShader(m_pixelShader[i], NULL, 0);
+	}
 	g_objDeviecManager.GetImmediateContext()->GSSetShader(m_geometryShader, NULL, 0);
 	g_objDeviecManager.GetImmediateContext()->HSSetShader(m_hullShader, NULL, 0);
 	g_objDeviecManager.GetImmediateContext()->DSSetShader(m_domainShader, NULL, 0);

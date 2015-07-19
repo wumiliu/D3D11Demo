@@ -4,6 +4,8 @@
 #include "DeviceManager.h"
 #include "D3D11RendererMaterial.h"
 #include "CommonStates.h"
+#include "DynamicPrimitive.h"
+
 D3D11RendererMesh::D3D11RendererMesh()
 {
 	m_d3dDevice = g_objDeviecManager.GetDevice();
@@ -122,6 +124,7 @@ void D3D11RendererMesh::render(D3D11RendererMaterial* pMaterial)
 		pMaterial->setShaders();
 		m_deviceContext->DrawIndexed(m_nIBSize, 0, 0);
 	}
+
 }
 
 
@@ -147,6 +150,7 @@ void D3D11RendererMesh::renderHelp(D3D11RendererMaterial* pMaterial)
 
 void D3D11RendererMesh::Pick(DirectX::SimpleMath::Ray ray)
 {
+	m_bPick = false;
 	mPickedTriangle = -1;
 	XMFLOAT3 Center;            // Center of the box.
 	XMFLOAT3 Extents;           // Distance from the center to each side.
@@ -178,8 +182,14 @@ void D3D11RendererMesh::Pick(DirectX::SimpleMath::Ray ray)
 				{
 					tmin = t;
 					mPickedTriangle = i;
+					m_bPick = true;
 				}
 			}
 		}
 	}
+}
+
+void D3D11RendererMesh::RenderSystem()
+{
+	
 }

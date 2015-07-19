@@ -9,6 +9,9 @@ struct RendererMaterialDesc
 	const char                     *domainShaderPath;
 	const char                     *vertexShaderPath;
 	const char                     *pixelShaderPath;
+
+	std::vector<std::string>        vecPass;
+
 };
 
 struct MatrixBufferShader
@@ -25,7 +28,7 @@ public:
 	D3D11RendererMaterial(const RendererMaterialDesc& desc);
 	~D3D11RendererMaterial();
 
-	void setShaders(int i = 0);
+	void setShaders(uint32 i = 0);
 	void SetShaderParameters(Matrix world, Matrix view, Matrix proj, ID3D11ShaderResourceView* texture = NULL);
 	void PSSetShaderResources(UINT StartSlot, UINT NumViews, ID3D11ShaderResourceView  *ppShaderResourceViews);
 	ID3D11VertexShader*   getVS() const { return m_vertexShader; }
@@ -44,7 +47,7 @@ protected:
 	void loadShaders(const RendererMaterialDesc& desc);
 private:
 	ID3D11VertexShader*  m_vertexShader;
-	ID3D11PixelShader* m_pixelShader[2];
+	std::vector<ID3D11PixelShader*>m_pixelShader;
 	ID3D11GeometryShader*        m_geometryShader;
 	ID3D11HullShader*            m_hullShader;
 	ID3D11DomainShader*          m_domainShader;
