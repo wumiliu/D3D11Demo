@@ -100,6 +100,7 @@ DeviceManager::~DeviceManager()
 	SAFE_RELEASE(m_pImmediateContext);
 	SAFE_RELEASE(m_pDXGIFactory);
 
+
 /*
 #if defined(DEBUG) || defined(_DEBUG)
 	ID3D11Debug *d3dDebug;

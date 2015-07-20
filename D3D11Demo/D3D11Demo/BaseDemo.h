@@ -21,7 +21,6 @@ class BaseDemo : public D3D11App
 public:
 	BaseDemo(HINSTANCE hInstance, int nWidth = 1024, int nHeight = 600);
 	~BaseDemo();
-	virtual bool Init();
 	virtual void UpdateScene(float dt);
 	virtual void DrawScene();
 	virtual void OnResize();

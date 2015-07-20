@@ -31,7 +31,6 @@ public:
 	ShadowDemo(HINSTANCE hInstance, int nWidth = 1024, int nHeight = 600);
 	~ShadowDemo();
 
-	virtual bool Init();
 	virtual void UpdateScene(float dt);
 	virtual void DrawScene();
 	void RenderSceneToTexture();

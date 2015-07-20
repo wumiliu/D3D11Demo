@@ -94,14 +94,6 @@ ShadowDemo::~ShadowDemo()
 
 }
 
-bool ShadowDemo::Init()
-{
-	if (!D3D11App::Init())
-		return false;
-	InitResource();
-	return true;
-}
-
 void ShadowDemo::InitResource()
 {
 	float AspectHByW = (float)mClientWidth / (float)mClientHeight;

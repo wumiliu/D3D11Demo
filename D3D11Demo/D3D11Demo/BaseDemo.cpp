@@ -8,12 +8,14 @@
 #include "d3dUtil.h"
 #include "p3types.h"
 #include "CommonStates.h"
-
+#include "Texture/DirectXHelpers.h"
 BaseDemo::BaseDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/)
 	: D3D11App(hInstance)
 {
 	mClientWidth = nWidth;
 	mClientHeight = nHeight;
+	m_vertexBuffer = NULL;
+	m_indexBuffer = NULL;
 
 	m_Curve = AnimationCurve::Cubic(0, 0, mClientWidth, mClientHeight);
 	m_Curve->AddKey(300, 400);
@@ -25,15 +27,9 @@ BaseDemo::~BaseDemo()
 {
 	SAFE_RELEASE(srv);
 	SAFE_RELEASE(m_vertexBuffer);
+	SAFE_RELEASE(m_indexBuffer);
 }
 
-bool BaseDemo::Init()
-{
-	if (!D3D11App::Init())
-		return false;
-	InitResource();
-	return true;
-}
 
 void BaseDemo::UpdateScene(float dt)
 {
@@ -44,7 +40,8 @@ void BaseDemo::DrawScene()
 {
 	SwapChainPtr->Begin();
 	ShowBlock(100, 100, 300, 200, { 0, 0, 1, 1 }, mTimer.TotalTime());
-
+	SwapChainPtr->Flip();
+	return;
 	vector<VertexPositionColor> vertices;
 	vertices.resize(mClientWidth);
 	for (int xval = 0; xval < mClientWidth; ++xval)
@@ -127,7 +124,6 @@ void BaseDemo::InitResource()
 		&srv
 		);
 	SAFE_RELEASE(pTexture2D);
-	SAFE_RELEASE(srv);
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC; //¶¯Ì¬»º´æ
 	vertexBufferDesc.ByteWidth = sizeof(VertexPositionColorTexture) * 10000;
@@ -138,7 +134,8 @@ void BaseDemo::InitResource()
 
 	HRESULT result = S_FALSE;
 	result = m_d3dDevice->CreateBuffer(&vertexBufferDesc, NULL, &m_vertexBuffer);
-	
+
+	SetDebugObjectName(m_vertexBuffer, "BaseDemo:m_vertexBuffer");
 
 }
 void BaseDemo::DrawPrimitiveUP(PrimitiveType PrimitiveType, unsigned int PrimitiveCount, VertexPositionColorTexture *pVertexs, const XMMATRIX &model /*= XMMatrixIdentity()*/, ID3D11ShaderResourceView*pTexture /*= NULL*/)
