@@ -27,6 +27,7 @@ D3D11RendererMaterial::~D3D11RendererMaterial()
 	SAFE_RELEASE(m_domainShader);
 	SAFE_RELEASE(vertexshaderBuffer);
 	SAFE_RELEASE(m_pInputLayout);
+	SAFE_RELEASE(m_matrixBuffer);
 
 }
 
