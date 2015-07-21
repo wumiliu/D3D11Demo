@@ -21,9 +21,33 @@
     <ClCompile Include="BaseDemo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="D3D11RendererMaterial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11RendererMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraHelp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11RendererMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11RendererMaterial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraHelp.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

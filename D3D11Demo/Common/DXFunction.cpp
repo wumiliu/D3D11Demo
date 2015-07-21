@@ -1,6 +1,7 @@
 #include "DXFunction.h"
 #include "BaseFunction.h"
 #include "Texture/DDSTextureLoader.h"
+#pragma comment(lib, "d3dcompiler.lib")
 
 ID3D11ShaderResourceView* D3DX11CreateShaderResourceViewFromFile(
 	ID3D11Device* pDevice, const char* strFileName)

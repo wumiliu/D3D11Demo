@@ -23,6 +23,10 @@
 #define  D3DX_PI XM_PI
 #endif
 
+#ifndef D3DXQUATERNION
+#define  D3DXQUATERNION Quaternion
+#endif
+
 
 ID3D11ShaderResourceView* D3DX11CreateShaderResourceViewFromFile(
 		ID3D11Device*  pDevice, 

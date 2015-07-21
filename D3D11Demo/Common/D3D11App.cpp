@@ -348,7 +348,6 @@ void D3D11App::OnMouseMove(WPARAM btnState, int x, int y)
 		mouseLast.X = _tmp.X;
 		mouseLast.Y = _tmp.Y;
 		g_objTrackballCameraController.Rotate((float)x, (float)y);
-		printf("%d   %d\n", x, y);
 	}
 }
 
