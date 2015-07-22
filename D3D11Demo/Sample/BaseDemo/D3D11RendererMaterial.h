@@ -30,6 +30,11 @@ public:
 
 	void setShaders(uint32 i = 0);
 	void SetShaderParameters(Matrix world, Matrix view, Matrix proj, ID3D11ShaderResourceView* texture = NULL);
+
+
+
+	void PSSetShaderResources(const char name,void** pBuffer);
+
 	void PSSetShaderResources(UINT StartSlot, UINT NumViews, ID3D11ShaderResourceView  *ppShaderResourceViews);
 	ID3D11VertexShader*   getVS() const { return m_vertexShader; }
 	ID3D11PixelShader*    getPS(int i = 0) const { return m_pixelShader[i]; }
@@ -53,6 +58,7 @@ private:
 	ID3D11DomainShader*          m_domainShader;
 
 	ID3DBlob* vertexshaderBuffer;
+	ID3D11ShaderReflection* pVSReflector;
 	ID3D11InputLayout * m_pInputLayout;
 
 

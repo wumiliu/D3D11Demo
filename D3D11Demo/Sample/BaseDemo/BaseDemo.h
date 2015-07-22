@@ -3,7 +3,7 @@
 #include "HpD3D9Type.h"
 #include "VertexTypes.h"
 
-#include "CameraComponent.h"
+#include "Camera/CameraComponent.h"
 
 /************************************************************************/
 /* 简单的视锥体裁剪                                                                     */

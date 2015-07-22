@@ -28,7 +28,7 @@ public:
 
 	template< class ConstantBuffer>
 	HRESULT CreateConstantBuffer(ID3D11Buffer **ppBuffer);
-
+	HRESULT CreateConstantBuffer(ID3D11Buffer **ppBuffer,int nSize);
 
 private:
 	DeviceManager();

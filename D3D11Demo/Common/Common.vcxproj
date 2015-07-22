@@ -67,6 +67,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseFunction.cpp" />
+    <ClCompile Include="Camera\CameraComponent.cpp" />
+    <ClCompile Include="Camera\CameraHelp.cpp" />
     <ClCompile Include="CommonStates.cpp" />
     <ClCompile Include="Cure\Curve.cpp" />
     <ClCompile Include="Cure\spline.cpp" />
@@ -91,6 +93,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseFunction.h" />
+    <ClInclude Include="Camera\CameraComponent.h" />
+    <ClInclude Include="Camera\CameraHelp.h" />
     <ClInclude Include="CommonStates.h" />
     <ClInclude Include="Cure\Curve.h" />
     <ClInclude Include="Cure\spline.h" />

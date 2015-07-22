@@ -2,11 +2,11 @@
 // Filename: color.vs
 ////////////////////////////////////////////////////////////////////////////////
 
-
+//#include "LightHelper.hlsl"
 /////////////
 // GLOBALS //
 /////////////
-cbuffer MatrixBuffer
+cbuffer  MatrixBuffer: register(b0)
 {
 	matrix worldMatrix;
 	matrix viewMatrix;
@@ -20,8 +20,8 @@ cbuffer MatrixBuffer
 struct VertexInputType
 {
 	float4 position : SV_Position;
-	float4 normal : NORMAL;
-	float4 tex : TEXCOORD;
+	float3 normal : NORMAL;
+	float2 tex : TEXCOORD;
 };
 
 struct PixelInputType

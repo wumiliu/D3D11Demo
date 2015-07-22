@@ -3,7 +3,7 @@
 #include "D3D11RendererMesh.h"
 #include "D3D11RendererMaterial.h"
 #include "CommonStates.h"
-#include "CameraHelp.h"
+#include "Camera/CameraHelp.h"
 #include "CommonStates.h"
 #include "Texture/DDSTextureLoader.h"
 #include "TrackballCameraController.h"
@@ -134,7 +134,6 @@ void BaseDemo::DrawScene()
 			m_MeshModel->render(m_Material.get());
 		}
 	}
-	
 	SwapChainPtr->Flip();
 }
 

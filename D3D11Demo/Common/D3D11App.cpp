@@ -4,6 +4,8 @@
 #include "SwapChain.h"
 #include "DeviceManager.h"
 #include "TrackballCameraController.h"
+#include "Camera/CameraComponent.h"
+
 namespace
 {
 	// This is just used to forward Windows messages from a global window
@@ -51,6 +53,8 @@ bool D3D11App::Init()
 	InitResource();
 	float AspectHByW = (float)mClientWidth / (float)mClientHeight;
 	g_objTrackballCameraController.ProjParams(DirectX::XM_PI*0.25f, AspectHByW, 1.0f, 1000.0f);
+	cameraComponent = std::make_shared<CameraComponent>();
+	cameraComponent->SetProjParams(DirectX::XM_PI*0.25f, AspectHByW, 1.0f, 1000.0f);
 	mTimer.Start();
 	return true;
 }
@@ -327,6 +331,14 @@ void D3D11App::CalculateFrameStats()
 void D3D11App::OnMouseDown(WPARAM btnState, int x, int y)
 {
 	bMouseDown = true;
+	if (btnState == 1)
+	{
+		mouseLast.bLeftDown = true;
+	}
+	else
+	{
+		mouseLast.bLeftDown = false;
+	}
 	mouseLast.X = x;
 	mouseLast.Y = y;
 }
@@ -334,6 +346,14 @@ void D3D11App::OnMouseDown(WPARAM btnState, int x, int y)
 void D3D11App::OnMouseUp(WPARAM btnState, int x, int y)
 {
 	bMouseDown = false;
+	if (btnState == 1)
+	{
+		mouseLast.bLeftDown = true;
+	}
+	else
+	{
+		mouseLast.bLeftDown = false;
+	}
 	mouseLast.X = x;
 	mouseLast.Y = y;
 }
@@ -347,13 +367,24 @@ void D3D11App::OnMouseMove(WPARAM btnState, int x, int y)
 		y -= mouseLast.Y;
 		mouseLast.X = _tmp.X;
 		mouseLast.Y = _tmp.Y;
-		g_objTrackballCameraController.Rotate((float)x, (float)y);
+		if (mouseLast.bLeftDown)
+		{
+			g_objTrackballCameraController.Rotate((float)x, (float)y);
+			cameraComponent->Rotate((float)x, (float)y);
+		}
+		else
+		{
+			g_objTrackballCameraController.Move((float)x, (float)y);
+			cameraComponent->Move((float)x, (float)y);
+		}
+
 	}
 }
 
 void D3D11App::OnMouseWheel(short zDelta, int x, int y)
 {
 	g_objTrackballCameraController.Zoom(zDelta, 0);
+	cameraComponent->Zoom(zDelta, 0);
 }
 
 DirectX::SimpleMath::Ray D3D11App::CalcPickingRay(int sx, int sy)

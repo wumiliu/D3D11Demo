@@ -91,15 +91,18 @@ struct  MousePos
 {
 	int X;
 	int Y;
+	bool bLeftDown;
 	MousePos()
 	{
 		X = 0;
 		Y = 0;
+		bLeftDown = false;
 	}
 	MousePos(int x, int y)
 	{
 		X = x;
 		Y = y;
+		bLeftDown = false;
 	}
 };
 typedef std::vector<D3D11_INPUT_ELEMENT_DESC> LayoutVector;

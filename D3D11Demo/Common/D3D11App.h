@@ -59,6 +59,7 @@ protected:
 	int mClientWidthOld;
 	int mClientHeightOld;
 	std::shared_ptr<class SwapChain> SwapChainPtr;
+	std::shared_ptr<class CameraComponent> cameraComponent;
 
 	bool bMouseDown;
 	MousePos mouseLast;

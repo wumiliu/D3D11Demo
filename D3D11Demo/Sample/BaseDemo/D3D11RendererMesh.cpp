@@ -96,10 +96,6 @@ bool D3D11RendererMesh::BuildBuffers(const GeoGen::MeshData& mesh)
 		MessageBox(NULL, L"Create Index Buffer failed!", L"Error", MB_OK);
 		return false;
 	}
-
-
-
-
 	return true;
 }
 

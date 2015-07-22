@@ -1,5 +1,5 @@
 #pragma once
-#include "HpD3D9Type.h"
+#include "../HpD3D9Type.h"
 
 class CameraComponent
 {
@@ -15,7 +15,9 @@ public:
 	Matrix GetViewMatrix() 	{ return m_mView; }
 	Matrix GetProjMatrix() { return m_mProj; }
 
-
+	void Rotate(float offset_x, float offset_y);
+	void Move(float offset_x, float offset_y);
+	void Zoom(float offset_x, float offset_y);
 private:
 	Vector3 m_vDefaultEye;          // Default camera eye position
 	Vector3 m_vDefaultLookAt;       // Default LookAt position

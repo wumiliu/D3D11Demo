@@ -25,6 +25,9 @@
     <Filter Include="Cure">
       <UniqueIdentifier>{2bc7876a-8b97-4c14-b26e-5168691fa659}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{d4af8fb6-8357-4c07-9ec9-ab537c7c216c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseFunction.cpp">
@@ -92,6 +95,12 @@
     </ClCompile>
     <ClCompile Include="TrackballCameraController.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\CameraComponent.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\CameraHelp.cpp">
+      <Filter>Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +187,12 @@
     </ClInclude>
     <ClInclude Include="TrackballCameraController.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\CameraComponent.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\CameraHelp.h">
+      <Filter>Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

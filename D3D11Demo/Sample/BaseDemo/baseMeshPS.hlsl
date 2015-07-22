@@ -20,8 +20,12 @@ struct PixelInputType
 ////////////////////////////////////////////////////////////////////////////////
 float4 main(PixelInputType input) : SV_TARGET
 {
+#if (EXAMPLE_DEFINE_1 == 0)
+	float4 textureColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+#else
 	float4 textureColor = { 0.0f, 0.0f, 1.0f, 1.0f };
 	textureColor = shaderTexture.Sample(SampleType, input.tex);
+#endif
 	return textureColor;
 }
 

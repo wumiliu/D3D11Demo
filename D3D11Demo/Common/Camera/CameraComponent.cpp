@@ -82,3 +82,18 @@ void CameraComponent::Reset()
 {
 
 }
+
+void CameraComponent::Rotate(float offset_x, float offset_y)
+{
+
+}
+
+void CameraComponent::Move(float offset_x, float offset_y)
+{
+
+}
+
+void CameraComponent::Zoom(float offset_x, float offset_y)
+{
+
+}

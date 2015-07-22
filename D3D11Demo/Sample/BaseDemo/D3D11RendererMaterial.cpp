@@ -35,7 +35,57 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 {
 	if (desc.vertexShaderPath)
 	{
-		D3DCompileShader(desc.vertexShaderPath, "main", "vs_4_0", &vertexshaderBuffer);
+		D3DCompileShader(desc.vertexShaderPath, "main", "vs_4_0", &vertexshaderBuffer, &pVSReflector);
+		if (pVSReflector)
+		{
+			D3D11_SHADER_DESC shaderDesc;
+			pVSReflector->GetDesc(&shaderDesc);
+			//即使 hlsl 中定义了多个常量,如果在hlsl 代码中没有使用的话，常量的数量还是为0
+			D3D11_SHADER_INPUT_BIND_DESC resourceBindingDesc0;
+			D3D11_SHADER_INPUT_BIND_DESC resourceBindingDesc1;
+			D3D11_SHADER_INPUT_BIND_DESC resourceBindingDesc2;
+
+			pVSReflector->GetResourceBindingDesc(0, &resourceBindingDesc0);
+			pVSReflector->GetResourceBindingDesc(1, &resourceBindingDesc1);
+			pVSReflector->GetResourceBindingDesc(2, &resourceBindingDesc2);
+			std::vector<D3D11_INPUT_ELEMENT_DESC> InputElements;
+			 for (int i = 0; i < shaderDesc.InputParameters;++i)
+			 {
+				 
+				 D3D11_SIGNATURE_PARAMETER_DESC pDesc2;
+				 pVSReflector->GetInputParameterDesc(i, &pDesc2);
+				 D3D11_INPUT_ELEMENT_DESC InputElement;
+				 InputElement.SemanticName = pDesc2.SemanticName;
+				 InputElement.SemanticIndex = pDesc2.SemanticIndex;
+		
+
+				 const D3D11_INPUT_ELEMENT_DESC InputElements111[] =
+				 {
+					 { "SV_Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+					 { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				 };
+				// pDesc1.uFlags
+			 }
+			 D3D11_SHADER_BUFFER_DESC pDesc;
+			 D3D11_SHADER_VARIABLE_DESC pVariableDesc;
+			 ID3D11ShaderReflectionVariable* pVariable = pVSReflector->GetVariableByName("MatrixBuffer");
+			 pVariable->GetDesc(&pVariableDesc);
+	
+			ID3D11ShaderReflectionConstantBuffer* pBuffer = pVSReflector->GetConstantBufferByIndex(0);
+			if (pBuffer)
+			{
+				pBuffer->GetDesc(&pDesc);
+				for (int i = 0; i < pDesc.Variables; ++i)
+				{
+					ID3D11ShaderReflectionVariable* pReflection = pBuffer->GetVariableByIndex(i);
+					if (pReflection)
+					{
+						pReflection->GetDesc(&pVariableDesc);
+					}
+				}
+				g_objDeviecManager.CreateConstantBuffer(&m_matrixBuffer, pDesc.Size);
+			}
+		}
 		g_objDeviecManager.CreateVertexShader(vertexshaderBuffer, &m_vertexShader);
 	}
 	if (desc.pixelShaderPath)
@@ -52,16 +102,29 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 		{
 			ID3DBlob* shaderBuffer;
 			ID3D11PixelShader *pPixelShader;
+			ID3D11ShaderReflection* pReflector = NULL;
 			for (uint32 i = 0; i < desc.vecPass.size();++i)
 			{
-				D3DCompileShader(desc.pixelShaderPath, desc.vecPass[i].c_str(), "ps_4_0", &shaderBuffer);
+				D3DCompileShader(desc.pixelShaderPath, desc.vecPass[i].c_str(), "ps_4_0", &shaderBuffer, &pReflector);
 				g_objDeviecManager.CreatePixelShader(shaderBuffer, &pPixelShader);
 				m_pixelShader.push_back(pPixelShader);
+
+				if (pReflector)
+				{
+					D3D11_SHADER_DESC shaderDesc;
+					pReflector->GetDesc(&shaderDesc);
+					D3D11_SHADER_INPUT_BIND_DESC resourceBindingDesc0;
+					D3D11_SHADER_INPUT_BIND_DESC resourceBindingDesc1;
+					D3D11_SHADER_INPUT_BIND_DESC resourceBindingDesc2;
+
+					pReflector->GetResourceBindingDesc(0, &resourceBindingDesc0);
+					pReflector->GetResourceBindingDesc(1, &resourceBindingDesc1);
+					pReflector->GetResourceBindingDesc(2, &resourceBindingDesc2);
+				}
+
 			}
 		}
 	}
-
-	g_objDeviecManager.CreateConstantBuffer<MatrixBufferShader>(&m_matrixBuffer);
 }
 
 void D3D11RendererMaterial::setShaders(uint32 i)
@@ -82,19 +145,49 @@ void D3D11RendererMaterial::SetShaderParameters(Matrix world, Matrix view, Matri
 	ID3D11DeviceContext		*m_deviceContext = g_objDeviecManager.GetImmediateContext();
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	MatrixBufferShader* dataPtr;
+	void* dataPtr;
 	result = m_deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result))
 	{
 		return;
 	}
 	// Get a pointer to the data in the constant buffer.
-	dataPtr = (MatrixBufferShader*)mappedResource.pData;
-	// Copy the matrices into the constant buffer.
-	dataPtr->world = world;
-	dataPtr->view = view;
-	dataPtr->projection = proj;
+	dataPtr = mappedResource.pData;
+	//dataPtr = (MatrixBufferShader*)mappedResource.pData;
+	//// Copy the matrices into the constant buffer.
+	//dataPtr->world = world;
+	//dataPtr->view = view;
+	//dataPtr->projection = proj;
 	// Unlock the constant buffer.
+
+	ID3D11ShaderReflectionConstantBuffer* pBuffer = pVSReflector->GetConstantBufferByIndex(0);
+	D3D11_SHADER_BUFFER_DESC pDesc;
+	D3D11_SHADER_VARIABLE_DESC pVariableDesc;
+	if (pBuffer)
+	{
+		pBuffer->GetDesc(&pDesc);
+		for (int i = 0; i < pDesc.Variables; ++i)
+		{
+			ID3D11ShaderReflectionVariable* pReflection = pBuffer->GetVariableByIndex(i);
+			if (pReflection)
+			{
+				pReflection->GetDesc(&pVariableDesc);
+				unsigned char*  pBuffer = (unsigned char*)dataPtr;
+				if (i == 0)
+				{
+					memcpy_s(pBuffer + pVariableDesc.StartOffset, pVariableDesc.Size, (void*)&world, 1 * sizeof(Matrix));
+				}
+				else if (i == 1)
+				{
+					memcpy_s(pBuffer + pVariableDesc.StartOffset, pVariableDesc.Size, (void*)&view, 1 * sizeof(Matrix));
+				}
+				else
+				{
+					memcpy_s(pBuffer + pVariableDesc.StartOffset, pVariableDesc.Size, (void*)&proj, 1 * sizeof(Matrix));
+				}
+			}
+		}
+	}
 	m_deviceContext->Unmap(m_matrixBuffer, 0);
 	m_deviceContext->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
 }
@@ -104,4 +197,9 @@ void D3D11RendererMaterial::PSSetShaderResources(UINT StartSlot, UINT NumViews, 
 	ID3D11DeviceContext		*m_deviceContext = g_objDeviecManager.GetImmediateContext();
 	// Finanly set the constant buffer in the vertex shader with the updated values.
 	m_deviceContext->PSSetShaderResources(StartSlot, NumViews, &ppShaderResourceViews);
+}
+
+void D3D11RendererMaterial::PSSetShaderResources(const char name, void** pBuffer)
+{
+
 }
