@@ -17,12 +17,7 @@ BaseDemo::BaseDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 6
 
 	// Setup the camera   
 	Vector3 vecEye(0.95f, 5.83f, -14.48f);
-	Vector3 vecAt(0.90f, 5.44f, -13.56f);
-
-	cameraComponent.SetViewParams(vecEye, vecAt);
-
-	
-	
+	Vector3 vecAt(0.90f, 5.44f, -13.56f);	
 }
 
 BaseDemo::~BaseDemo()
@@ -31,9 +26,6 @@ BaseDemo::~BaseDemo()
 }
 void BaseDemo::InitResource()
 {
-	float fAspectRatio = (float)mClientWidth / (float)mClientHeight;
-	cameraComponent.SetProjParams(XM_PIDIV4, fAspectRatio, 10.0f, 100.0f);
-
 	RendererMaterialDesc desc;
 	desc.vertexShaderPath = "baseMeshVS.hlsl";
 	desc.pixelShaderPath = "baseMeshPS.hlsl";
@@ -130,7 +122,7 @@ void BaseDemo::DrawScene()
 		if (renderModel)
 		{
 			renderCount++;
-			m_Material->SetShaderParameters(worldMatrix, mView, mProj);
+			m_Material->SetMatrix(worldMatrix, mView, mProj);
 			m_MeshModel->render(m_Material.get());
 		}
 	}

@@ -32,7 +32,7 @@ private:
 	std::vector<ModelInfoType> vecModels;
 	std::shared_ptr<class D3D11RendererMesh> m_MeshModel;
 	std::shared_ptr<class D3D11RendererMaterial> m_Material;
-	CameraComponent cameraComponent;
+
 	ID3D11ShaderResourceView* srv;
 };
 

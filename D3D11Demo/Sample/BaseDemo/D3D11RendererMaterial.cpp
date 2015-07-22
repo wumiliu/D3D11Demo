@@ -83,10 +83,13 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 						pReflection->GetDesc(&pVariableDesc);
 					}
 				}
-				g_objDeviecManager.CreateConstantBuffer(&m_matrixBuffer, pDesc.Size);
+				m_Shader.vecConstantBuffer.resize(1);
+				g_objDeviecManager.CreateConstantBuffer(&m_Shader.vecConstantBuffer[0], pDesc.Size);
 			}
 		}
 		g_objDeviecManager.CreateVertexShader(vertexshaderBuffer, &m_vertexShader);
+		m_Shader.m_pShader = m_vertexShader;
+		m_Shader.pReflector = pVSReflector;
 	}
 	if (desc.pixelShaderPath)
 	{
@@ -202,4 +205,36 @@ void D3D11RendererMaterial::PSSetShaderResources(UINT StartSlot, UINT NumViews, 
 void D3D11RendererMaterial::PSSetShaderResources(const char name, void** pBuffer)
 {
 
+}
+
+void D3D11RendererMaterial::SetMatrix(Matrix world, Matrix view, Matrix proj)
+{
+	D3D11_SHADER_INPUT_BIND_DESC pBindDesc;
+	m_Shader.pReflector->GetResourceBindingDescByName("MatrixBuffer", &pBindDesc);
+	ID3D11ShaderReflectionConstantBuffer* pBuffer = m_Shader.pReflector->GetConstantBufferByName("MatrixBuffer");
+	D3D11_SHADER_BUFFER_DESC pDesc;
+	pBuffer->GetDesc(&pDesc);
+	ID3D11DeviceContext		*m_deviceContext = g_objDeviecManager.GetImmediateContext();
+	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	void* dataPtr;
+	result = m_deviceContext->Map(m_Shader.vecConstantBuffer[0], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result))
+	{
+		return;
+	}
+	dataPtr = mappedResource.pData;
+	D3D11_SHADER_VARIABLE_DESC pVariableDesc;
+	ID3D11ShaderReflectionVariable* pWorldVariable = pBuffer->GetVariableByName("worldMatrix");
+	pWorldVariable->GetDesc(&pVariableDesc);
+	unsigned char*  pDataBuffer = (unsigned char*)dataPtr;
+	memcpy_s(pDataBuffer + pVariableDesc.StartOffset, pVariableDesc.Size, (void*)&world, 1 * sizeof(Matrix));
+	ID3D11ShaderReflectionVariable* pViewVariable = pBuffer->GetVariableByName("viewMatrix");
+	pViewVariable->GetDesc(&pVariableDesc);
+	memcpy_s(pDataBuffer + pVariableDesc.StartOffset, pVariableDesc.Size, (void*)&view, 1 * sizeof(Matrix));
+	ID3D11ShaderReflectionVariable* pProjVariable = pBuffer->GetVariableByName("projectionMatrix");
+	pProjVariable->GetDesc(&pVariableDesc);
+	memcpy_s(pDataBuffer + pVariableDesc.StartOffset, pVariableDesc.Size, (void*)&proj, 1 * sizeof(Matrix));
+	m_deviceContext->Unmap(m_Shader.vecConstantBuffer[0], 0);
+	m_deviceContext->VSSetConstantBuffers(pBindDesc.BindPoint, pBindDesc.BindCount, &m_Shader.vecConstantBuffer[0]);  
 }
