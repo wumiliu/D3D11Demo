@@ -1,6 +1,6 @@
 #pragma once
 #include "HpD3D9Type.h"
-
+#include "D3D11Shader.h"
 
 struct RendererMaterialDesc
 {
@@ -22,6 +22,7 @@ public:
 	Matrix projection;
 };
 
+
 class D3D11RendererMaterial
 {
 public:
@@ -30,8 +31,7 @@ public:
 
 	void setShaders(uint32 i = 0);
 	void SetShaderParameters(Matrix world, Matrix view, Matrix proj, ID3D11ShaderResourceView* texture = NULL);
-
-
+	void SetMatrix(Matrix world, Matrix view, Matrix proj);
 
 	void PSSetShaderResources(const char name,void** pBuffer);
 
@@ -63,6 +63,7 @@ private:
 
 
 	ID3D11Buffer* m_matrixBuffer;
+	D3D11Shader<ID3D11VertexShader> m_Shader;
 };
 
 
