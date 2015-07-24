@@ -6,6 +6,25 @@
 template< class D3D11ShaderType >
 struct D3D11Shader
 {
+	D3D11Shader()
+	{
+		m_pShader = NULL;
+		pReflector = NULL;
+	}
+	~D3D11Shader()
+	{
+		Clear();
+	}
+	void Clear()
+	{
+		for (uint i = 0; i < vecConstantBuffer.size(); ++i)
+		{
+			SAFE_RELEASE(vecConstantBuffer[i]);
+		}
+		vecConstantBuffer.clear();
+		SAFE_RELEASE(m_pShader);
+		SAFE_RELEASE(pReflector);
+	}
 	D3D11ShaderType*  m_pShader;
 	ID3D11ShaderReflection*  pReflector;
 	int GetConstantIndex(const char* pszName);

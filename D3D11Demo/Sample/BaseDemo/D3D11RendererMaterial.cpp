@@ -61,7 +61,6 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 			CreateD3D11Shader(&m_Shader, pVSReflector);
 		}
 		g_objDeviecManager.CreateVertexShader(vertexshaderBuffer, &m_vertexShader);
-		m_Shader.m_pShader = m_vertexShader;
 		m_Shader.pReflector = pVSReflector;
 	}
 	if (desc.pixelShaderPath)
