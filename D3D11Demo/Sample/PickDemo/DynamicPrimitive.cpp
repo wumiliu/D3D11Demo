@@ -3,6 +3,7 @@
 #include "VertexTypes.h"
 #include "D3D11RendererMaterial.h"
 #include "d3dUtil.h"
+#include "CommonStates.h"
 
 DynamicPrimitive& DynamicPrimitive::GetInstance()
 {
@@ -20,6 +21,8 @@ DynamicPrimitive::DynamicPrimitive(int initialBufferCapacity /*= 32*/, int maxBu
 	RendererMaterialDesc desc;
 	desc.vertexShaderPath = "DynamicPrimitiveVS.hlsl";
 	desc.pixelShaderPath = "DynamicPrimitivePS.hlsl";
+	desc.geometryShaderPath = desc.vertexShaderPath;
+
 	desc.vecPass.push_back("mainColor");
 	desc.vecPass.push_back("mainTex");
 
@@ -68,6 +71,45 @@ void DynamicPrimitive::CreateVertexBuffer(int nType, int nSize)
 	result = m_d3dDevice->CreateBuffer(&vertexBufferDesc, NULL, &m_vertexBuffer);
 }
 
+void DynamicPrimitive::ShowRect(int x1, int y1, int x2, int y2, const XMFLOAT4& color, bool bDot, float dt /*= 0*/)
+{
+	float x = (float)x1;
+	float y = (float)y1;
+	float h = (float)y2 - y1;
+	float w = (float)x2 - x1;
+
+	XMFLOAT3 LeftTop = XMFLOAT3(x, y, 0.0f);
+	XMFLOAT3 RightTop = XMFLOAT3(x + w, y, 0.0f);
+
+	XMFLOAT3 LeftBottom = XMFLOAT3(x, (y + h), 0.0f);
+	XMFLOAT3 RightBottom = XMFLOAT3(x + w, (y + h), 0.0f);
+
+	VertexPositionColorTexture vertices[8] =
+	{
+		//正面的四个点
+		{ LeftBottom, color, XMFLOAT2(0, 1) },
+		{ LeftTop, color, XMFLOAT2(0, 0) },
+
+		{ LeftTop, color, XMFLOAT2(0, 0) },
+		{ RightTop, color, XMFLOAT2(1, 0) },
+
+		{ RightTop, color, XMFLOAT2(1, 0) },
+		{ RightBottom, color, XMFLOAT2(1, 1) },
+
+		{ RightBottom, color, XMFLOAT2(1, 1) },
+		{ LeftBottom, color, XMFLOAT2(0, 1) }
+	};
+
+	XMMATRIX rz = XMMatrixRotationZ(XM_PI *dt);
+	//先平移为原点，绕着原点旋转, 转换到平行投影的中点为（w/2,h/2）坐标系。Y 是颠倒的，在旋转
+	XMMATRIX rTmp = XMMatrixTranslation(-x, -y, 0.0)* rz * XMMatrixTranslation(x, y, 0.0);
+
+	XMMATRIX toTexSpace = GetShow2DMatrix(m_nWidth, m_nHeight);
+	toTexSpace = rTmp * toTexSpace;
+	m_MaterialPtr->SetbUseGeometry(bDot);
+	DrawPrimitiveUP(PRIMITIVE_LINELIST, 8, vertices, toTexSpace);
+}
+
 void DynamicPrimitive::ShowBlock(int x1, int y1, int x2, int y2, const XMFLOAT4& color, float dt)
 {
 	float x = (float)x1;
@@ -98,6 +140,7 @@ void DynamicPrimitive::ShowBlock(int x1, int y1, int x2, int y2, const XMFLOAT4&
 
 	XMMATRIX toTexSpace = GetShow2DMatrix(m_nWidth, m_nHeight);
 	toTexSpace = rTmp * toTexSpace;
+	m_MaterialPtr->SetbUseGeometry(false);
 	DrawPrimitiveUP(PRIMITIVE_TRIANGLELIST, 6, vertices, toTexSpace);
 }
 
@@ -146,6 +189,9 @@ void DynamicPrimitive::DrawPrimitiveUP(PrimitiveType PrimitiveType, unsigned int
 	m_MaterialPtr->PSSetShaderResources(0, 1, pTexture);
 	m_MaterialPtr->setShaders();
 
+	ID3D11BlendState* AlphaBlendingState = g_objStates.AlphaBlend();
+	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	m_deviceContext->OMSetBlendState(AlphaBlendingState, BlendFactor, 0xFFFFFFFF);
 	m_deviceContext->Draw(PrimitiveCount, 0);
 }
 

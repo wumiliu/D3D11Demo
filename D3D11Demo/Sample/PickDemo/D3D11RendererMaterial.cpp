@@ -11,6 +11,7 @@ D3D11RendererMaterial::D3D11RendererMaterial(const RendererMaterialDesc& desc)
 	m_domainShader = NULL;
 	m_pInputLayout = NULL;
 	m_matrixBuffer = NULL;
+	bUseGeometry = false;
 	loadShaders(desc);
 }
 
@@ -60,7 +61,12 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 			}
 		}
 	}
-
+	if (desc.geometryShaderPath)
+	{
+		ID3DBlob* shaderBuffer;
+		D3DCompileShader(desc.geometryShaderPath, "DrawGS", "gs_4_0", &shaderBuffer);
+		g_objDeviecManager.CreateGeometryShader(shaderBuffer, &m_geometryShader);
+	}
 	g_objDeviecManager.CreateConstantBuffer<MatrixBufferShader>(&m_matrixBuffer);
 }
 
@@ -71,7 +77,14 @@ void D3D11RendererMaterial::setShaders(uint32 i)
 	{
 		g_objDeviecManager.GetImmediateContext()->PSSetShader(m_pixelShader[i], NULL, 0);
 	}
-	g_objDeviecManager.GetImmediateContext()->GSSetShader(m_geometryShader, NULL, 0);
+	if (bUseGeometry)
+	{
+		g_objDeviecManager.GetImmediateContext()->GSSetShader(m_geometryShader, NULL, 0);
+	}
+	else
+	{
+		g_objDeviecManager.GetImmediateContext()->GSSetShader(NULL, NULL, 0);
+	}
 	g_objDeviecManager.GetImmediateContext()->HSSetShader(m_hullShader, NULL, 0);
 	g_objDeviecManager.GetImmediateContext()->DSSetShader(m_domainShader, NULL, 0);
 }

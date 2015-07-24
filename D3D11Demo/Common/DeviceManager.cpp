@@ -145,6 +145,16 @@ HRESULT DeviceManager::CreatePixelShader(ID3DBlob* shaderBuffer, ID3D11PixelShad
 	return result;
 }
 
+HRESULT DeviceManager::CreateGeometryShader(ID3DBlob* shaderBuffer, ID3D11GeometryShader **ppGeometryShader)
+{
+	HRESULT result = m_pd3dDevice->CreateGeometryShader(
+		shaderBuffer->GetBufferPointer(),
+		shaderBuffer->GetBufferSize(),
+		(ID3D11ClassLinkage *)NULL,
+		ppGeometryShader);
+	return result;
+}
+
 HRESULT DeviceManager::CreateInputLayout(LayoutVector vecLayout, ID3DBlob* shaderBuffer, ID3D11InputLayout **ppInputLayout)
 {
 	HRESULT result = m_pd3dDevice->CreateInputLayout(

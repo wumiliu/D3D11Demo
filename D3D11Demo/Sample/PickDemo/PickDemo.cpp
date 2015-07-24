@@ -97,7 +97,9 @@ void PickDemo::DrawScene()
 	projectionMatrix = g_objTrackballCameraController.Proj();
 
 	g_objSprite.ResetSize(mClientWidth, mClientHeight);
-	g_objSprite.ShowBlock(100, 100, 300, 200, { 0, 0, 1, 1 }, mTimer.TotalTime());
+	g_objSprite.ShowRect(100, 100, 300, 200, { 0.58f, 0.65f, 1, 1 },true);
+
+	g_objSprite.ShowBlock(500, 50, 700, 100, { 1, 0, 1, 1 });
 	VertexPositionColor vertexs[] =
 	{
 		VertexPositionColor(XMFLOAT3(0, 0, 0), XMFLOAT4(1, 0, 0, 1)),

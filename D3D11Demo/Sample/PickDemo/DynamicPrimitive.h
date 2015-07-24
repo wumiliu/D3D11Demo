@@ -23,7 +23,7 @@ public:
 	~DynamicPrimitive();
 	void CreateVertexBuffer(int nType, int nSize);
 	void CreateIndexBuffer(int nType, int nSize);
-	
+	void ShowRect(int x1, int y1, int x2, int y2, const XMFLOAT4& color, bool bDot = false,float dt = 0);
 
 	void ShowBlock(int x1, int y1, int x2, int y2, const XMFLOAT4& color, float dt = 0);
 

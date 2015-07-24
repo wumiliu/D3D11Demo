@@ -4,6 +4,14 @@
 
 struct RendererMaterialDesc
 {
+	RendererMaterialDesc()
+	{
+		geometryShaderPath = NULL;
+		hullShaderPath = NULL;
+		domainShaderPath = NULL;
+		vertexShaderPath = NULL;
+		pixelShaderPath = NULL;
+	}
 	const char                     *geometryShaderPath;
 	const char                     *hullShaderPath;
 	const char                     *domainShaderPath;
@@ -27,7 +35,7 @@ class D3D11RendererMaterial
 public:
 	D3D11RendererMaterial(const RendererMaterialDesc& desc);
 	~D3D11RendererMaterial();
-
+	void SetbUseGeometry(bool bUse){ bUseGeometry = bUse; }
 	void setShaders(uint32 i = 0);
 	void SetShaderParameters(Matrix world, Matrix view, Matrix proj, ID3D11ShaderResourceView* texture = NULL);
 	void PSSetShaderResources(UINT StartSlot, UINT NumViews, ID3D11ShaderResourceView  *ppShaderResourceViews);
@@ -57,6 +65,7 @@ private:
 
 
 	ID3D11Buffer* m_matrixBuffer;
+	bool bUseGeometry;
 };
 
 

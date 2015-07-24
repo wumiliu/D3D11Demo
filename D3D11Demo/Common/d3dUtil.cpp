@@ -68,11 +68,15 @@ HRESULT D3DCompileShader(LPCSTR pFileName, LPCSTR pEntrypoint,
 	// Compile the pixel shader code.
 	result = D3DCompileFromFile(BaseFunction::gAnsiToUnicode(pFileName), defines, D3D_COMPILE_STANDARD_FILE_INCLUDE, pEntrypoint, pTarget, shaderFlags, 0,
 		ppCode, &errorMessage);
-	if (result != S_OK)
+	if (result == S_OK)
+	{
+		D3DReflect((*ppCode)->GetBufferPointer(), (*ppCode)->GetBufferSize(),
+			IID_ID3D11ShaderReflection, (void**)ppReflector);
+	}
+	else
 	{
 		OutputShaderErrorMessage(errorMessage, "error.txt");
 	}
-	D3DReflect((*ppCode)->GetBufferPointer(), (*ppCode)->GetBufferSize(),
-		IID_ID3D11ShaderReflection, (void**)ppReflector);
+
 	return result;
 }

@@ -24,6 +24,8 @@ public:
 
 	HRESULT CreateVertexShader(ID3DBlob* shaderBuffer, ID3D11VertexShader **ppVertexShader);
 	HRESULT CreatePixelShader(ID3DBlob* shaderBuffer, ID3D11PixelShader **ppPixelShader);
+	HRESULT CreateGeometryShader(ID3DBlob* shaderBuffer, ID3D11GeometryShader **ppGeometryShader);
+
 	HRESULT CreateInputLayout(LayoutVector vecLayout, ID3DBlob* shaderBuffer, ID3D11InputLayout **ppInputLayout);
 
 	template< class ConstantBuffer>
