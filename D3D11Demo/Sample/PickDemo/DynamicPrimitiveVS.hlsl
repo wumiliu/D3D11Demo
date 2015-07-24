@@ -35,6 +35,7 @@ struct GeoOut
 {
 	float4 position : SV_Position;
 	float4 color : COLOR;
+	float2 tex : TEXCOORD;
 };
 
 
@@ -87,7 +88,7 @@ void DrawGS(line  PixelInputType gin[2],
 		{
 			V0.color = gin[0].color;
 		}
-
+		V0.tex = gin[0].tex;
 		output.Append(V0);
 	}
 }
