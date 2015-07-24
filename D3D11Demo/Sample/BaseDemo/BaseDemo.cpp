@@ -130,7 +130,7 @@ void BaseDemo::DrawScene()
 		if (renderModel)
 		{
 			renderCount++;
-			m_Material->SetShaderParameters(worldMatrix, mView, mProj);
+			m_Material->SetMatrix(worldMatrix, mView, mProj);
 			m_MeshModel->render(m_Material.get());
 		}
 	}

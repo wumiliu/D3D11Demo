@@ -1,6 +1,6 @@
 #pragma once
 #include "HpD3D9Type.h"
-
+#include "D3DShader.h"
 
 struct RendererMaterialDesc
 {
@@ -22,6 +22,7 @@ public:
 	Matrix projection;
 };
 
+
 class D3D11RendererMaterial
 {
 public:
@@ -29,11 +30,9 @@ public:
 	~D3D11RendererMaterial();
 
 	void setShaders(uint32 i = 0);
-	void SetShaderParameters(Matrix world, Matrix view, Matrix proj, ID3D11ShaderResourceView* texture = NULL);
+	void SetMatrix(Matrix world, Matrix view, Matrix proj);
 
-
-
-	void PSSetShaderResources(const char name,void** pBuffer);
+	void PSSetShaderResources(const char name, void** pBuffer);
 
 	void PSSetShaderResources(UINT StartSlot, UINT NumViews, ID3D11ShaderResourceView  *ppShaderResourceViews);
 	ID3D11VertexShader*   getVS() const { return m_vertexShader; }
@@ -60,9 +59,7 @@ private:
 	ID3DBlob* vertexshaderBuffer;
 	ID3D11ShaderReflection* pVSReflector;
 	ID3D11InputLayout * m_pInputLayout;
-
-
-	ID3D11Buffer* m_matrixBuffer;
+	D3D11Shader<ID3D11VertexShader> m_Shader;
 };
 
 
@@ -72,7 +69,7 @@ ID3D11InputLayout* D3D11RendererMaterial::getLayout()
 	if (!m_pInputLayout)
 	{
 		LayoutVector vecLayout;
-		for (int i = 0; i < VertexTypes::InputElementCount;++i)
+		for (int i = 0; i < VertexTypes::InputElementCount; ++i)
 		{
 			vecLayout.push_back(VertexTypes::InputElements[i]);
 		}

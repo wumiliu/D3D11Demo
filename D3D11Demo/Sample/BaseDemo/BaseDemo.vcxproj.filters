@@ -38,5 +38,8 @@
     <ClInclude Include="D3D11RendererMaterial.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="D3DShader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

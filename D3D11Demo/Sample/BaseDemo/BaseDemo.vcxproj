@@ -74,6 +74,7 @@
     <ClInclude Include="BaseDemo.h" />
     <ClInclude Include="D3D11RendererMaterial.h" />
     <ClInclude Include="D3D11RendererMesh.h" />
+    <ClInclude Include="D3DShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
