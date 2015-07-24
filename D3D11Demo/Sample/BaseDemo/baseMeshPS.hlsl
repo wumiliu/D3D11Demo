@@ -5,6 +5,21 @@
 Texture2D shaderTexture;
 SamplerState SampleType: register(s0);
 
+cbuffer  DefaultColor
+{
+	float4 MyColor;
+	float4 MyColor1;
+	float4 MyColor2;
+};
+
+cbuffer  DefaultColorEx
+{
+	float4 MyColor3;
+
+};
+
+
+
 //////////////
 // TYPEDEFS //
 //////////////
@@ -26,6 +41,10 @@ float4 main(PixelInputType input) : SV_TARGET
 	float4 textureColor = { 0.0f, 0.0f, 1.0f, 1.0f };
 	textureColor = shaderTexture.Sample(SampleType, input.tex);
 #endif
+	textureColor += MyColor;
+	textureColor += MyColor1;
+	textureColor += MyColor2;
+	textureColor += MyColor3;
 	return textureColor;
 }
 

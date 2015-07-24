@@ -98,7 +98,16 @@ void BaseDemo::DrawScene()
 	SwapChainPtr->Begin();
 	ID3D11SamplerState* LinearClamp = g_objStates.LinearClamp();
 	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
-	m_Material->PSSetShaderResources(0, 1, srv);
+	//m_Material->PSSetShaderResources(0, 1, srv);
+	Vector4 color{ 0, 1, 0, 0 };
+	m_Material->PSSetShaderResources("shaderTexture", srv);
+
+	m_Material->PSSetConstantBuffers("MyColor3", &color);
+	m_Material->PSSetConstantBuffers("MyColor", &color);
+	m_Material->PSSetConstantBuffers("MyColor1", &color);
+	m_Material->PSSetConstantBuffers("MyColor2", &color);
+
+
 	m_deviceContext->OMSetDepthStencilState(g_objStates.DepthDefault(), 1);
 
 	Matrix mWorld;

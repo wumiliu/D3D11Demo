@@ -14,15 +14,6 @@ struct RendererMaterialDesc
 
 };
 
-struct MatrixBufferShader
-{
-public:
-	Matrix world;
-	Matrix view;
-	Matrix projection;
-};
-
-
 class D3D11RendererMaterial
 {
 public:
@@ -30,11 +21,12 @@ public:
 	~D3D11RendererMaterial();
 
 	void setShaders(uint32 i = 0);
+
 	void SetMatrix(Matrix world, Matrix view, Matrix proj);
-
-	void PSSetShaderResources(const char name, void** pBuffer);
-
+	void PSSetShaderResources(const char* name, void* ppBuffer);
+	void PSSetConstantBuffers(const char* name, void* pBuffer);
 	void PSSetShaderResources(UINT StartSlot, UINT NumViews, ID3D11ShaderResourceView  *ppShaderResourceViews);
+
 	ID3D11VertexShader*   getVS() const { return m_vertexShader; }
 	ID3D11PixelShader*    getPS(int i = 0) const { return m_pixelShader[i]; }
 
@@ -60,6 +52,7 @@ private:
 	ID3D11ShaderReflection* pVSReflector;
 	ID3D11InputLayout * m_pInputLayout;
 	D3D11Shader<ID3D11VertexShader> m_Shader;
+	D3D11Shader<ID3D11PixelShader> m_Shader1;
 };
 
 
