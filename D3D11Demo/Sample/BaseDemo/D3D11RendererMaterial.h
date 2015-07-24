@@ -1,7 +1,21 @@
 #pragma once
 #include "HpD3D9Type.h"
 #include "D3DShader.h"
+struct MatrixBufferShader
+{
+public:
+	Matrix world;
+	Matrix view;
+	Matrix projection;
+};
 
+struct GO
+{
+public:
+	Vector4 MyColor;
+	Vector4 MyColor1;
+	Vector4 MyColor2;
+};
 struct RendererMaterialDesc
 {
 	const char                     *geometryShaderPath;
@@ -9,9 +23,7 @@ struct RendererMaterialDesc
 	const char                     *domainShaderPath;
 	const char                     *vertexShaderPath;
 	const char                     *pixelShaderPath;
-
 	std::vector<std::string>        vecPass;
-
 };
 
 class D3D11RendererMaterial
@@ -23,11 +35,16 @@ public:
 	void setShaders(uint32 i = 0);
 
 	void SetMatrix(Matrix world, Matrix view, Matrix proj);
-	void PSSetShaderResources(const char* name, void* ppBuffer);
+	//VS ConstantBuffers不能分开设置，需要在一个map 里面把所有的参数设置完
+	void VSSetConstantBuffers(const char* name, void* pBuffer);
+	//设置纹理资源等
+	void PSSetShaderResources(const char* name, void* pBuffer);
+	//设置像素着色器常量
+	//VS ConstantBuffers可以分开设置
 	void PSSetConstantBuffers(const char* name, void* pBuffer);
-	void PSSetShaderResources(UINT StartSlot, UINT NumViews, ID3D11ShaderResourceView  *ppShaderResourceViews);
 
-	ID3D11VertexShader*   getVS() const { return m_vertexShader; }
+
+	ID3D11VertexShader*   getVS() const { return m_vertexShader.m_pShader; }
 	ID3D11PixelShader*    getPS(int i = 0) const { return m_pixelShader[i]; }
 
 	ID3D11GeometryShader* getGS() const { return m_geometryShader; }
@@ -42,16 +59,14 @@ public:
 protected:
 	void loadShaders(const RendererMaterialDesc& desc);
 private:
-	ID3D11VertexShader*  m_vertexShader;
 	std::vector<ID3D11PixelShader*>m_pixelShader;
 	ID3D11GeometryShader*        m_geometryShader;
 	ID3D11HullShader*            m_hullShader;
 	ID3D11DomainShader*          m_domainShader;
 
 	ID3DBlob* vertexshaderBuffer;
-	ID3D11ShaderReflection* pVSReflector;
 	ID3D11InputLayout * m_pInputLayout;
-	D3D11Shader<ID3D11VertexShader> m_Shader;
+	D3D11Shader<ID3D11VertexShader> m_vertexShader;
 	D3D11Shader<ID3D11PixelShader> m_Shader1;
 };
 

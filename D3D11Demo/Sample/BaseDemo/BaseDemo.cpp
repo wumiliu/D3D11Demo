@@ -99,7 +99,11 @@ void BaseDemo::DrawScene()
 	ID3D11SamplerState* LinearClamp = g_objStates.LinearClamp();
 	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
 	//m_Material->PSSetShaderResources(0, 1, srv);
-	Vector4 color{ 0, 1, 0, 0 };
+	Vector4 color{ 1, 0, 0, 0 };
+
+//	m_Material->VSSetConstantBuffers("MyColor1", &color);
+//	m_Material->VSSetConstantBuffers("MyColor", &color);
+
 	m_Material->PSSetShaderResources("shaderTexture", srv);
 
 	m_Material->PSSetConstantBuffers("MyColor3", &color);
@@ -139,7 +143,16 @@ void BaseDemo::DrawScene()
 		if (renderModel)
 		{
 			renderCount++;
-			m_Material->SetMatrix(worldMatrix, mView, mProj);
+		//	m_Material->SetMatrix(worldMatrix, mView, mProj);
+			worldMatrix *= mView;
+			worldMatrix *= mProj;
+
+			m_Material->VSSetConstantBuffers("worldMatrix", &worldMatrix);
+		//	m_Material->VSSetConstantBuffers("viewMatrix", &mView);
+			m_Material->VSSetConstantBuffers("worldMatrix", &worldMatrix);
+		
+
+
 			m_MeshModel->render(m_Material.get());
 		}
 	}

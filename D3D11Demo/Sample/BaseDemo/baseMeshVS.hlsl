@@ -13,6 +13,10 @@ cbuffer  MatrixBuffer: register(b0)
 	matrix projectionMatrix;
 };
 
+float4 MyColor;
+float4 MyColor1;
+float4 MyColor2;
+
 
 //////////////
 // TYPEDEFS //
@@ -42,10 +46,14 @@ PixelInputType main(VertexInputType input)
 	// Change the position vector to be 4 units for proper matrix calculations.
 	input.position.w = 1.0f;
 	// Calculate the position of the vertex against the world, view, and projection matrices.
+	
+	//output.position -= MyColor1;
 
 	output.position = mul(input.position, worldMatrix);
-	output.position = mul(output.position, viewMatrix);
-	output.position = mul(output.position, projectionMatrix);
+	//output.position = mul(output.position, viewMatrix);
+	//output.position = mul(output.position, projectionMatrix);
+
+//	output.position += MyColor;
 
 	// Store the input color for the pixel shader to use.
 	output.tex = input.tex;
