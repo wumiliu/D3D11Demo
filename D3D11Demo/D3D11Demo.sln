@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PickDemo", "Sample\PickDemo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseDemo", "Sample\BaseDemo\BaseDemo.vcxproj", "{8D5301C1-D2B7-4CA7-B849-22112B0CBAC3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NanovgDemo", "Sample\NanovgDemo\NanovgDemo.vcxproj", "{C4FD7F99-10B0-47F5-98BC-7C002807F7A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -33,6 +35,10 @@ Global
 		{8D5301C1-D2B7-4CA7-B849-22112B0CBAC3}.Debug|Win32.Build.0 = Debug|Win32
 		{8D5301C1-D2B7-4CA7-B849-22112B0CBAC3}.Release|Win32.ActiveCfg = Release|Win32
 		{8D5301C1-D2B7-4CA7-B849-22112B0CBAC3}.Release|Win32.Build.0 = Release|Win32
+		{C4FD7F99-10B0-47F5-98BC-7C002807F7A5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C4FD7F99-10B0-47F5-98BC-7C002807F7A5}.Debug|Win32.Build.0 = Debug|Win32
+		{C4FD7F99-10B0-47F5-98BC-7C002807F7A5}.Release|Win32.ActiveCfg = Release|Win32
+		{C4FD7F99-10B0-47F5-98BC-7C002807F7A5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
