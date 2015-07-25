@@ -56,5 +56,6 @@ PixelInputType main(VertexInputType input)
 	// Store the input color for the pixel shader to use.
 	output.tex = input.tex;
 	output.normal = mul(float4(input.normal, 0.0f), worldMatrix).xyz;
+	output.normal = normalize(output.normal);
 	return output;
 }
