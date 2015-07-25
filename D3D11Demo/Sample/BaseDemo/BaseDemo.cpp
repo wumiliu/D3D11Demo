@@ -143,13 +143,11 @@ void BaseDemo::DrawScene()
 		if (renderModel)
 		{
 			renderCount++;
-		//	m_Material->SetMatrix(worldMatrix, mView, mProj);
-			worldMatrix *= mView;
-			worldMatrix *= mProj;
+			m_Material->SetMatrix(worldMatrix, mView, mProj);
 
-			m_Material->VSSetConstantBuffers("worldMatrix", &worldMatrix);
+		//	m_Material->VSSetConstantBuffers("worldMatrix", &worldMatrix);
 		//	m_Material->VSSetConstantBuffers("viewMatrix", &mView);
-			m_Material->VSSetConstantBuffers("worldMatrix", &worldMatrix);
+		//	m_Material->VSSetConstantBuffers("worldMatrix", &worldMatrix);
 		
 
 

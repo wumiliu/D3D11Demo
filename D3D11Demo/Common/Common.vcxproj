@@ -73,6 +73,9 @@
     <ClCompile Include="Cure\Curve.cpp" />
     <ClCompile Include="Cure\spline.cpp" />
     <ClCompile Include="D3D11App.cpp" />
+    <ClCompile Include="D3D11RendererMaterial.cpp" />
+    <ClCompile Include="D3D11RendererMesh.cpp" />
+    <ClCompile Include="D3DShader.cpp" />
     <ClCompile Include="d3dUtil.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="DXFunction.cpp" />
@@ -99,6 +102,8 @@
     <ClInclude Include="Cure\Curve.h" />
     <ClInclude Include="Cure\spline.h" />
     <ClInclude Include="D3D11App.h" />
+    <ClInclude Include="D3D11RendererMaterial.h" />
+    <ClInclude Include="D3D11RendererMesh.h" />
     <ClInclude Include="d3dUtil.h" />
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="DXFunction.h" />

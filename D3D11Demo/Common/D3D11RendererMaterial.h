@@ -18,6 +18,14 @@ public:
 };
 struct RendererMaterialDesc
 {
+	RendererMaterialDesc()
+	{
+		geometryShaderPath = NULL;
+		hullShaderPath = NULL;
+		domainShaderPath = NULL;
+		vertexShaderPath = NULL;
+		pixelShaderPath = NULL;
+	}
 	const char                     *geometryShaderPath;
 	const char                     *hullShaderPath;
 	const char                     *domainShaderPath;

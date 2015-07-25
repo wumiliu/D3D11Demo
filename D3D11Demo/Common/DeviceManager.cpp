@@ -181,3 +181,4 @@ HRESULT DeviceManager::CreateConstantBuffer(ID3D11Buffer **ppBuffer, int nSize)
 	return result;
 }
 
+

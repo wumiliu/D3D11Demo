@@ -1,6 +1,20 @@
 #pragma once
 
 #include "HpD3D9Type.h"
+struct D3D11ConstantBuffer
+{
+	D3D11ConstantBuffer()
+	{
+		bMap = false;
+		dataPtr = NULL;
+	}
+	ID3D11Buffer* pConstantBuffer;
+	void* Map(ID3D11DeviceContext* pDeviceContext);
+	void Update(ID3D11DeviceContext* pDeviceContext);
+	bool bMap;
+	void* dataPtr;
+};
+
 
 
 template< class D3D11ShaderType >
@@ -19,7 +33,7 @@ struct D3D11Shader
 	{
 		for (uint i = 0; i < vecConstantBuffer.size(); ++i)
 		{
-			SAFE_RELEASE(vecConstantBuffer[i]);
+		//	SAFE_RELEASE(vecConstantBuffer[i]);
 		}
 		vecConstantBuffer.clear();
 		SAFE_RELEASE(m_pShader);
@@ -28,7 +42,8 @@ struct D3D11Shader
 	D3D11ShaderType*  m_pShader;
 	ID3D11ShaderReflection*  pReflector;
 	int GetConstantIndex(const char* pszName);
-	std::vector<ID3D11Buffer*> vecConstantBuffer;
+	std::vector<D3D11ConstantBuffer> vecConstantBuffer;
+
 };
 
 template< class D3D11ShaderType >

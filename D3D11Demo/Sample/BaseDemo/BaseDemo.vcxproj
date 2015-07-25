@@ -66,15 +66,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseDemo.cpp" />
-    <ClCompile Include="D3D11RendererMaterial.cpp" />
-    <ClCompile Include="D3D11RendererMesh.cpp" />
+    <ClCompile Include="Diffuse Lighting\DiffuseLight.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h" />
-    <ClInclude Include="D3D11RendererMaterial.h" />
-    <ClInclude Include="D3D11RendererMesh.h" />
-    <ClInclude Include="D3DShader.h" />
+    <ClInclude Include="Diffuse Lighting\DiffuseLight.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

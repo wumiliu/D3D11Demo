@@ -13,9 +13,6 @@ cbuffer  MatrixBuffer: register(b0)
 	matrix projectionMatrix;
 };
 
-float4 MyColor;
-float4 MyColor1;
-float4 MyColor2;
 
 
 //////////////
@@ -31,6 +28,7 @@ struct VertexInputType
 struct PixelInputType
 {
     float4 position : SV_Position;
+	float3 normal : NORMAL;
 	float2 tex : TEXCOORD;
 };
 
@@ -50,12 +48,13 @@ PixelInputType main(VertexInputType input)
 	//output.position -= MyColor1;
 
 	output.position = mul(input.position, worldMatrix);
-	//output.position = mul(output.position, viewMatrix);
-	//output.position = mul(output.position, projectionMatrix);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projectionMatrix);
 
-//	output.position += MyColor;
+
 
 	// Store the input color for the pixel shader to use.
 	output.tex = input.tex;
+	output.normal = mul(float4(input.normal, 0.0f), worldMatrix).xyz;
 	return output;
 }
