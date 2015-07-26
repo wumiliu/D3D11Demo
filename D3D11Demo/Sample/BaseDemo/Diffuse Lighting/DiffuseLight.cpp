@@ -4,6 +4,7 @@
 #include "D3D11RendererMesh.h"
 #include "D3D11RendererMaterial.h"
 #include "TrackballCameraController.h"
+#include "CommonStates.h"
 
 DiffuseLight::DiffuseLight(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/)
 : D3D11App(hInstance)
@@ -15,7 +16,7 @@ DiffuseLight::DiffuseLight(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeig
 
 DiffuseLight::~DiffuseLight()
 {
-
+	SAFE_RELEASE(srv);
 }
 
 void DiffuseLight::InitResource()
@@ -51,6 +52,9 @@ void DiffuseLight::DrawScene()
 {
 	SwapChainPtr->Begin();
 
+	ID3D11SamplerState* LinearClamp = g_objStates.LinearClamp();
+	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
+
 	m_Material->PSSetShaderResources("shaderTexture", srv);
 	Vector4 diffuseColor = { 1.0f, 0.0f, 1.0f, 1.0f };
 	m_Material->PSSetConstantBuffers("diffuseColor", &diffuseColor);
@@ -69,9 +73,10 @@ void DiffuseLight::DrawScene()
 	XMMATRIX rz = XMMatrixRotationY(XM_PIDIV4 * mTimer.TotalTime());
 	Vector3 lightDirection = { -3.0f, 0.0f, 0.0f };
 
-	lightDirection = lightDirection.Transform(lightDirection, rz);
+//	lightDirection = lightDirection.Transform(lightDirection, rz);
 	m_Material->PSSetConstantBuffers("lightDirection", &lightDirection);
-	m_Material->SetMatrix(worldMatrix, mView, mProj);
+	m_Material->SetMatrix(rz, mView, mProj);
+
 	m_MeshModel->render(m_Material.get());
 	SwapChainPtr->Flip();
 }

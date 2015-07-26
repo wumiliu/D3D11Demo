@@ -8,6 +8,10 @@ struct D3D11ConstantBuffer
 		bMap = false;
 		dataPtr = NULL;
 	}
+	~D3D11ConstantBuffer()
+	{
+		SAFE_RELEASE(pConstantBuffer);
+	}
 	ID3D11Buffer* pConstantBuffer;
 	void* Map(ID3D11DeviceContext* pDeviceContext);
 	void Update(ID3D11DeviceContext* pDeviceContext);
