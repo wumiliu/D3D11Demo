@@ -4,6 +4,27 @@
 #include "VertexTypes.h"
 using namespace GeoGen;
 
+class MathHelper
+{
+public:
+	// Returns random float in [0, 1).
+	static float RandF()
+	{
+		return (float)(rand()) / (float)RAND_MAX;
+	}
+
+	// Returns random float in [a, b).
+	static float RandF(float a, float b)
+	{
+		return a + RandF()*(b - a);
+	}
+
+};
+struct InstancedData
+{
+	XMFLOAT4X4 World;
+	XMFLOAT4 Color;
+};
 class D3D11RendererMaterial;
 class D3D11RendererMesh
 {
@@ -13,16 +34,18 @@ public:
 	bool BuildBuffers(const GeoGen::MeshData& mesh);
 	void         render(D3D11RendererMaterial* pMaterial,uint32 pass = 0);
 	void         renderHelp(D3D11RendererMaterial* pMaterial);
-	
+	void BuildInstancedBuffer();
 	void Pick(DirectX::SimpleMath::Ray ray);
 protected:
 	void RenderSystem();
 private:
+	std::vector<InstancedData> mInstancedData;
 	std::vector<VertexPositionNormalTexture> vertices;
 	std::vector<UINT> indices;
 protected:
 	ID3D11Buffer	*m_VB;
 	ID3D11Buffer	*m_IB;
+	ID3D11Buffer* mInstancedBuffer;
 	int m_nVBSize;
 	int m_nIBSize;
 	XMVECTOR vMin;

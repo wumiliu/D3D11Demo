@@ -96,21 +96,37 @@ bool D3D11RendererMesh::BuildBuffers(const GeoGen::MeshData& mesh)
 		MessageBox(NULL, L"Create Index Buffer failed!", L"Error", MB_OK);
 		return false;
 	}
+//	BuildInstancedBuffer();
 	return true;
 }
 
 void D3D11RendererMesh::render(D3D11RendererMaterial* pMaterial, uint32 pass)
 {
+
+	/*D3D11_MAPPED_SUBRESOURCE mappedData;
+	m_deviceContext->Map(mInstancedBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData);
+
+	InstancedData* dataView = reinterpret_cast<InstancedData*>(mappedData.pData);
+	int mVisibleObjectCount = 0;
+	for (UINT i = 0; i < mInstancedData.size(); ++i)
+	{
+		dataView[mVisibleObjectCount++] = mInstancedData[i];
+	}
+
+	m_deviceContext->Unmap(mInstancedBuffer, 0);*/
+
 	m_deviceContext->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_deviceContext->IASetInputLayout(pMaterial->getLayout<VertexPositionNormalTexture>());
-	unsigned int stride;
-	unsigned int offset;
-	stride = sizeof(VertexPositionNormalTexture);
-	offset = 0;
+
 	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
 	//m_deviceContext->OMSetBlendState(m_pBlendState, BlendFactor, 0xFFFFFFFF);
 	//1ÊäÈë²¼¾Ö½×¶Î
-	m_deviceContext->IASetVertexBuffers(0, 1, &m_VB, &stride, &offset);
+	ID3D11Buffer* vbs[2] = { m_VB, mInstancedBuffer };
+
+	UINT stride[2] = { sizeof(VertexPositionNormalTexture), sizeof(InstancedData) };
+	UINT offset[2] = { 0, 0 };
+
+	m_deviceContext->IASetVertexBuffers(0, 1, vbs, stride, offset);
 	m_deviceContext->IASetIndexBuffer(m_IB, DXGI_FORMAT_R32_UINT, 0);
 	if (m_nIBSize <= 0)
 	{
@@ -120,6 +136,9 @@ void D3D11RendererMesh::render(D3D11RendererMaterial* pMaterial, uint32 pass)
 	{
 		pMaterial->setShaders(pass);
 		m_deviceContext->DrawIndexed(m_nIBSize, 0, 0);
+	//	m_deviceContext->DrawIndexedInstanced(m_nIBSize, mVisibleObjectCount, 0, 0, 0);
+		//m_deviceContext->DrawIndexed(m_nIBSize, 0, 0);
+
 	}
 
 }
@@ -189,4 +208,42 @@ void D3D11RendererMesh::Pick(DirectX::SimpleMath::Ray ray)
 void D3D11RendererMesh::RenderSystem()
 {
 	
+}
+
+void D3D11RendererMesh::BuildInstancedBuffer()
+{
+	mInstancedData.resize(2);
+
+	int i;
+	float red, green, blue;
+
+	srand((unsigned int)time(NULL));
+
+	// Go through all the models and randomly generate the model color and position.
+	for (i = 0; i < mInstancedData.size(); i++)
+	{
+		// Generate a random color for the model.
+		red = (float)rand() / RAND_MAX;
+		green = (float)rand() / RAND_MAX;
+		blue = (float)rand() / RAND_MAX;
+
+		mInstancedData[i].Color = Vector4(red, green, blue, 1.0f);
+
+		// Generate a random position in front of the viewer for the mode.
+		float positionX = (((float)rand() - (float)rand()) / RAND_MAX) * 10.0f;
+		float positionY = (((float)rand() - (float)rand()) / RAND_MAX) * 10.0f;
+		float positionZ = ((((float)rand() - (float)rand()) / RAND_MAX) * 10.0f) + 5.0f;
+		mInstancedData[i].World = Matrix::CreateTranslation(positionX, positionY, positionZ);
+	}
+
+	
+	D3D11_BUFFER_DESC vbd;
+	vbd.Usage = D3D11_USAGE_DYNAMIC;
+	vbd.ByteWidth = sizeof(InstancedData) * mInstancedData.size();
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	vbd.MiscFlags = 0;
+	vbd.StructureByteStride = 0;
+
+	(m_d3dDevice->CreateBuffer(&vbd, 0, &mInstancedBuffer));
 }
