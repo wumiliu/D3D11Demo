@@ -16,6 +16,9 @@
     <Filter Include="Diffuse Lighting">
       <UniqueIdentifier>{a16d8ad1-8064-41e4-ad59-84bcc7a1b9af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SpecularLight">
+      <UniqueIdentifier>{1cd72fc1-e016-4c1f-8b13-48a884bfe708}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,6 +30,9 @@
     <ClCompile Include="Diffuse Lighting\DiffuseLight.cpp">
       <Filter>Diffuse Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="SpecularLight\SpecularLight.cpp">
+      <Filter>SpecularLight</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h">
@@ -34,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="Diffuse Lighting\DiffuseLight.h">
       <Filter>Diffuse Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecularLight\SpecularLight.h">
+      <Filter>SpecularLight</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

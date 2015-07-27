@@ -95,11 +95,14 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 
 void D3D11RendererMaterial::setShaders(uint32 nIndex)
 {
-	for (int i = 0; i < m_vertexShader.vecConstantBuffer.size();++i)
+	for (uint32 i = 0; i < m_vertexShader.vecConstantBuffer.size();++i)
 	{
 		m_vertexShader.vecConstantBuffer[i].Update(g_objDeviecManager.GetImmediateContext());
+		g_objDeviecManager.GetImmediateContext()->VSSetConstantBuffers(i, 1,
+			&m_vertexShader.vecConstantBuffer[i].pConstantBuffer);
+		
 	}
-	for (int i = 0; i < m_Shader1.vecConstantBuffer.size(); ++i)
+	for (uint32 i = 0; i < m_Shader1.vecConstantBuffer.size(); ++i)
 	{
 		m_Shader1.vecConstantBuffer[i].Update(g_objDeviecManager.GetImmediateContext());
 		g_objDeviecManager.GetImmediateContext()->PSSetConstantBuffers(i, 1,
@@ -173,7 +176,6 @@ void D3D11RendererMaterial::SetMatrix(Matrix world, Matrix view, Matrix proj)
 	D3D11_SHADER_BUFFER_DESC pDesc;
 	pBuffer->GetDesc(&pDesc);
 	ID3D11DeviceContext		*m_deviceContext = g_objDeviecManager.GetImmediateContext();
-	HRESULT result;
 	void* dataPtr = m_vertexShader.vecConstantBuffer[pBindDesc.BindPoint].Map(m_deviceContext);
 	D3D11_SHADER_VARIABLE_DESC pVariableDesc;
 	ID3D11ShaderReflectionVariable* pWorldVariable = pBuffer->GetVariableByName("worldMatrix");

@@ -68,10 +68,12 @@
     <ClCompile Include="BaseDemo.cpp" />
     <ClCompile Include="Diffuse Lighting\DiffuseLight.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SpecularLight\SpecularLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h" />
     <ClInclude Include="Diffuse Lighting\DiffuseLight.h" />
+    <ClInclude Include="SpecularLight\SpecularLight.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
