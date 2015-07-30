@@ -104,7 +104,7 @@ void BaseDemo::DrawScene()
 //	m_Material->VSSetConstantBuffers("MyColor1", &color);
 //	m_Material->VSSetConstantBuffers("MyColor", &color);
 
-	m_Material->PSSetShaderResources("shaderTexture", srv);
+	m_Material->PSSetShaderResources("shaderTexture", &srv);
 
 	m_Material->PSSetConstantBuffers("MyColor3", &color);
 	m_Material->PSSetConstantBuffers("MyColor", &color);

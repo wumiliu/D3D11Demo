@@ -95,6 +95,7 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 
 void D3D11RendererMaterial::setShaders(uint32 nIndex)
 {
+//	g_objDeviecManager.GetImmediateContext()->VSSetShaderResources(0, 1, NULL);
 	for (uint32 i = 0; i < m_vertexShader.vecConstantBuffer.size();++i)
 	{
 		m_vertexShader.vecConstantBuffer[i].Update(g_objDeviecManager.GetImmediateContext());
@@ -140,7 +141,7 @@ void D3D11RendererMaterial::PSSetConstantBuffers(const char* name, void* pBuffer
 	}
 }
 
-void D3D11RendererMaterial::PSSetShaderResources(const char* name, void* pBuffer)
+void D3D11RendererMaterial::PSSetShaderResources(const char* name, ID3D11ShaderResourceView** ppShaderResourceViews)
 {
 	ID3D11DeviceContext		*m_deviceContext = g_objDeviecManager.GetImmediateContext();
 	D3D11_SHADER_INPUT_BIND_DESC pBindDesc;
@@ -148,7 +149,7 @@ void D3D11RendererMaterial::PSSetShaderResources(const char* name, void* pBuffer
 	m_Shader1.pReflector->GetResourceBindingDescByName(name, &pBindDesc);
 	if (D3D_SIT_TEXTURE == pBindDesc.Type)
 	{
-		m_deviceContext->PSSetShaderResources(pBindDesc.BindPoint, pBindDesc.BindCount, (ID3D11ShaderResourceView **)&pBuffer);
+		m_deviceContext->PSSetShaderResources(pBindDesc.BindPoint, pBindDesc.BindCount, ppShaderResourceViews);
 	}
 }
 

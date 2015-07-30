@@ -1,0 +1,32 @@
+////////////////////////////////////////////////////////////////////////////////
+// Filename: color.ps
+////////////////////////////////////////////////////////////////////////////////
+
+TextureCube g_cubeMap;
+SamplerState SampleType: register(s0);
+
+
+//////////////
+// TYPEDEFS //
+//////////////
+struct PixelInputType
+{
+	float4 position : SV_Position;
+	float3 posL: POSITION;
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Pixel Shader
+////////////////////////////////////////////////////////////////////////////////
+float4 main(PixelInputType input) : SV_TARGET
+{
+#if (EXAMPLE_DEFINE_1 == 0)
+	float4 textureColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+#else
+	float4 textureColor = { 0.0f, 0.0f, 1.0f, 1.0f };
+	input.posL = normalize(input.posL);
+	textureColor = g_cubeMap.Sample(SampleType, input.posL);
+#endif
+	return textureColor;
+}

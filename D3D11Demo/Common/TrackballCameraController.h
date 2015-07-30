@@ -49,6 +49,9 @@ public:
 		return XMLoadFloat3(&_EyePos);
 	}
 	Matrix GetSystemAxisMatrix(int nWidth, int nHeight);
+	Matrix GetViewMatrix(){ return view_mat_; }
+	Matrix GetProjMatrix(){ return proj_mat_; }
+
 public:
 	float		rotationScaler_;	// Scaler for rotation
 	float		moveScaler_;		// Scaler for movement

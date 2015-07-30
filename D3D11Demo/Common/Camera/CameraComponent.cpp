@@ -3,7 +3,7 @@
 
 CameraComponent::CameraComponent()
 {
-	Vector3 vEyePt(0.0f, 0.0f, 0.0f);
+	Vector3 vEyePt(3.0f, 2.0f,1.0f);
 	Vector3 vLookatPt(0.0f, 0.0f, 1.0f);
 	// Setup the view matrix
 	SetViewParams(vEyePt, vLookatPt);
@@ -57,6 +57,7 @@ void CameraComponent::SetViewParams(Vector3 vEyePt, Vector3 vLookatPt, Vector3 v
 
 	Matrix mInvView;
 	m_mView.Invert(mInvView);
+
 }
 
 

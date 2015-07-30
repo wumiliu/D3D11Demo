@@ -18,6 +18,7 @@ public:
 	void Rotate(float offset_x, float offset_y);
 	void Move(float offset_x, float offset_y);
 	void Zoom(float offset_x, float offset_y);
+	Vector3 GetEye(){ return m_vEye; }
 private:
 	Vector3 m_vDefaultEye;          // Default camera eye position
 	Vector3 m_vDefaultLookAt;       // Default LookAt position

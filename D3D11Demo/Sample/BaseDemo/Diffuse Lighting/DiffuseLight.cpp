@@ -55,7 +55,7 @@ void DiffuseLight::DrawScene()
 	ID3D11SamplerState* LinearClamp = g_objStates.LinearClamp();
 	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
 
-	m_Material->PSSetShaderResources("shaderTexture", srv);
+	m_Material->PSSetShaderResources("shaderTexture", &srv);
 	Vector4 diffuseColor = { 1.0f, 0.0f, 1.0f, 1.0f };
 	m_Material->PSSetConstantBuffers("diffuseColor", &diffuseColor);
 

@@ -19,6 +19,12 @@
     <Filter Include="SpecularLight">
       <UniqueIdentifier>{1cd72fc1-e016-4c1f-8b13-48a884bfe708}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LightMaps">
+      <UniqueIdentifier>{2a1e75fa-9c9f-4521-aa9d-b778945134bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SkyBox">
+      <UniqueIdentifier>{85ae8e1f-0187-4645-9f4c-dd09c5aba2c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,6 +39,12 @@
     <ClCompile Include="SpecularLight\SpecularLight.cpp">
       <Filter>SpecularLight</Filter>
     </ClCompile>
+    <ClCompile Include="LightMaps\LightMaps.cpp">
+      <Filter>LightMaps</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBox\SkyBoxApp.cpp">
+      <Filter>SkyBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h">
@@ -43,6 +55,12 @@
     </ClInclude>
     <ClInclude Include="SpecularLight\SpecularLight.h">
       <Filter>SpecularLight</Filter>
+    </ClInclude>
+    <ClInclude Include="LightMaps\LightMaps.h">
+      <Filter>LightMaps</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox\SkyBoxApp.h">
+      <Filter>SkyBox</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

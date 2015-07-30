@@ -46,7 +46,7 @@ public:
 	//VS ConstantBuffers不能分开设置，需要在一个map 里面把所有的参数设置完
 	void VSSetConstantBuffers(const char* name, void* pBuffer);
 	//设置纹理资源等
-	void PSSetShaderResources(const char* name, void* pBuffer);
+	void PSSetShaderResources(const char* name, ID3D11ShaderResourceView** ppShaderResourceViews);
 	//设置像素着色器常量
 	//VS ConstantBuffers可以分开设置
 	void PSSetConstantBuffers(const char* name, void* pBuffer);
@@ -63,7 +63,7 @@ public:
 
 	template< class VertexTypes >
 	ID3D11InputLayout* getLayout();// { return m_pInputLayout; }
-
+	D3D11Shader<ID3D11VertexShader> m_vertexShader;
 protected:
 	void loadShaders(const RendererMaterialDesc& desc);
 private:
@@ -74,7 +74,7 @@ private:
 
 	ID3DBlob* vertexshaderBuffer;
 	ID3D11InputLayout * m_pInputLayout;
-	D3D11Shader<ID3D11VertexShader> m_vertexShader;
+
 	D3D11Shader<ID3D11PixelShader> m_Shader1;
 };
 
