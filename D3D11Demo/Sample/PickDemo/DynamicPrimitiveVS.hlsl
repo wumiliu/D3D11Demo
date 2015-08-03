@@ -21,7 +21,7 @@ struct VertexInputType
 {
 	float4 position : SV_Position;
 	float4 color : COLOR;
-	float4 tex : TEXCOORD;
+	float2 tex : TEXCOORD;
 };
 
 struct PixelInputType
@@ -76,11 +76,11 @@ void DrawGS(line  PixelInputType gin[2],
 		V0.position = (gin[0].position);
 		V0.position.x += i* width / 100.0f;
 		V0.position.y += i* height / 100.0f;
-		if (i % 3 == 0)
+		if (i%3 == 0)
 		{
 			ntmp++;
 		}
-		if (ntmp % 2 == 0)
+		if (ntmp%2 == 0)
 		{
 			V0.color = float4(0, 0, 0, 0);
 		}

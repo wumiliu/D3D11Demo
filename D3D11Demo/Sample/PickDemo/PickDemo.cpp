@@ -8,7 +8,7 @@
 #include "TrackballCameraController.h"
 #include "CommonStates.h"
 #include "DynamicPrimitive.h"
-
+#include "Camera/CameraComponent.h"
 using namespace GeoGen;
 
 PickDemo::PickDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/)
@@ -59,6 +59,16 @@ void PickDemo::InitResource()
 		&srv
 		);
 	SAFE_RELEASE(pTexture2D);
+
+	// Setup the camera   
+	Vector3 vecEye(0.95f, 5.83f, -14.48f);
+	Vector3 vecAt(0.90f, 5.44f, -13.56f);
+
+	cameraComponent->SetViewParams(vecEye, vecAt);
+	float fAspectRatio = (float)mClientWidth / (float)mClientHeight;
+	cameraComponent->SetProjParams(XM_PIDIV4, fAspectRatio, 10.0f, 100.0f);
+
+
 }
 
 void PickDemo::UpdateScene(float dt)
@@ -112,6 +122,76 @@ void PickDemo::DrawScene()
 		VertexPositionColor(XMFLOAT3(0, 0, 1), XMFLOAT4(0, 0, 1, 1))
 	};
 	g_objSprite.DrawPrimitiveUP(PRIMITIVE_LINELIST, 6, vertexs, viewMatrix* projectionMatrix);
+
+
+
+	float fAspectRatio = (float)mClientWidth / (float)mClientHeight;
+	float FrustumStartDist = 10.0f;
+	float FrustumEndDist = 100.0f;
+
+	float HozLength = 0.0f;
+	float VertLength = 0.0f;
+
+	HozLength = FrustumStartDist* tanf(XM_PIDIV4 / 2);
+	VertLength = HozLength / fAspectRatio;
+
+	Vector3 Direction(0, 0, 1);
+	Vector3 LeftVector(1, 0, 0);
+	Vector3 UpVector(0, 1, 0);
+	Vector3 Verts[8];
+
+	// near plane verts
+	Verts[0] = (Direction * FrustumStartDist) + (UpVector * VertLength) + (LeftVector * HozLength);
+	Verts[1] = (Direction * FrustumStartDist) + (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[2] = (Direction * FrustumStartDist) - (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[3] = (Direction * FrustumStartDist) - (UpVector * VertLength) + (LeftVector * HozLength);
+
+	if (XM_PIDIV4 > 0.0f)
+	{
+		HozLength = FrustumEndDist * tanf(XM_PIDIV4 / 2);
+		VertLength = HozLength / fAspectRatio;
+	}
+
+	// far plane verts
+	Verts[4] = (Direction * FrustumEndDist) + (UpVector * VertLength) + (LeftVector * HozLength);
+	Verts[5] = (Direction * FrustumEndDist) + (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[6] = (Direction * FrustumEndDist) - (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[7] = (Direction * FrustumEndDist) - (UpVector * VertLength) + (LeftVector * HozLength);
+
+	VertexPositionColor vertexsCamera[] =
+	{
+		VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)),
+
+		VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)),
+
+		VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)),
+
+		VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)),
+
+		VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)),
+		VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1))
+	};
+	Matrix world = Matrix::CreateTranslation(0.95f, 5.83f, -14.48f);
+	g_objSprite.DrawPrimitiveUP(PRIMITIVE_LINELIST, 24, vertexsCamera, world*viewMatrix* projectionMatrix);
+
 	SwapChainPtr->Flip();
 	
 }

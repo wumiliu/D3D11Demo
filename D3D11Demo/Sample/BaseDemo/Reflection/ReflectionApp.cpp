@@ -66,7 +66,6 @@ void ReflectionApp::DrawScene()
 	XMMATRIX rz = XMMatrixRotationY(XM_PIDIV4 * mTimer.TotalTime());
 	m_Material->SetMatrix(rz, mView, mProj);
 	m_MeshModel->render(m_Material.get());
-
 	SwapChainPtr->Flip();
 }
 
