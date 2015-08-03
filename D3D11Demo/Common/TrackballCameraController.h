@@ -51,7 +51,11 @@ public:
 	Matrix GetSystemAxisMatrix(int nWidth, int nHeight);
 	Matrix GetViewMatrix(){ return view_mat_; }
 	Matrix GetProjMatrix(){ return proj_mat_; }
-
+	//新的RenderReflection函数构建反映视图矩阵一样定期渲染函数构建视图矩阵。
+	//唯一的区别是, 我们采取作为输入对象的高度, 将作为Y轴平面, 
+	//然后我们用这个高度 转化的位置。 y变量进行反思。 
+	//这将构建反映视图矩阵, 我们可以使用的材质。 注意, 这个函数只在Y轴面工作。
+	void RenderReflection(float height);
 public:
 	float		rotationScaler_;	// Scaler for rotation
 	float		moveScaler_;		// Scaler for movement

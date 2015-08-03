@@ -180,3 +180,9 @@ void TrackballCameraController::LookAt(FXMVECTOR pos, FXMVECTOR target, FXMVECTO
 	inv_view_mat_ = XMMatrixInverse(&inv, view_mat_);
 }
 
+void TrackballCameraController::RenderReflection(float height)
+{
+
+	return;
+}
+

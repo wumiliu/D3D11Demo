@@ -4,6 +4,7 @@
 
 #include "LightMaps/LightMaps.h"
 #include "SkyBox/SkyBoxApp.h"
+#include "Reflection/ReflectionApp.h"
 
 #pragma  comment(lib,"Common.lib")
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine, int cmdShow)
@@ -16,7 +17,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	}
 #endif
 
-	SkyBoxApp theApp(hInstance, 1024, 600);
+	ReflectionApp theApp(hInstance, 1024, 600);
 	if (!theApp.Init())
 		return 0;
 	return theApp.Run();

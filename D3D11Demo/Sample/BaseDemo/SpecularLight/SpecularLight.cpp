@@ -56,7 +56,7 @@ void SpecularLight::DrawScene()
 	ID3D11SamplerState* LinearClamp = g_objStates.AnisotropicWrap();
 	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
 
-	m_Material->PSSetShaderResources("shaderTexture", srv);
+	m_Material->PSSetShaderResources("shaderTexture", &srv);
 
 
 

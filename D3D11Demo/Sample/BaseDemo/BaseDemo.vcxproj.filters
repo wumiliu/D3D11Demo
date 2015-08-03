@@ -25,6 +25,9 @@
     <Filter Include="SkyBox">
       <UniqueIdentifier>{85ae8e1f-0187-4645-9f4c-dd09c5aba2c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Reflection">
+      <UniqueIdentifier>{70d6f923-7157-4623-ae1a-79639bc697e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +48,9 @@
     <ClCompile Include="SkyBox\SkyBoxApp.cpp">
       <Filter>SkyBox</Filter>
     </ClCompile>
+    <ClCompile Include="Reflection\ReflectionApp.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h">
@@ -61,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="SkyBox\SkyBoxApp.h">
       <Filter>SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection\ReflectionApp.h">
+      <Filter>Reflection</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

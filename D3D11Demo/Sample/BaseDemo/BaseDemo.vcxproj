@@ -69,6 +69,7 @@
     <ClCompile Include="Diffuse Lighting\DiffuseLight.cpp" />
     <ClCompile Include="LightMaps\LightMaps.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Reflection\ReflectionApp.cpp" />
     <ClCompile Include="SkyBox\SkyBoxApp.cpp" />
     <ClCompile Include="SpecularLight\SpecularLight.cpp" />
   </ItemGroup>
@@ -76,6 +77,7 @@
     <ClInclude Include="BaseDemo.h" />
     <ClInclude Include="Diffuse Lighting\DiffuseLight.h" />
     <ClInclude Include="LightMaps\LightMaps.h" />
+    <ClInclude Include="Reflection\ReflectionApp.h" />
     <ClInclude Include="SkyBox\SkyBoxApp.h" />
     <ClInclude Include="SpecularLight\SpecularLight.h" />
   </ItemGroup>
