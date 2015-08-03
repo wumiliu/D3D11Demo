@@ -51,7 +51,7 @@ bool D3D11App::Init()
 	if (!InitDirect3D())
 		return false;
 	float AspectHByW = (float)mClientWidth / (float)mClientHeight;
-	g_objTrackballCameraController.ProjParams(DirectX::XM_PI*0.25f, AspectHByW, 1.0f, 1000.0f);
+	g_objTrackballCameraController.ProjParams(DirectX::XM_PI*0.25f, AspectHByW, 0.0f, 10.0f);
 	cameraComponent = std::make_shared<CameraComponent>();
 	cameraComponent->SetProjParams(DirectX::XM_PI*0.25f, AspectHByW, 1.0f, 1000.0f);
 	InitResource();

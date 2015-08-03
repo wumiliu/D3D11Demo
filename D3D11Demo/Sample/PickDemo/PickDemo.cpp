@@ -127,7 +127,7 @@ void PickDemo::DrawScene()
 
 	float fAspectRatio = (float)mClientWidth / (float)mClientHeight;
 	float FrustumStartDist = 10.0f;
-	float FrustumEndDist = 100.0f;
+	float FrustumEndDist = 1010.0f;
 
 	float HozLength = 0.0f;
 	float VertLength = 0.0f;

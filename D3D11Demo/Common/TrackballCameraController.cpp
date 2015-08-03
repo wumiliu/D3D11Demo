@@ -3,9 +3,10 @@
 TrackballCameraController::TrackballCameraController() :
 mEyePos(0.0f, 0.0f, 0.0f), mTheta(0.3f*XM_PI), mPhi(0.4f*XM_PI), mRadius(30.0f)
 {
+	mRadius = 1000.0f;
 	view_mat_ = XMMatrixIdentity();
 	proj_mat_ = XMMatrixIdentity();
-	moveScaler_ = 0.00144151133f;
+	moveScaler_ = 0.00144151133f * 30.0f;
 	rotationScaler_ = 0.0099999999978f;
 	target = XMLoadFloat3(&XMFLOAT3(0, 0, 0));
 	up = XMLoadFloat3(&XMFLOAT3(0, 1, 0));
