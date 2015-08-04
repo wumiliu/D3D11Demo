@@ -41,7 +41,7 @@ void DX11RTTexture::Create(int nWidth, int nHeight)
 	texDesc.CPUAccessFlags = 0;
 	texDesc.MiscFlags = 0;
 
-	texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+//	texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 //	texDesc.Format = DXGI_FORMAT_R32_TYPELESS;
 
 	ID3D11Texture2D* cubeTex = 0;

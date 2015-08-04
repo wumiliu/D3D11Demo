@@ -204,3 +204,136 @@ bool CameraHelp::CheckRectangle(float xCenter, float yCenter, float zCenter, flo
 
 	return true;
 }
+
+
+
+void CameraHelp::GetFrustumMeshElements(std::vector<VertexPositionColor>& vecPos, int nWidth, int nHeight)
+{
+	vecPos.clear();
+
+	float fAspectRatio = (float)nWidth / (float)nHeight;
+	float FrustumStartDist = 10.0f;
+	float FrustumEndDist = 1000.0f;
+
+	float HozLength = 0.0f;
+	float VertLength = 0.0f;
+
+	HozLength = FrustumStartDist* tanf(XM_PIDIV4 / 2);
+	VertLength = HozLength / fAspectRatio;
+
+	Vector3 Direction(0, 0, 1);
+	Vector3 LeftVector(1, 0, 0);
+	Vector3 UpVector(0, 1, 0);
+	Vector3 Verts[8];
+
+	// near plane verts
+	Verts[0] = (Direction * FrustumStartDist) + (UpVector * VertLength) + (LeftVector * HozLength);
+	Verts[1] = (Direction * FrustumStartDist) + (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[2] = (Direction * FrustumStartDist) - (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[3] = (Direction * FrustumStartDist) - (UpVector * VertLength) + (LeftVector * HozLength);
+
+	if (XM_PIDIV4 > 0.0f)
+	{
+		HozLength = FrustumEndDist * tanf(XM_PIDIV4 / 2);
+		VertLength = HozLength / fAspectRatio;
+	}
+
+	// far plane verts
+	Verts[4] = (Direction * FrustumEndDist) + (UpVector * VertLength) + (LeftVector * HozLength);
+	Verts[5] = (Direction * FrustumEndDist) + (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[6] = (Direction * FrustumEndDist) - (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[7] = (Direction * FrustumEndDist) - (UpVector * VertLength) + (LeftVector * HozLength);
+
+		vecPos.push_back(VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)));
+
+		vecPos.push_back(VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)));
+
+		vecPos.push_back(VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)));
+
+		vecPos.push_back(VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)));
+
+		vecPos.push_back(VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)));
+		vecPos.push_back(VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)));
+
+}
+
+void CameraHelp::GetFrustumMeshElementsEx(std::vector<VertexPositionColor>& vecPos, int nWidth, int nHeight)
+{
+	vecPos.clear();
+
+	float fAspectRatio = (float)nWidth / (float)nHeight;
+	float FrustumStartDist = 10.0f;
+	float FrustumEndDist = 1000.0f;
+
+	float HozLength = 0.0f;
+	float VertLength = 0.0f;
+
+	HozLength = FrustumStartDist* tanf(XM_PIDIV4 / 2);
+	VertLength = HozLength / fAspectRatio;
+
+	Vector3 Direction(0, 0, 1);
+	Vector3 LeftVector(1, 0, 0);
+	Vector3 UpVector(0, 1, 0);
+	Vector3 Verts[8];
+
+	// near plane verts
+	Verts[0] = (Direction * FrustumStartDist) + (UpVector * VertLength) + (LeftVector * HozLength);
+	Verts[1] = (Direction * FrustumStartDist) + (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[2] = (Direction * FrustumStartDist) - (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[3] = (Direction * FrustumStartDist) - (UpVector * VertLength) + (LeftVector * HozLength);
+
+	if (XM_PIDIV4 > 0.0f)
+	{
+		HozLength = FrustumEndDist * tanf(XM_PIDIV4 / 2);
+		VertLength = HozLength / fAspectRatio;
+	}
+
+	// far plane verts
+	Verts[4] = (Direction * FrustumEndDist) + (UpVector * VertLength) + (LeftVector * HozLength);
+	Verts[5] = (Direction * FrustumEndDist) + (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[6] = (Direction * FrustumEndDist) - (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[7] = (Direction * FrustumEndDist) - (UpVector * VertLength) + (LeftVector * HozLength);
+
+	vecPos.push_back(VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)));
+
+	
+
+	vecPos.push_back(VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)));
+
+
+	vecPos.push_back(VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)));
+
+}

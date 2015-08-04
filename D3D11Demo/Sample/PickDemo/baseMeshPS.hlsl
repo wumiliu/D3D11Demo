@@ -47,6 +47,6 @@ float4 mainGreen(PixelInputType input) : SV_TARGET
 
 float4 mainBlue(PixelInputType input) : SV_TARGET
 {
-	float4 textureColor = { 0.0f, 0.0f, 1.0f, 1.0f };
+	float4 textureColor = { 0.0f, 0.0f, 1.0f, 0.5f };
 	return textureColor;
 }

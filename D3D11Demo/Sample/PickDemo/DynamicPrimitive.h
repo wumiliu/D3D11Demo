@@ -33,6 +33,8 @@ public:
 	void DrawPrimitiveUP(PrimitiveType PrimitiveType, unsigned int PrimitiveCount,
 		VertexPositionColorTexture *pVertexs, const XMMATRIX &model = XMMatrixIdentity(), ID3D11ShaderResourceView*pTexture = NULL);
 
+	void ShowTexEx(RECT *pDest, RECT *pSrc, int nWidth, int nHeight, ID3D11ShaderResourceView*pTexture);
+
 private:
 	ID3D11Buffer *m_vertexBuffer;
 	ID3D11Buffer	*m_indexBuffer;

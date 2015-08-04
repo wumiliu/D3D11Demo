@@ -1,6 +1,6 @@
 #pragma once
 #include "../HpD3D9Type.h"
-
+#include "../VertexTypes.h"
 class CameraComponent
 {
 public:
@@ -13,7 +13,9 @@ public:
 
 	// Functions to get state
 	Matrix GetViewMatrix() 	{ return m_mView; }
+
 	Matrix GetProjMatrix() { return m_mProj; }
+	void GetFrustumMeshElements(std::vector<VertexPositionColor>& vecPos);
 
 	void Rotate(float offset_x, float offset_y);
 	void Move(float offset_x, float offset_y);

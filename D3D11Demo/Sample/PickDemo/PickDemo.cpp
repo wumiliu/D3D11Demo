@@ -9,6 +9,8 @@
 #include "CommonStates.h"
 #include "DynamicPrimitive.h"
 #include "Camera/CameraComponent.h"
+#include "Texture/DX11RTTexture.h"
+#include "Camera/CameraHelp.h"
 using namespace GeoGen;
 
 PickDemo::PickDemo(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/)
@@ -26,9 +28,11 @@ PickDemo::~PickDemo()
 
 void PickDemo::InitResource()
 {
+	DX11RTTexturePtr = std::make_shared<DX11RTTexture>();
 	m_CubeModel = std::make_shared<D3D11RendererMesh>();
 	m_Cylinder = std::make_shared<D3D11RendererMesh>();
 
+	m_CubeModelHelp = std::make_shared<D3D11RendererMesh>();
 
 	RendererMaterialDesc desc;
 	desc.vertexShaderPath = "baseMeshVS.hlsl";
@@ -42,6 +46,7 @@ void PickDemo::InitResource()
 
 	MeshData meshData;
 	GeoGen::CreateBox(2, 2, 2, meshData);
+	m_CubeModelHelp->BuildBuffers(meshData);
 	//GeoGen::CreateSphere(1, 50, 50, meshData);
 
 	GeoGen::CreateCylinder(0.0, 0.5f, 1, 20,20,meshData);
@@ -61,13 +66,13 @@ void PickDemo::InitResource()
 	SAFE_RELEASE(pTexture2D);
 
 	// Setup the camera   
-	Vector3 vecEye(0.95f, 5.83f, -14.48f);
-	Vector3 vecAt(0.90f, 5.44f, -13.56f);
+	Vector3 vecEye(0.0f, 0.0f, 0.0f);
+	Vector3 vecAt(0.0f, 0.0f, -1.0f);
 
 	cameraComponent->SetViewParams(vecEye, vecAt);
 	float fAspectRatio = (float)mClientWidth / (float)mClientHeight;
-	cameraComponent->SetProjParams(XM_PIDIV4, fAspectRatio, 10.0f, 100.0f);
-
+	cameraComponent->SetProjParams(XM_PIDIV4, fAspectRatio, 10.0f, 1000.0f);
+	DX11RTTexturePtr->Create(mClientWidth, mClientHeight);
 
 }
 
@@ -97,6 +102,8 @@ void PickDemo::ResetState()
 
 void PickDemo::DrawScene()
 {
+	RenderRT();
+
 	SwapChainPtr->SetBackBufferRenderTarget();
 	SwapChainPtr->Clear();
 	ResetState();
@@ -106,8 +113,7 @@ void PickDemo::DrawScene()
 	viewMatrix = g_objTrackballCameraController.View();
 	projectionMatrix = g_objTrackballCameraController.Proj();
 
-	g_objSprite.ResetSize(mClientWidth, mClientHeight);
-	g_objSprite.ShowRect(100, 100, 300, 200, { 1.0f, 0.65f, 0.3f, 1 },true);
+
 
 	g_objSprite.ShowBlock(500, 50, 700, 100, { 1, 0, 1, 1 });
 	VertexPositionColor vertexs[] =
@@ -123,74 +129,49 @@ void PickDemo::DrawScene()
 	};
 	g_objSprite.DrawPrimitiveUP(PRIMITIVE_LINELIST, 6, vertexs, viewMatrix* projectionMatrix);
 
+	CameraHelp cameraHelp;
+	std::vector<VertexPositionColor> vertexsCamera;
+	cameraComponent->GetFrustumMeshElements(vertexsCamera);
+	cameraHelp.GetFrustumMeshElements(vertexsCamera,mClientWidth,mClientHeight);
+
+	Matrix world = Matrix::CreateTranslation(0, 6.0f, -12.0f);// *cameraComponent->GetProjMatrix();
+//	world *= (cameraComponent->GetViewMatrix()* cameraComponent->GetProjMatrix());
+	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
+	m_CubeModelHelp->render(m_Material.get(), 4);
+
+	world *= (cameraComponent->GetViewMatrix()* cameraComponent->GetProjMatrix());
+	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
+	m_CubeModelHelp->render(m_Material.get(), 4);
+
+	world = cameraComponent->GetViewMatrix();
+	world = cameraComponent->GetViewMatrix().Invert();
+//	world = cameraComponent->GetProjMatrix();
+
+	g_objSprite.DrawPrimitiveUP(PRIMITIVE_LINELIST, 24, &vertexsCamera[0], world*viewMatrix* projectionMatrix);
+	world = cameraComponent->GetProjMatrix();
+	g_objSprite.DrawPrimitiveUP(PRIMITIVE_LINELIST, 24, &vertexsCamera[0], world*viewMatrix* projectionMatrix);
+
+	int x = mClientWidth * 0.66666f - 10;
+	int y = mClientHeight * 0.66666f - 10;
+	int width = mClientWidth + 10;
+	int height = mClientHeight + 10;
+
+	RECT rect1;
+	rect1.left = 0;
+	rect1.right = DX11RTTexturePtr->m_nWidth;
+	rect1.top = 0;
+	rect1.bottom = DX11RTTexturePtr->m_nHeight;
+	RECT rect;
+	rect.left = mClientWidth * 0.66666f - 5;
+	rect.right = mClientWidth - 5;
+	rect.top = mClientHeight * 0.66666f - 5;
+	rect.bottom = mClientHeight - 5;
+
+	g_objSprite.ShowBlock(x, y, x + width, y + height, { 0.000000000f, 0.000000000f, 0.000000000f, 0.500000000f });
+	g_objSprite.ShowTexEx(&rect, &rect1, rect1.right, rect1.bottom, DX11RTTexturePtr->GetRTView());
 
 
-	float fAspectRatio = (float)mClientWidth / (float)mClientHeight;
-	float FrustumStartDist = 10.0f;
-	float FrustumEndDist = 1010.0f;
 
-	float HozLength = 0.0f;
-	float VertLength = 0.0f;
-
-	HozLength = FrustumStartDist* tanf(XM_PIDIV4 / 2);
-	VertLength = HozLength / fAspectRatio;
-
-	Vector3 Direction(0, 0, 1);
-	Vector3 LeftVector(1, 0, 0);
-	Vector3 UpVector(0, 1, 0);
-	Vector3 Verts[8];
-
-	// near plane verts
-	Verts[0] = (Direction * FrustumStartDist) + (UpVector * VertLength) + (LeftVector * HozLength);
-	Verts[1] = (Direction * FrustumStartDist) + (UpVector * VertLength) - (LeftVector * HozLength);
-	Verts[2] = (Direction * FrustumStartDist) - (UpVector * VertLength) - (LeftVector * HozLength);
-	Verts[3] = (Direction * FrustumStartDist) - (UpVector * VertLength) + (LeftVector * HozLength);
-
-	if (XM_PIDIV4 > 0.0f)
-	{
-		HozLength = FrustumEndDist * tanf(XM_PIDIV4 / 2);
-		VertLength = HozLength / fAspectRatio;
-	}
-
-	// far plane verts
-	Verts[4] = (Direction * FrustumEndDist) + (UpVector * VertLength) + (LeftVector * HozLength);
-	Verts[5] = (Direction * FrustumEndDist) + (UpVector * VertLength) - (LeftVector * HozLength);
-	Verts[6] = (Direction * FrustumEndDist) - (UpVector * VertLength) - (LeftVector * HozLength);
-	Verts[7] = (Direction * FrustumEndDist) - (UpVector * VertLength) + (LeftVector * HozLength);
-
-	VertexPositionColor vertexsCamera[] =
-	{
-		VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)),
-
-		VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)),
-
-		VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)),
-
-		VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)),
-
-		VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)),
-		VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1))
-	};
-	Matrix world = Matrix::CreateTranslation(0.95f, 5.83f, -14.48f);
-	g_objSprite.DrawPrimitiveUP(PRIMITIVE_LINELIST, 24, vertexsCamera, world*viewMatrix* projectionMatrix);
 
 	SwapChainPtr->Flip();
 	
@@ -221,6 +202,7 @@ void PickDemo::RenderSystemAxis()
 
 	m_Material->PSSetShaderResources(0, 1, srv);
 	m_deviceContext->OMSetDepthStencilState(g_objStates.DepthDefault(), 1);
+	return;
 	Matrix world = Matrix::CreateScale(0.5, 0.5, 0.5) * Matrix::CreateTranslation(0, 5.5f*0.5f, 0);
 	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
 	m_CubeModel->render(m_Material.get(), 3);
@@ -244,4 +226,17 @@ void PickDemo::RenderSystemAxis()
 	world *= Matrix::CreateRotationZ(-XM_PIDIV2);
 	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
 	m_Cylinder->render(m_Material.get(), 2);
+}
+
+void PickDemo::RenderRT()
+{
+	DX11RTTexturePtr->Begin();
+	g_objSprite.ResetSize(mClientWidth, mClientHeight);
+	//g_objSprite.ShowRect(100, 100, 300, 200, { 1.0f, 0.65f, 0.3f, 1 }, true);
+
+	Matrix world = Matrix::CreateTranslation(0,6.0f, -12.0f);
+	m_Material->SetShaderParameters(world, cameraComponent->GetViewMatrix(), cameraComponent->GetProjMatrix());
+	m_CubeModelHelp->render(m_Material.get(), 4);
+
+	DX11RTTexturePtr->End();
 }

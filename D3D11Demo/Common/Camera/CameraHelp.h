@@ -1,5 +1,6 @@
 #pragma once
 #include "../HpD3D9Type.h"
+#include "../VertexTypes.h"
 class CameraHelp
 {
 public:
@@ -13,6 +14,8 @@ public:
 
 	//º∆À„ ”◊∂ÃÂ
 	void ConstructFrustum(Matrix viewMatrix, Matrix projectionMatrix);
+	void GetFrustumMeshElements(std::vector<VertexPositionColor>& vecPos,int nWidth,int nHeight);
+	void GetFrustumMeshElementsEx(std::vector<VertexPositionColor>& vecPos, int nWidth, int nHeight);
 
 private:
 	Plane m_planes[6];

@@ -98,3 +98,76 @@ void CameraComponent::Zoom(float offset_x, float offset_y)
 {
 
 }
+
+void CameraComponent::GetFrustumMeshElements(std::vector<VertexPositionColor>& vecPos)
+{
+	vecPos.clear();
+
+	float fAspectRatio = m_fAspect;
+	float FrustumStartDist = m_fNearPlane;
+	float FrustumEndDist = m_fFarPlane;
+
+	float HozLength = 0.0f;
+	float VertLength = 0.0f;
+
+	VertLength = FrustumStartDist* tanf(m_fFOV * 0.5f);
+	HozLength = VertLength * fAspectRatio;
+	Vector3 Direction(0, 0, 1);
+	Vector3 LeftVector(1, 0, 0);
+	Vector3 UpVector(0, 1, 0);
+
+
+
+	Vector3 Verts[8];
+
+	// near plane verts
+	Verts[0] = (Direction * FrustumStartDist) + (UpVector * VertLength) + (LeftVector * HozLength);
+	Verts[1] = (Direction * FrustumStartDist) + (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[2] = (Direction * FrustumStartDist) - (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[3] = (Direction * FrustumStartDist) - (UpVector * VertLength) + (LeftVector * HozLength);
+
+	VertLength = FrustumEndDist* tanf(m_fFOV * 0.5f);
+	HozLength = VertLength * fAspectRatio;
+
+	// far plane verts
+	Verts[4] = (Direction * FrustumEndDist) + (UpVector * VertLength) + (LeftVector * HozLength);
+	Verts[5] = (Direction * FrustumEndDist) + (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[6] = (Direction * FrustumEndDist) - (UpVector * VertLength) - (LeftVector * HozLength);
+	Verts[7] = (Direction * FrustumEndDist) - (UpVector * VertLength) + (LeftVector * HozLength);
+
+	/*for (int i = 0; i < 8;++i)
+	{
+		Vector3&  vert = Verts[i];
+		Vector3 Tmp = vert;
+		vert /= Tmp.z;
+	}*/
+	vecPos.push_back(VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)));
+
+	vecPos.push_back(VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)));
+
+	vecPos.push_back(VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)));
+
+	vecPos.push_back(VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)));
+
+	vecPos.push_back(VertexPositionColor(Verts[0], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[4], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[1], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[5], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[2], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[6], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[3], XMFLOAT4(1, 0, 0, 1)));
+	vecPos.push_back(VertexPositionColor(Verts[7], XMFLOAT4(1, 0, 0, 1)));
+
+}

@@ -186,8 +186,15 @@ void DynamicPrimitive::DrawPrimitiveUP(PrimitiveType PrimitiveType, unsigned int
 
 
 	m_MaterialPtr->SetShaderParameters(Matrix::Identity, Matrix::Identity, model);
-	m_MaterialPtr->PSSetShaderResources(0, 1, pTexture);
-	m_MaterialPtr->setShaders();
+	if (pTexture)
+	{
+		m_MaterialPtr->PSSetShaderResources(0, 1, pTexture);
+		m_MaterialPtr->setShaders(1);
+	}
+	else
+	{
+		m_MaterialPtr->setShaders();
+	}
 
 	ID3D11BlendState* AlphaBlendingState = g_objStates.AlphaBlend();
 	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -201,3 +208,51 @@ void DynamicPrimitive::ResetSize(int nWidth, int nHeight)
 	m_nWidth = nWidth;
 	m_nHeight = nHeight;
 }
+
+void DynamicPrimitive::ShowTexEx(RECT *pDest, RECT *pSrc, int nWidth, int nHeight, ID3D11ShaderResourceView*pTexture)
+{
+	XMFLOAT4 color(0, 0, 0, 0);
+	int x = pDest->left;
+	int y = pDest->top;
+
+	int h = pDest->bottom - pDest->top;
+	int w = pDest->right - pDest->left;
+
+	XMFLOAT3 LeftTop = XMFLOAT3(x, y, 0.0f);
+	XMFLOAT3 RightTop = XMFLOAT3(x + w, y, 0.0f);
+
+	XMFLOAT3 LeftBottom = XMFLOAT3(x, (y + h), 0.0f);
+	XMFLOAT3 RightBottom = XMFLOAT3(x + w, (y + h), 0.0f);
+	int tmpX = (float)m_nWidth*1.0f / 2.0f - x;
+	int tmpY = (float)m_nHeight*1.0f / 2.0f - y;
+	VertexPositionColorTexture vertices[] =
+	{
+		//正面的四个点
+		{ LeftBottom, color, XMFLOAT2(0, 1) },
+		{ LeftTop, color, XMFLOAT2(0, 0) },
+		{ RightTop, color, XMFLOAT2(1, 0) },
+		{ LeftBottom, color, XMFLOAT2(0, 1) },
+		{ RightTop, color, XMFLOAT2(1, 0) },
+		{ RightBottom, color, XMFLOAT2(1, 1) }
+	};
+	XMFLOAT2 textureCoordinate[4];
+	textureCoordinate[0].x = textureCoordinate[1].x = float(pSrc->left) / (float)nWidth;
+	textureCoordinate[0].y = textureCoordinate[3].y = float(pSrc->bottom) / (float)nHeight;
+
+
+	textureCoordinate[2].x = textureCoordinate[3].x = float(pSrc->right) / (float)nWidth;
+	textureCoordinate[2].y = textureCoordinate[1].y = float(pSrc->top) / (float)nHeight;
+	vertices[0].textureCoordinate = textureCoordinate[0];
+	vertices[1].textureCoordinate = textureCoordinate[1];
+	vertices[2].textureCoordinate = textureCoordinate[2];
+
+	vertices[3].textureCoordinate = textureCoordinate[0];
+	vertices[4].textureCoordinate = textureCoordinate[2];
+	vertices[5].textureCoordinate = textureCoordinate[3];
+
+
+	// Transform NDC space [-1,+1]^2 to texture space [0,1]^2
+	XMMATRIX toTexSpace = GetShow2DMatrix(m_nWidth, m_nHeight);
+	DrawPrimitiveUP(PRIMITIVE_TRIANGLELIST, 6, vertices, toTexSpace, pTexture);
+}
+
