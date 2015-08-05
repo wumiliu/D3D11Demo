@@ -30,6 +30,7 @@ void SkyBoxApp::InitResource()
 
 	MeshData meshData;
 	GeoGen::CreateSphere(10.0f, 30, 30, meshData);
+
 	//GeoGen::CreateSphere(100.f, 30, 30, meshData);
 
 	m_MeshModel = std::make_shared<D3D11RendererMesh>();
