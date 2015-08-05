@@ -71,7 +71,7 @@ void PickDemo::InitResource()
 
 	cameraComponent->SetViewParams(vecEye, vecAt);
 	float fAspectRatio = (float)mClientWidth / (float)mClientHeight;
-	cameraComponent->SetProjParams(XM_PIDIV4, fAspectRatio, 10.0f, 1000.0f);
+	cameraComponent->SetProjParams(XM_PIDIV4, fAspectRatio, 10.0f, 1010.0f);
 	DX11RTTexturePtr->Create(mClientWidth, mClientHeight);
 
 }
@@ -132,14 +132,14 @@ void PickDemo::DrawScene()
 	CameraHelp cameraHelp;
 	std::vector<VertexPositionColor> vertexsCamera;
 	cameraComponent->GetFrustumMeshElements(vertexsCamera);
-	cameraHelp.GetFrustumMeshElements(vertexsCamera,mClientWidth,mClientHeight);
+	//cameraHelp.GetFrustumMeshElements(vertexsCamera,mClientWidth,mClientHeight);
 
 	Matrix world = Matrix::CreateTranslation(0, 6.0f, -12.0f);// *cameraComponent->GetProjMatrix();
 //	world *= (cameraComponent->GetViewMatrix()* cameraComponent->GetProjMatrix());
 	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
 	m_CubeModelHelp->render(m_Material.get(), 4);
 
-	world *= (cameraComponent->GetViewMatrix()* cameraComponent->GetProjMatrix());
+	world = world*(cameraComponent->GetViewMatrix()* cameraComponent->GetProjMatrix()) ;
 	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
 	m_CubeModelHelp->render(m_Material.get(), 4);
 

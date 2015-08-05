@@ -68,14 +68,16 @@ void CameraComponent::SetProjParams(FLOAT fFOV, FLOAT fAspect, FLOAT fNearPlane,
 	m_fAspect = fAspect;
 	m_fNearPlane = fNearPlane;
 	m_fFarPlane = fFarPlane;
+	//r = fAspect
 	//	透视投影矩阵的方程
-	// 1/ (tan(&/2))     0    0     0
+	// r/ (tan(&/2))     0    0     0
 	// 0		1/(tan(&/2))    0    0	
 	// 0   0      f/f-n                1
 	// 0   0     -nf/f-n              0
 	//
 	//
 	m_mProj = XMMatrixPerspectiveFovLH(fFOV, fAspect, fNearPlane, fFarPlane);
+	//m_mProj = XMMatrixPerspectiveFovRH(fFOV, fAspect, fNearPlane, fFarPlane);
 
 }
 
@@ -101,6 +103,7 @@ void CameraComponent::Zoom(float offset_x, float offset_y)
 
 void CameraComponent::GetFrustumMeshElements(std::vector<VertexPositionColor>& vecPos)
 {
+	//左手坐标系，z范围是0-1. 所以cvv空间是一个长方体
 	vecPos.clear();
 
 	float fAspectRatio = m_fAspect;

@@ -21,7 +21,7 @@ public:
 	Matrix Proj()const;
 	Matrix ViewProj()const;
 	Matrix InvViewProj()const;
-
+	 
 	void Rotate(float offset_x, float offset_y);
 	void Move(float offset_x, float offset_y);
 	void Zoom(float offset_x, float offset_y);

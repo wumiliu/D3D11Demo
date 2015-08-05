@@ -14,7 +14,11 @@ protected:
 	virtual void InitResource();
 	std::shared_ptr<class D3D11RendererMesh> m_MeshModel;
 	std::shared_ptr<class D3D11RendererMaterial> m_Material;
+
+	std::shared_ptr<class D3D11RendererMesh> m_FloorModel;
 	std::shared_ptr<class DX11RTTexture> DX11RTTexturePtr;
 	ID3D11ShaderResourceView* srv;
+	ID3D11ShaderResourceView* srv1;
+
 };
 

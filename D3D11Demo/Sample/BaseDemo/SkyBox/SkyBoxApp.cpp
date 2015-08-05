@@ -6,6 +6,7 @@
 #include "TrackballCameraController.h"
 #include "CommonStates.h"
 #include "Camera/CameraComponent.h"
+#include "CommonStates.h"
 
 SkyBoxApp::SkyBoxApp(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/)
 	: D3D11App(hInstance)
@@ -28,7 +29,7 @@ void SkyBoxApp::InitResource()
 	m_Material = std::make_shared<D3D11RendererMaterial>(desc);
 
 	MeshData meshData;
-	GeoGen::CreateSphere(20, 50, 50, meshData);
+	GeoGen::CreateSphere(10.0f, 30, 30, meshData);
 	//GeoGen::CreateSphere(100.f, 30, 30, meshData);
 
 	m_MeshModel = std::make_shared<D3D11RendererMesh>();
@@ -58,7 +59,9 @@ void SkyBoxApp::DrawScene()
 	Matrix mView;
 	Matrix mProj;
 	Matrix mWorldViewProjection;
-	
+	ID3D11SamplerState* LinearClamp = g_objStates.LinearWrap();
+	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
+
 	mView = g_objTrackballCameraController.GetViewMatrix();
 	mProj = g_objTrackballCameraController.GetProjMatrix();
 	mWorldViewProjection = mView * mProj;
@@ -67,7 +70,6 @@ void SkyBoxApp::DrawScene()
 	Vector3 cameraPosition = g_objTrackballCameraController.EyePos();
 	//worldMatrix = Matrix::CreateTranslation(cameraPosition);
 	m_Material->SetMatrix(worldMatrix, mView, mProj);
-	
 	m_deviceContext->OMSetDepthStencilState(g_objStates.DepthDefault(), 1);
 	m_MeshModel->render(m_Material.get());
 	SwapChainPtr->Flip();
