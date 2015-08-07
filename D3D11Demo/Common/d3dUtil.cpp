@@ -2,6 +2,7 @@
 #include "BaseFunction.h"
 #include <iostream>
 #include <fstream>
+#include <guiddef.h >
 using namespace std;
 
 #pragma comment(lib, "d3dcompiler.lib")
@@ -70,10 +71,11 @@ HRESULT D3DCompileShader(LPCSTR pFileName, LPCSTR pEntrypoint,
 	// Compile the pixel shader code.
 	result = D3DCompileFromFile(BaseFunction::gAnsiToUnicode(pFileName), defines, D3D_COMPILE_STANDARD_FILE_INCLUDE, pEntrypoint, pTarget, shaderFlags, 0,
 		ppCode, &errorMessage);
+	const GUID IID_ID3D11ShaderReflection11 = { 0x8d536ca1, 0x0cca, 0x4956, 0xa8, 0x37, 0x78, 0x69, 0x63, 0x75, 0x55, 0x84 };
 	if (result == S_OK)
 	{
 		D3DReflect((*ppCode)->GetBufferPointer(), (*ppCode)->GetBufferSize(),
-			IID_ID3D11ShaderReflection, (void**)ppReflector);
+			IID_ID3D11ShaderReflection11, (void**)ppReflector);
 	}
 	else
 	{

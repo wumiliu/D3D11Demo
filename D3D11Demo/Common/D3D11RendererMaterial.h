@@ -1,6 +1,7 @@
 #pragma once
 #include "HpD3D9Type.h"
 #include "D3DShader.h"
+#include "DeviceManager.h"
 struct MatrixBufferShader
 {
 public:

@@ -152,3 +152,12 @@ void XM_CALLCONV VertexPositionNormalTangentColorTextureSkinning::SetBlendWeight
     XMStoreUByteN4( &packed, weights );
     this->weights = packed.v;
 }
+
+
+const D3D11_INPUT_ELEMENT_DESC PosTexSkinned::InputElements[] =
+{
+	{ "SV_Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "WEIGHTS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "BONEINDICES", 0, DXGI_FORMAT_R8G8B8A8_UINT, 0, 36, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};

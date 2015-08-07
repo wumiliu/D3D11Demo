@@ -1,5 +1,5 @@
 #include "D3D11RendererMaterial.h"
-#include "DeviceManager.h"
+
 #include "d3dUtil.h"
 
 

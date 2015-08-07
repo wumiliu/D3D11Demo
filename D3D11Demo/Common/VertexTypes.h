@@ -328,4 +328,30 @@ namespace DirectX
         static const int InputElementCount = 7;
         static const D3D11_INPUT_ELEMENT_DESC InputElements[InputElementCount];
     };
+
+
+	struct PosTexSkinned
+	{
+		XMFLOAT3 position;
+		XMFLOAT2 textureCoordinate;
+		float Weights[4];
+		BYTE BoneIndices[4];
+		PosTexSkinned()
+		{
+			Weights[0] = 0;
+			Weights[1] = 0;
+			Weights[2] = 0;
+			Weights[3] = 0;
+			BoneIndices[0] = 0;
+			BoneIndices[1] = 0;
+			BoneIndices[2] = 0;
+			BoneIndices[3] = 0;
+		}
+		static const int InputElementCount = 4;
+		static const D3D11_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+	};
+
+
+
+
 }

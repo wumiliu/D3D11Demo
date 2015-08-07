@@ -69,9 +69,9 @@ void SkyBoxApp::DrawScene()
 	Matrix worldMatrix = Matrix::CreateTranslation(0, 0, 0);
 	m_Material->PSSetShaderResources("g_cubeMap", &srv);
 	Vector3 cameraPosition = g_objTrackballCameraController.EyePos();
-	//worldMatrix = Matrix::CreateTranslation(cameraPosition);
+//	worldMatrix = Matrix::CreateTranslation(cameraPosition);
 	m_Material->SetMatrix(worldMatrix, mView, mProj);
-	m_deviceContext->OMSetDepthStencilState(g_objStates.DepthDefault(), 1);
+	m_deviceContext->OMSetDepthStencilState(g_objStates.DepthNone(), 1);
 	m_MeshModel->render(m_Material.get());
 	SwapChainPtr->Flip();
 
