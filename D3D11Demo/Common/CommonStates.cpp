@@ -96,30 +96,30 @@ HRESULT CommonStates::Impl::CreateBlendState(D3D11_BLEND srcBlend, D3D11_BLEND d
 // Helper for creating depth stencil state objects.
 HRESULT CommonStates::Impl::CreateDepthStencilState(bool enable, bool writeEnable, _Out_ ID3D11DepthStencilState** pResult)
 {
-    D3D11_DEPTH_STENCIL_DESC desc;
-    ZeroMemory(&desc, sizeof(desc));
+	D3D11_DEPTH_STENCIL_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
 
-    desc.DepthEnable = enable;
-    desc.DepthWriteMask = writeEnable ? D3D11_DEPTH_WRITE_MASK_ALL : D3D11_DEPTH_WRITE_MASK_ZERO;
-    desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	desc.DepthEnable = enable;
+	desc.DepthWriteMask = writeEnable ? D3D11_DEPTH_WRITE_MASK_ALL : D3D11_DEPTH_WRITE_MASK_ZERO;
+	desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
-    desc.StencilEnable = false;
-    desc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
-    desc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+	desc.StencilEnable = false;
+	desc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+	desc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
 
-    desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-    desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-    desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+	desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 
-    desc.BackFace = desc.FrontFace;
+	desc.BackFace = desc.FrontFace;
 
-    HRESULT hr = device->CreateDepthStencilState(&desc, pResult);
+	HRESULT hr = device->CreateDepthStencilState(&desc, pResult);
 
-    if (SUCCEEDED(hr))
-        SetDebugObjectName(*pResult, "DirectXTK:CommonStates");
+	if (SUCCEEDED(hr))
+		SetDebugObjectName(*pResult, "DirectXTK:CommonStates");
 
-    return hr;
+	return hr;
 }
 
 

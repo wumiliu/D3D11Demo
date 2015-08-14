@@ -153,6 +153,12 @@ void D3D11RendererMaterial::PSSetShaderResources(const char* name, ID3D11ShaderR
 	}
 }
 
+void D3D11RendererMaterial::PSSetShaderResources(uint32 StartSlot, uint32 NumViews, ID3D11ShaderResourceView* pShaderResourceViews)
+{
+	ID3D11DeviceContext		*m_deviceContext = g_objDeviecManager.GetImmediateContext();
+	m_deviceContext->PSSetShaderResources(StartSlot, NumViews, &pShaderResourceViews);
+}
+
 void D3D11RendererMaterial::VSSetConstantBuffers(const char* name, void* pBuffer)
 {
 	ID3D11DeviceContext		*m_deviceContext = g_objDeviecManager.GetImmediateContext();
@@ -193,4 +199,10 @@ void D3D11RendererMaterial::SetMatrix(Matrix world, Matrix view, Matrix proj)
 	MatrixBufferShader* dataPtr1 = (MatrixBufferShader*)dataPtr;
 	m_vertexShader.vecConstantBuffer[pBindDesc.BindPoint].Update(m_deviceContext);
 	m_deviceContext->VSSetConstantBuffers(pBindDesc.BindPoint, pBindDesc.BindCount, &m_vertexShader.vecConstantBuffer[pBindDesc.BindPoint].pConstantBuffer);
+}
+
+void D3D11RendererMaterial::VSSetShaderResources(uint32 StartSlot, uint32 NumViews, ID3D11ShaderResourceView* pShaderResourceViews)
+{
+	ID3D11DeviceContext		*m_deviceContext = g_objDeviecManager.GetImmediateContext();
+	m_deviceContext->VSSetShaderResources(StartSlot, NumViews,&pShaderResourceViews);
 }

@@ -46,8 +46,12 @@ public:
 	void SetMatrix(Matrix world, Matrix view, Matrix proj);
 	//VS ConstantBuffers不能分开设置，需要在一个map 里面把所有的参数设置完
 	void VSSetConstantBuffers(const char* name, void* pBuffer);
+	void VSSetShaderResources(uint32 StartSlot, uint32 NumViews, ID3D11ShaderResourceView* pShaderResourceViews);
+
 	//设置纹理资源等
 	void PSSetShaderResources(const char* name, ID3D11ShaderResourceView** ppShaderResourceViews);
+	void PSSetShaderResources(uint32 StartSlot, uint32 NumViews, ID3D11ShaderResourceView* pShaderResourceViews);
+
 	//设置像素着色器常量
 	//VS ConstantBuffers可以分开设置
 	void PSSetConstantBuffers(const char* name, void* pBuffer);

@@ -73,6 +73,7 @@
     <ClCompile Include="Cure\Curve.cpp" />
     <ClCompile Include="Cure\spline.cpp" />
     <ClCompile Include="D3D11App.cpp" />
+    <ClCompile Include="D3D11AppEx.cpp" />
     <ClCompile Include="D3D11RendererMaterial.cpp" />
     <ClCompile Include="D3D11RendererMesh.cpp" />
     <ClCompile Include="D3DShader.cpp" />
@@ -88,9 +89,12 @@
     <ClCompile Include="Shader\ShaderBufferManager.cpp" />
     <ClCompile Include="Shader\ShaderManager.cpp" />
     <ClCompile Include="Shader\ShaderResource.cpp" />
+    <ClCompile Include="Shader\ShaderResources.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Texture\DDSTextureLoader.cpp" />
     <ClCompile Include="Texture\DX11RTTexture.cpp" />
+    <ClCompile Include="Texture\Texture.cpp" />
+    <ClCompile Include="Texture\TextureMgr.cpp" />
     <ClCompile Include="TrackballCameraController.cpp" />
     <ClCompile Include="VertexTypes.cpp" />
   </ItemGroup>
@@ -102,6 +106,7 @@
     <ClInclude Include="Cure\Curve.h" />
     <ClInclude Include="Cure\spline.h" />
     <ClInclude Include="D3D11App.h" />
+    <ClInclude Include="D3D11AppEx.h" />
     <ClInclude Include="D3D11RendererMaterial.h" />
     <ClInclude Include="D3D11RendererMesh.h" />
     <ClInclude Include="d3dUtil.h" />
@@ -118,6 +123,7 @@
     <ClInclude Include="Shader\ShaderBufferManager.h" />
     <ClInclude Include="Shader\ShaderManager.h" />
     <ClInclude Include="Shader\ShaderResource.h" />
+    <ClInclude Include="Shader\ShaderResources.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Texture\dds.h" />
     <ClInclude Include="Texture\DDSTextureLoader.h" />
@@ -125,6 +131,8 @@
     <ClInclude Include="Texture\DX11RTTexture.h" />
     <ClInclude Include="Texture\pch.h" />
     <ClInclude Include="Texture\PlatformHelpers.h" />
+    <ClInclude Include="Texture\Texture.h" />
+    <ClInclude Include="Texture\TextureMgr.h" />
     <ClInclude Include="TrackballCameraController.h" />
     <ClInclude Include="VertexTypes.h" />
   </ItemGroup>

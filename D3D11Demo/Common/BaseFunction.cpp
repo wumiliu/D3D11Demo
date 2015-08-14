@@ -42,3 +42,26 @@ std::string BaseFunction::UnicodeToANSI(const wchar_t* str)
 	delete[] pElementText;
 	return strText;
 }
+
+std::string& BaseFunction::trim(std::string &s)
+{
+	if (s.empty())
+	{
+		return s;
+	}
+	const std::string drop = " ";
+	std::string stTmp = "";
+	int nPos = s.find_first_of(drop);
+	int i = 0;
+	while (nPos != std::string::npos && i <= 8)
+	{
+		stTmp = s.erase(nPos, 1);
+		nPos = s.find_first_of(drop);
+		i++;
+	}
+	// trim right
+	s.erase(s.find_last_not_of(drop) + 1);
+	// trim left
+	return s.erase(0, s.find_first_not_of(drop));
+	return s;
+}

@@ -6,8 +6,11 @@
 class BaseFunction
 {
 public:
+
+
 	static wchar_t* gAnsiToUnicode(const char* szStr);
 	static std::string UnicodeToANSI(const wchar_t* str);
+	static std::string& trim(std::string &s);
 };
 
 

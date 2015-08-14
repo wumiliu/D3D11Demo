@@ -1,30 +1,25 @@
-#include "D3D11App.h"
+#include "D3D11AppEx.h"
 #include <WindowsX.h>
 #include <sstream>
 #include "SwapChain.h"
 #include "DeviceManager.h"
 #include "TrackballCameraController.h"
 #include "Camera/CameraComponent.h"
-
 namespace
 {
 	// This is just used to forward Windows messages from a global window
 	// procedure to our member function window procedure because we cannot
 	// assign a member function to WNDCLASS::lpfnWndProc.
-	D3D11App* gd3dApp = 0;
+	D3D11AppEx* gd3dApp1 = 0;
 }
 
-LRESULT CALLBACK
-MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK	WndProc2(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	// Forward hwnd on because we can get messages (e.g., WM_CREATE)
-	// before CreateWindow returns, and thus before mhMainWnd is valid.
-	return gd3dApp->MsgProc(hwnd, msg, wParam, lParam);
+
+	return gd3dApp1->MsgProc(hWnd, message, wParam, lParam);
 }
 
-
-D3D11App::D3D11App(HINSTANCE hInstance)
-: mhAppInst(hInstance),
+D3D11AppEx::D3D11AppEx(HINSTANCE hInstance) :mhAppInst(hInstance),
 mMainWndCaption(L"D3D11 Application"),
 mClientWidth(800),
 mClientHeight(600),
@@ -33,74 +28,98 @@ mMinimized(false),
 mMaximized(false),
 mResizing(false)
 {
-	gd3dApp = this;
+	gd3dApp1 = this;
 	SwapChainPtr = std::make_shared<SwapChain>();
 	bMouseDown = false;
 }
 
-D3D11App::~D3D11App()
+D3D11AppEx::~D3D11AppEx()
 {
 
 }
 
-bool D3D11App::Init()
+bool D3D11AppEx::Init()
 {
-	if (!InitMainWindow())
-		return false;
-
-	if (!InitDirect3D())
-		return false;
-	float AspectHByW = (float)mClientWidth / (float)mClientHeight;
-	g_objTrackballCameraController.ProjParams(DirectX::XM_PI*0.25f, AspectHByW, 1.0f, 1000.0f);
-	cameraComponent = std::make_shared<CameraComponent>();
-	cameraComponent->SetProjParams(DirectX::XM_PI*0.25f, AspectHByW, 1.0f, 1000.0f);
+	InitMainWindow();
+	InitDirect3D();
 	InitResource();
-	mTimer.Start();
 	return true;
 }
 
-bool D3D11App::InitMainWindow()
+bool D3D11AppEx::InitMainWindow()
 {
-	WNDCLASS wc;
-	//CS_DBLCLKS 双击事件
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
-	wc.lpfnWndProc = MainWndProc;
-	wc.cbClsExtra = 0;
-	wc.cbWndExtra = 0;
-	wc.hInstance = mhAppInst;
-	wc.hIcon = LoadIcon(0, IDI_APPLICATION);
-	wc.hCursor = LoadCursor(0, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
-	wc.lpszMenuName = 0;
-	wc.lpszClassName = L"D3DWndClassName";
+	WNDCLASSEX wcex = { 0 };
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
-	if (!RegisterClass(&wc))
-	{
-		MessageBox(0, L"RegisterClass Failed.", 0, 0);
-		return false;
-	}
+	wcex.style = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
+	wcex.lpfnWndProc = WndProc2;
+	wcex.cbClsExtra = 0;
+	wcex.cbWndExtra = 0;
+	wcex.hInstance = mhAppInst;
+	wcex.hIcon = LoadIcon(0, IDI_APPLICATION);
+	wcex.hCursor = LoadCursor(0, IDC_ARROW);
+	wcex.lpszClassName = L"D3DWndClassName";;
 
-	// Compute window rectangle dimensions based on requested client area dimensions.
-	RECT R = { 0, 0, mClientWidth, mClientHeight };
-	AdjustWindowRect(&R, WS_OVERLAPPEDWINDOW, false);
-	int width = R.right - R.left;
-	int height = R.bottom - R.top;
-
-	mhMainWnd = CreateWindowW(L"D3DWndClassName", mMainWndCaption.c_str(),
-		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, mhAppInst, 0);
-	if (!mhMainWnd)
-	{
-		MessageBox(0, L"CreateWindow Failed.", 0, 0);
-		return false;
-	}
-
+	RegisterClassEx(&wcex);
+	mhMainWnd = CreateWindow(L"D3DWndClassName", L"Win32Project", WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, mhAppInst, NULL);
 	ShowWindow(mhMainWnd, SW_SHOW);
 	UpdateWindow(mhMainWnd);
 
-	return true;
+	return TRUE;
 }
 
-LRESULT D3D11App::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+bool D3D11AppEx::InitDirect3D()
+{
+	RECT  rcClient;
+	GetClientRect(mhMainWnd, &rcClient);
+	int nSceneWidth = rcClient.right - rcClient.left;
+	int nSceneHeight = rcClient.bottom - rcClient.top;
+	float AspectHByW = (float)nSceneWidth / (float)nSceneHeight;
+	g_objTrackballCameraController.ProjParams(DirectX::XM_PI*0.25f, AspectHByW, 1.0f, 1000.0f);
+	SwapChainPtr->Initialize(mhMainWnd, nSceneWidth, nSceneHeight);
+
+	return true;
+}
+int D3D11AppEx::Run()
+{
+	MSG msg = { 0 };
+	//MSG msg = { 0 };
+	while (msg.message != WM_QUIT)
+	{
+		// If there are Window messages then process them.
+		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		// Otherwise, do animation/game stuff.
+		else
+		{
+			mTimer.Tick();
+			if (!mAppPaused)
+			{
+				static DWORD timeLoop = 0;
+				const DWORD FRAME_INTERVAL = 30; //15 毫秒
+				DWORD timerNow = mTimer.GetTime();
+				if (timerNow < timeLoop + FRAME_INTERVAL)
+				{
+					Sleep(timeLoop + FRAME_INTERVAL - timerNow);
+				}
+				else
+				{
+					timeLoop = mTimer.GetTime();
+			//		CalculateFrameStats();
+				//	UpdateScene(mTimer.DeltaTime());
+					DrawScene();
+				}
+			}
+		}
+	}
+	return (int)msg.wParam; 
+}
+
+LRESULT D3D11AppEx::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
@@ -108,16 +127,16 @@ LRESULT D3D11App::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		// We pause the game when the window is deactivated and unpause it 
 		// when it becomes active.  
 	case WM_ACTIVATE:
-/*
+		/*
 		if (LOWORD(wParam) == WA_INACTIVE)
 		{
-			mAppPaused = true;
-			mTimer.Stop();
+		mAppPaused = true;
+		mTimer.Stop();
 		}
 		else
 		{
-			mAppPaused = false;
-			mTimer.Start();
+		mAppPaused = false;
+		mTimer.Start();
 		}*/
 		return 0;
 		// WM_SIZE is sent when the user resizes the window.  
@@ -192,14 +211,14 @@ LRESULT D3D11App::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		mAppPaused = false;
 		mResizing = false;
 		mTimer.Start();
-		if ((mClientWidthOld != mClientWidth) && (mClientHeightOld!= mClientHeight))
+		if ((mClientWidthOld != mClientWidth) && (mClientHeightOld != mClientHeight))
 		{
 			OnResize();
 		}
 		return 0;
 
-/*
-	case WM_PAINT:
+		/*
+		case WM_PAINT:
 		hDC = BeginPaint(hwnd, &paintStruct);
 		EndPaint(hwnd, &paintStruct);
 		break;*/
@@ -240,95 +259,12 @@ LRESULT D3D11App::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-int D3D11App::Run()
+void D3D11AppEx::OnResize()
 {
-	MSG msg = { 0 };
-	while (msg.message != WM_QUIT)
-	{
-		// If there are Window messages then process them.
-		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-		// Otherwise, do animation/game stuff.
-		else
-		{
-			mTimer.Tick();
-			if (!mAppPaused)
-			{
-				static DWORD timeLoop = 0;
-				const DWORD FRAME_INTERVAL = 30; //15 毫秒
-				DWORD timerNow = mTimer.GetTime();
-				if (timerNow < timeLoop + FRAME_INTERVAL)
-				{
-					Sleep(timeLoop + FRAME_INTERVAL - timerNow);
-				}
-				else
-				{
-					timeLoop = mTimer.GetTime();
-					CalculateFrameStats();
-					UpdateScene(mTimer.DeltaTime());
-					DrawScene();
-				}
-			}
-		}
-	}
-	return (int)msg.wParam;
+	SwapChainPtr->OnResize(mClientWidth, mClientHeight);
 }
 
-bool D3D11App::InitDirect3D()
-{
-	SwapChainPtr->Initialize(mhMainWnd, mClientWidth, mClientHeight);
-	m_d3dDevice = g_objDeviecManager.GetDevice();
-	m_deviceContext = g_objDeviecManager.GetImmediateContext();
-
-	return true;
-}
-
-void D3D11App::OnResize()
-{
-	SwapChainPtr->OnResize(mClientWidth,mClientHeight);
-	printf("OnResize");
-}
-
-void D3D11App::CalculateFrameStats()
-{
-	// Code computes the average frames per second, and also the 
-	// average time it takes to render one frame.  These stats 
-	// are appended to the window caption bar.
-
-	static int frameCnt = 0;
-	static float timeElapsed = 0.0f;
-	static float  currentTime = 0.0f;//当前时间
-	static float  lastTime = 0.0f;//持续时间
-
-	frameCnt++;
-	currentTime = mTimer.GetTime() * 0.001f;
-	// Compute averages over one second period.
-	if ((currentTime - lastTime) >= 1.0f)
-	{
-		float fps = (float)frameCnt; // fps = frameCnt / 1
-		
-
-		fps = (float)frameCnt / (currentTime - lastTime);//计算这1秒钟的FPS值
-		lastTime = currentTime; //将当前时间currentTime赋给持续时间lastTime，作为下一秒的基准时间
-		float mspf = 1000.0f / fps;
-		std::wostringstream outs;
-		outs.precision(6);
-		outs << mMainWndCaption << L"    "
-			<< L"FPS: " << fps << L"    "
-			<< L"Frame Time: " << mspf << L" (ms)";
-		SetWindowText(mhMainWnd, outs.str().c_str());
-
-		// Reset for next average.
-		frameCnt = 0;
-		timeElapsed += 1.0f;
-	}
-
-}
-
-void D3D11App::OnMouseDown(WPARAM btnState, int x, int y)
+void D3D11AppEx::OnMouseDown(WPARAM btnState, int x, int y)
 {
 	bMouseDown = true;
 	if (btnState == 1)
@@ -343,7 +279,7 @@ void D3D11App::OnMouseDown(WPARAM btnState, int x, int y)
 	mouseLast.Y = y;
 }
 
-void D3D11App::OnMouseUp(WPARAM btnState, int x, int y)
+void D3D11AppEx::OnMouseUp(WPARAM btnState, int x, int y)
 {
 	bMouseDown = false;
 	if (btnState == 1)
@@ -358,7 +294,7 @@ void D3D11App::OnMouseUp(WPARAM btnState, int x, int y)
 	mouseLast.Y = y;
 }
 
-void D3D11App::OnMouseMove(WPARAM btnState, int x, int y)
+void D3D11AppEx::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	if (bMouseDown)
 	{
@@ -381,20 +317,20 @@ void D3D11App::OnMouseMove(WPARAM btnState, int x, int y)
 	}
 }
 
-void D3D11App::OnMouseWheel(short zDelta, int x, int y)
+void D3D11AppEx::OnMouseWheel(short zDelta, int x, int y)
 {
 	g_objTrackballCameraController.Zoom(zDelta, 0);
 	cameraComponent->Zoom(zDelta, 0);
 }
 
-DirectX::SimpleMath::Ray D3D11App::CalcPickingRay(int sx, int sy)
+DirectX::SimpleMath::Ray D3D11AppEx::CalcPickingRay(int x, int y)
 {
 	XMMATRIX view = g_objTrackballCameraController.View();
 	//投影变换
 	Matrix P = g_objTrackballCameraController.Proj();
 
-	float vx = (+2.0f*sx / mClientWidth - 1.0f) / (P(0, 0));
-	float vy = (-2.0f*sy / mClientHeight + 1.0f) / (P(1, 1));
+	float vx = (+2.0f*x / mClientWidth - 1.0f) / (P(0, 0));
+	float vy = (-2.0f*y / mClientHeight + 1.0f) / (P(1, 1));
 	// Ray definition in view space.
 	XMVECTOR rayOrigin = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 	XMVECTOR rayDir = XMVectorSet(vx, vy, 1.0f, 0.0f);
@@ -421,3 +357,4 @@ DirectX::SimpleMath::Ray D3D11App::CalcPickingRay(int sx, int sy)
 	DirectX::SimpleMath::Ray ray(rayOrigin, rayDir);
 	return ray;
 }
+
