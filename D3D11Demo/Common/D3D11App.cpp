@@ -96,7 +96,8 @@ bool D3D11App::InitMainWindow()
 
 	ShowWindow(mhMainWnd, SW_SHOW);
 	UpdateWindow(mhMainWnd);
-
+	// 文件拖拽第二步   DragAcceptFiles  
+	DragAcceptFiles(mhMainWnd, TRUE);
 	return true;
 }
 
@@ -120,6 +121,19 @@ LRESULT D3D11App::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			mTimer.Start();
 		}*/
 		return 0;
+	case WM_DROPFILES:
+	{
+		HDROP hDrop = (HDROP)wParam;
+		UINT nFileNum = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0); // 拖拽文件个数  
+		char strFileName[MAX_PATH];
+		for (int i = 0; i < nFileNum; i++)
+		{
+			DragQueryFileA(hDrop, i, strFileName, MAX_PATH);//获得拖曳的文件名  
+		}
+		DragFinish(hDrop);      //释放hDrop
+		OnDragFinish(strFileName);
+	}
+	return 0;
 		// WM_SIZE is sent when the user resizes the window.  
 	case WM_SIZE:
 		// Save the new client area dimensions.

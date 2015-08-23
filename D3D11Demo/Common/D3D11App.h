@@ -27,6 +27,7 @@ public:
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 	virtual void OnMouseWheel(short zDelta, int x, int y);
 	virtual void OnLButtonDblClk(WPARAM btnState, int x, int y){};
+	virtual void OnDragFinish(const char* filName){};
 
 
 	DirectX::SimpleMath::Ray CalcPickingRay(int x, int y);
