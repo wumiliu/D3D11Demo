@@ -1,7 +1,7 @@
 #pragma once
 #include "HpD3D9Type.h"
 
-class GRAPHIC_API SwapChain
+class  SwapChain
 {
 public:
 	SwapChain();

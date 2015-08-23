@@ -122,15 +122,24 @@ void D3D11RendererMaterial::setShaders(uint32 nIndex)
 
 void D3D11RendererMaterial::PSSetConstantBuffers(const char* name, void* pBuffer)
 {
+	if (m_Shader1.vecConstantBuffer.size() <= 0)
+	{
+		return;
+	}
 	ID3D11DeviceContext		*m_deviceContext = g_objDeviecManager.GetImmediateContext();
 	ID3D11ShaderReflectionVariable* pReflectionVariable = m_Shader1.pReflector->GetVariableByName(name);
 	D3D11_SHADER_VARIABLE_DESC pVariableDesc;
 	int nIndex = m_Shader1.GetConstantIndex(name);
 	
 	D3D11_SHADER_INPUT_BIND_DESC pBindDesc;
+	memset(&pBindDesc, 0, sizeof(D3D11_SHADER_VARIABLE_DESC));
 	m_Shader1.pReflector->GetResourceBindingDescByName("$Globals", &pBindDesc);
 	if (pReflectionVariable)
 	{
+	/*	if (pBindDesc.BindCount <=0)
+		{
+			return;
+		}*/
 		pReflectionVariable->GetDesc(&pVariableDesc);
 		void* dataPtr;
 		//D3D11_MAP_WRITE_NO_OVERWRITE 
@@ -164,14 +173,19 @@ void D3D11RendererMaterial::VSSetConstantBuffers(const char* name, void* pBuffer
 	ID3D11DeviceContext		*m_deviceContext = g_objDeviecManager.GetImmediateContext();
 	ID3D11ShaderReflectionVariable* pReflectionVariable = m_vertexShader.pReflector->GetVariableByName(name);
 	D3D11_SHADER_VARIABLE_DESC pVariableDesc;
+	memset(&pVariableDesc, 0, sizeof(D3D11_SHADER_VARIABLE_DESC));
 	int nIndex = m_vertexShader.GetConstantIndex(name);
 	if (pReflectionVariable)
 	{
 		pReflectionVariable->GetDesc(&pVariableDesc);
-		void* dataPtr = m_vertexShader.vecConstantBuffer[nIndex].Map(m_deviceContext);
-		unsigned char*  pDataBuffer = (unsigned char*)dataPtr;
-		memcpy_s(pDataBuffer + pVariableDesc.StartOffset, pVariableDesc.Size, pBuffer, pVariableDesc.Size);
-		GO* dataPtr1 = (GO*)dataPtr;
+		if (pVariableDesc.Size> 0)
+		{
+			void* dataPtr = m_vertexShader.vecConstantBuffer[nIndex].Map(m_deviceContext);
+			unsigned char*  pDataBuffer = (unsigned char*)dataPtr;
+			memcpy_s(pDataBuffer + pVariableDesc.StartOffset, pVariableDesc.Size, pBuffer, pVariableDesc.Size);
+			GO* dataPtr1 = (GO*)dataPtr;
+		}
+
 	}
 }
 
