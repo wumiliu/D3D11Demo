@@ -81,7 +81,9 @@
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="DXFunction.cpp" />
     <ClCompile Include="GameTimer.cpp" />
+    <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="GeometryGens.cpp" />
+    <ClCompile Include="Math\MathHelper.cpp" />
     <ClCompile Include="Math\SimpleMath.cpp" />
     <ClCompile Include="MeshRender.cpp" />
     <ClCompile Include="modelclass.cpp" />
@@ -113,8 +115,10 @@
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="DXFunction.h" />
     <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="GeometryGens.h" />
     <ClInclude Include="HpD3D9Type.h" />
+    <ClInclude Include="Math\MathHelper.h" />
     <ClInclude Include="Math\SimpleMath.h" />
     <ClInclude Include="MeshRender.h" />
     <ClInclude Include="modelclass.h" />

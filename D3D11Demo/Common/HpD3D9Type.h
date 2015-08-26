@@ -28,6 +28,7 @@
 #include <vector>
 #include <memory>
 #include "Math/SimpleMath.h"
+#include "Math/MathHelper.h"
 #pragma comment(lib, "winmm.lib") 
 #pragma comment(lib, "kernel32.lib") 
 

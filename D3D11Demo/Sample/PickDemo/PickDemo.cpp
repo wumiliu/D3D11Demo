@@ -104,8 +104,7 @@ void PickDemo::DrawScene()
 {
 	RenderRT();
 
-	SwapChainPtr->SetBackBufferRenderTarget();
-	SwapChainPtr->Clear();
+	SwapChainPtr->Begin();
 	ResetState();
 	RenderSystemAxis();
 	Matrix viewMatrix;
@@ -202,7 +201,7 @@ void PickDemo::RenderSystemAxis()
 
 	m_Material->PSSetShaderResources(0, 1, srv);
 	m_deviceContext->OMSetDepthStencilState(g_objStates.DepthDefault(), 1);
-	return;
+	//return;
 	Matrix world = Matrix::CreateScale(0.5, 0.5, 0.5) * Matrix::CreateTranslation(0, 5.5f*0.5f, 0);
 	m_Material->SetShaderParameters(world, viewMatrix, projectionMatrix);
 	m_CubeModel->render(m_Material.get(), 3);

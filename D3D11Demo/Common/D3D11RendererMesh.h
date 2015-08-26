@@ -1,6 +1,7 @@
 #pragma once
 #include "HpD3D9Type.h"
 #include "GeometryGens.h"
+#include "GeometryGenerator.h"
 #include "VertexTypes.h"
 using namespace GeoGen;
 
@@ -17,10 +18,12 @@ public:
 	D3D11RendererMesh();
 	~D3D11RendererMesh();
 	bool BuildBuffers(const GeoGen::MeshData& mesh);
+	bool BuildBuffers(const GeometryGenerator::MeshData& mesh);
+
 	void         render(D3D11RendererMaterial* pMaterial,uint32 pass = 0);
 	void         renderHelp(D3D11RendererMaterial* pMaterial);
 	void BuildInstancedBuffer();
-	void Pick(DirectX::SimpleMath::Ray ray);
+	Vector3 Pick(DirectX::SimpleMath::Ray ray);
 protected:
 	void RenderSystem();
 private:

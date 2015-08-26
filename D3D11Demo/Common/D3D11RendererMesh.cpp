@@ -100,6 +100,63 @@ bool D3D11RendererMesh::BuildBuffers(const GeoGen::MeshData& mesh)
 	return true;
 }
 
+bool D3D11RendererMesh::BuildBuffers(const GeometryGenerator::MeshData& mesh)
+{
+	D3D11_BUFFER_DESC desc = { 0 };
+	desc.ByteWidth = sizeof(VertexPositionNormalTexture) * mesh.Vertices.size();
+	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	m_nVBSize = mesh.Vertices.size();
+	m_nIBSize = mesh.Indices.size();
+
+	vertices.resize(mesh.Vertices.size());
+	float Infinity = FLT_MAX;
+	XMFLOAT3 vMinf3(+Infinity, +Infinity, +Infinity);
+	XMFLOAT3 vMaxf3(-Infinity, -Infinity, -Infinity);
+	vMin = XMLoadFloat3(&vMinf3);
+	vMax = XMLoadFloat3(&vMaxf3);
+
+	for (UINT i = 0; i < mesh.Vertices.size(); ++i)
+	{
+		vertices[i].position = mesh.Vertices[i].Position;
+		vertices[i].normal = mesh.Vertices[i].Normal;
+		vertices[i].textureCoordinate = mesh.Vertices[i].TexC;
+		XMVECTOR P = XMLoadFloat3(&vertices[i].position);
+		vMin = XMVectorMin(vMin, P);
+		vMax = XMVectorMax(vMax, P);
+	}
+	D3D11_SUBRESOURCE_DATA vData;
+	vData.pSysMem = &vertices[0];
+	vData.SysMemPitch = 0;
+	vData.SysMemSlicePitch = 0;
+	if (FAILED(m_d3dDevice->CreateBuffer(&desc, &vData, &m_VB)))
+	{
+		MessageBox(NULL, L"Create Vertex Buffer failed!", L"Error", MB_OK);
+		return false;
+	}
+
+	D3D11_BUFFER_DESC iDesc = { 0 };
+	iDesc.ByteWidth = sizeof(UINT) * mesh.Indices.size();
+	iDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	iDesc.Usage = D3D11_USAGE_DEFAULT;
+	indices.resize(mesh.Indices.size());
+	for (UINT i = 0; i < mesh.Indices.size(); ++i)
+	{
+		indices[i] = mesh.Indices[i];
+	}
+	D3D11_SUBRESOURCE_DATA iData;
+	iData.pSysMem = &indices[0];
+	iData.SysMemPitch = 0;
+	iData.SysMemSlicePitch = 0;
+	if (FAILED(m_d3dDevice->CreateBuffer(&iDesc, &iData, &m_IB)))
+	{
+		MessageBox(NULL, L"Create Index Buffer failed!", L"Error", MB_OK);
+		return false;
+	}
+	//	BuildInstancedBuffer();
+	return true;
+}
+
 void D3D11RendererMesh::render(D3D11RendererMaterial* pMaterial, uint32 pass)
 {
 
@@ -164,8 +221,9 @@ void D3D11RendererMesh::renderHelp(D3D11RendererMaterial* pMaterial)
 }
 
 
-void D3D11RendererMesh::Pick(DirectX::SimpleMath::Ray ray)
+Vector3 D3D11RendererMesh::Pick(DirectX::SimpleMath::Ray ray)
 {
+	Vector3 pos = Vector3::Zero;
 	m_bPick = false;
 	mPickedTriangle = -1;
 	XMFLOAT3 Center;            // Center of the box.
@@ -196,6 +254,7 @@ void D3D11RendererMesh::Pick(DirectX::SimpleMath::Ray ray)
 			{
 				if (t < tmin)
 				{
+					pos = v0;
 					tmin = t;
 					mPickedTriangle = i;
 					m_bPick = true;
@@ -203,6 +262,7 @@ void D3D11RendererMesh::Pick(DirectX::SimpleMath::Ray ray)
 			}
 		}
 	}
+	return pos;
 }
 
 void D3D11RendererMesh::RenderSystem()

@@ -40,8 +40,7 @@ void BaseDemo::DrawScene()
 {
 	SwapChainPtr->Begin();
 	ShowBlock(100, 100, 300, 200, { 0, 0, 1, 1 }, mTimer.TotalTime());
-	SwapChainPtr->Flip();
-	return;
+
 	vector<VertexPositionColor> vertices;
 	vertices.resize(mClientWidth);
 	for (int xval = 0; xval < mClientWidth; ++xval)

@@ -28,6 +28,9 @@
     <Filter Include="Reflection">
       <UniqueIdentifier>{70d6f923-7157-4623-ae1a-79639bc697e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quaternions">
+      <UniqueIdentifier>{d89a025f-a9bf-4f61-9ddc-000df9102c7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,6 +54,15 @@
     <ClCompile Include="Reflection\ReflectionApp.cpp">
       <Filter>Reflection</Filter>
     </ClCompile>
+    <ClCompile Include="Quaternions\QuatDemo.cpp">
+      <Filter>Quaternions</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicPrimitive.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Quaternions\AnimationHelper.cpp">
+      <Filter>Quaternions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h">
@@ -70,6 +82,15 @@
     </ClInclude>
     <ClInclude Include="Reflection\ReflectionApp.h">
       <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternions\QuatDemo.h">
+      <Filter>Quaternions</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicPrimitive.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternions\AnimationHelper.h">
+      <Filter>Quaternions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

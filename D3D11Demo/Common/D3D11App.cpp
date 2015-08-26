@@ -268,19 +268,22 @@ int D3D11App::Run()
 		// Otherwise, do animation/game stuff.
 		else
 		{
-			mTimer.Tick();
+			
 			if (!mAppPaused)
 			{
 				static DWORD timeLoop = 0;
-				const DWORD FRAME_INTERVAL = 30; //15 ∫¡√Î
-				DWORD timerNow = mTimer.GetTime();
+				const DWORD FRAME_INTERVAL = 15; //15 ∫¡√Î
+				//DWORD timerNow = mTimer.GetTime();
+				DWORD timerNow = timeGetTime();
 				if (timerNow < timeLoop + FRAME_INTERVAL)
 				{
 					Sleep(timeLoop + FRAME_INTERVAL - timerNow);
 				}
 				else
 				{
+					mTimer.Tick();
 					timeLoop = mTimer.GetTime();
+					timeLoop = timeGetTime();
 					CalculateFrameStats();
 					UpdateScene(mTimer.DeltaTime());
 					DrawScene();

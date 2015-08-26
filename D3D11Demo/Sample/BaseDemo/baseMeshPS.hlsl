@@ -15,7 +15,6 @@ cbuffer  DefaultColor
 cbuffer  DefaultColorEx
 {
 	float4 MyColor3;
-
 };
 
 
@@ -26,6 +25,7 @@ cbuffer  DefaultColorEx
 struct PixelInputType
 {
 	float4 position : SV_Position;
+	float3 normal : NORMAL;
 	float2 tex : TEXCOORD;
 };
 
@@ -50,7 +50,7 @@ float4 main(PixelInputType input) : SV_TARGET
 
 float4 mainPick(PixelInputType input) : SV_TARGET
 {
-	float4 textureColor = { 1.0f, 0.0f, 0.0f, 1.0f };
+	float4 textureColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	return textureColor;
 }
 
@@ -71,5 +71,12 @@ float4 mainGreen(PixelInputType input) : SV_TARGET
 float4 mainBlue(PixelInputType input) : SV_TARGET
 {
 	float4 textureColor = { 0.0f, 0.0f, 1.0f, 1.0f };
+	return textureColor;
+}
+
+float4 mainTex(PixelInputType input) : SV_TARGET
+{
+	float4 textureColor = { 0.0f, 0.0f, 1.0f, 1.0f };
+	textureColor = shaderTexture.Sample(SampleType, input.tex);
 	return textureColor;
 }

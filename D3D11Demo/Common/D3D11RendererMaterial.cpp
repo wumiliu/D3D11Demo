@@ -132,7 +132,7 @@ void D3D11RendererMaterial::PSSetConstantBuffers(const char* name, void* pBuffer
 	int nIndex = m_Shader1.GetConstantIndex(name);
 	
 	D3D11_SHADER_INPUT_BIND_DESC pBindDesc;
-	memset(&pBindDesc, 0, sizeof(D3D11_SHADER_VARIABLE_DESC));
+	memset(&pBindDesc, 0, sizeof(D3D11_SHADER_INPUT_BIND_DESC));
 	m_Shader1.pReflector->GetResourceBindingDescByName("$Globals", &pBindDesc);
 	if (pReflectionVariable)
 	{

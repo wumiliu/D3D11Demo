@@ -7,7 +7,7 @@
 #include "CommonStates.h"
 #include "Camera/CameraComponent.h"
 #include "CommonStates.h"
-
+#include "Texture/TextureMgr.h"
 SkyBoxApp::SkyBoxApp(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/)
 	: D3D11App(hInstance)
 {
@@ -25,7 +25,9 @@ void SkyBoxApp::InitResource()
 	RendererMaterialDesc desc;
 	desc.vertexShaderPath = "SkyBox\\baseMeshVS.hlsl";
 	desc.pixelShaderPath = "SkyBox\\baseMeshPS.hlsl";
-	desc.vecPass.push_back("main");
+	//desc.vecPass.push_back("main");
+	desc.vecPass.push_back("mainTex");
+
 	m_Material = std::make_shared<D3D11RendererMaterial>(desc);
 
 	MeshData meshData;
@@ -67,7 +69,12 @@ void SkyBoxApp::DrawScene()
 	mProj = g_objTrackballCameraController.GetProjMatrix();
 	mWorldViewProjection = mView * mProj;
 	Matrix worldMatrix = Matrix::CreateTranslation(0, 0, 0);
-	m_Material->PSSetShaderResources("g_cubeMap", &srv);
+	//m_Material->PSSetShaderResources("g_cubeMap", &srv);
+	ID3D11ShaderResourceView* pSrv = g_objTextureMgr.CreateTextureDDs("ice.dds");
+	if (pSrv)
+	{
+		m_Material->PSSetShaderResources("shaderTexture", &pSrv);
+	}
 	Vector3 cameraPosition = g_objTrackballCameraController.EyePos();
 //	worldMatrix = Matrix::CreateTranslation(cameraPosition);
 	m_Material->SetMatrix(worldMatrix, mView, mProj);

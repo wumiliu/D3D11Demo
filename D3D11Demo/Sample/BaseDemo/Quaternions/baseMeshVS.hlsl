@@ -49,7 +49,6 @@ PixelInputType main(VertexInputType input)
 	output.position = mul(input.position, worldMatrix);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
-	output.position = output.position.xyww;
 	// Store the input color for the pixel shader to use.
 	output.posL = input.position.xyz;
 	output.tex = input.tex;
