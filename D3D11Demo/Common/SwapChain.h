@@ -10,6 +10,7 @@ public:
 	ID3D11RenderTargetView* GetRenderTargetView() { return m_renderTargetView; }
 	ID3D11DepthStencilView* GetDepthStencilView() { return m_depthStencilView; }
 	IDXGISwapChain* GetDXGISwapChain(){ return m_pSwapChain; }
+	ID3D11ShaderResourceView* GetResourceView();
 	void OnResize(int nWidth, int nHeight);
 	D3D11_VIEWPORT GetViewPort(){ return m_viewport; }
 	void BeginClipRect(RECT& clipRC);
@@ -28,6 +29,8 @@ public:
 		return m_bkgColor;
 	}
 	void Begin();
+	void SetBackBufferRenderTarget();
+	void Clear();
 	void Flip();
 	CXMMATRIX GetWorld(){ return m_WorldMat; }
 	CXMMATRIX GetView(){ return m_viewMat; }
@@ -61,5 +64,8 @@ private:
 	XMMATRIX				m_projectMat;
 	XMMATRIX				m_OrthotMat;
 	bool m_bInit;
+
+	ID3D11ShaderResourceView* mSRV;
+	ID3D11Texture2D*  texEx;
 };
 

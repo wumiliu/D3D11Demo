@@ -70,22 +70,32 @@
     <ClCompile Include="DynamicPrimitive.cpp" />
     <ClCompile Include="LightMaps\LightMaps.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Quat.cpp" />
     <ClCompile Include="Quaternions\AnimationHelper.cpp" />
     <ClCompile Include="Quaternions\QuatDemo.cpp" />
     <ClCompile Include="Reflection\ReflectionApp.cpp" />
+    <ClCompile Include="Rotator.cpp" />
     <ClCompile Include="SkyBox\SkyBoxApp.cpp" />
     <ClCompile Include="SpecularLight\SpecularLight.cpp" />
+    <ClCompile Include="UnrealMath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h" />
     <ClInclude Include="Diffuse Lighting\DiffuseLight.h" />
     <ClInclude Include="DynamicPrimitive.h" />
     <ClInclude Include="LightMaps\LightMaps.h" />
+    <ClInclude Include="Quat.h" />
     <ClInclude Include="Quaternions\AnimationHelper.h" />
     <ClInclude Include="Quaternions\QuatDemo.h" />
     <ClInclude Include="Reflection\ReflectionApp.h" />
+    <ClInclude Include="Rotator.h" />
     <ClInclude Include="SkyBox\SkyBoxApp.h" />
     <ClInclude Include="SpecularLight\SpecularLight.h" />
+    <ClInclude Include="UnrealMath.h" />
+    <ClInclude Include="UnrealMathDirectX.h" />
+    <ClInclude Include="UnrealMathVectorCommon.h" />
+    <ClInclude Include="UnrealMathVectorConstants.h" />
+    <ClInclude Include="UnrealMathUtility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

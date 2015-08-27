@@ -63,6 +63,15 @@
     <ClCompile Include="Quaternions\AnimationHelper.cpp">
       <Filter>Quaternions</Filter>
     </ClCompile>
+    <ClCompile Include="Quat.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Rotator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UnrealMath.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h">
@@ -91,6 +100,27 @@
     </ClInclude>
     <ClInclude Include="Quaternions\AnimationHelper.h">
       <Filter>Quaternions</Filter>
+    </ClInclude>
+    <ClInclude Include="Quat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UnrealMathDirectX.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UnrealMathVectorConstants.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UnrealMathUtility.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UnrealMathVectorCommon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UnrealMath.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

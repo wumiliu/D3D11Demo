@@ -109,4 +109,7 @@ struct  MousePos
 };
 typedef std::vector<D3D11_INPUT_ELEMENT_DESC> LayoutVector;
 
+#define  FMatrix Matrix
+#define  FVector Vector3
+
 #endif

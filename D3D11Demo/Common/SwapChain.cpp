@@ -56,6 +56,29 @@ HRESULT SwapChain::Initialize(HWND hwnd, int nWidth, int nHeigth)
 		hr = S_FALSE;
 	}
 	m_bInit = true;
+
+	D3D11_TEXTURE2D_DESC desc;
+	desc.Width = static_cast<UINT>(m_nWidth);
+	desc.Height = static_cast<UINT>(m_nHeight);
+	desc.MipLevels = static_cast<UINT>(1);
+	desc.ArraySize = static_cast<UINT>(1);
+	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;;
+	desc.CPUAccessFlags = 0;
+	desc.MiscFlags = 0;
+
+	hr = m_pd3dDevice->CreateTexture2D(&desc, NULL, &texEx);
+	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
+	memset(&SRVDesc, 0, sizeof(SRVDesc));
+	SRVDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	SRVDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
+	SRVDesc.Texture2D.MostDetailedMip = 0;
+	SRVDesc.Texture2D.MipLevels = 1;
+	hr = m_pd3dDevice->CreateShaderResourceView(texEx, &SRVDesc, &mSRV);
+
 	return hr;
 }
 
@@ -72,6 +95,8 @@ bool SwapChain::CreateWindowSizeDependentResources()
 	//获取后缓冲区地址
 	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
 
+	D3D11_TEXTURE2D_DESC textureDesc;
+	backBuffer->GetDesc(&textureDesc);
 	//创建视图
 	hr = m_pd3dDevice->CreateRenderTargetView(backBuffer, 0, &m_renderTargetView);
 	if (FAILED(hr))return false;
@@ -176,6 +201,19 @@ void SwapChain::Begin()
 	color[3] = 1.f;
 	d3dcontext->ClearRenderTargetView(*rt, this->GetBkgColor());
 }
+void SwapChain::SetBackBufferRenderTarget()
+{
+	ID3D11DeviceContext*  d3dcontext = g_objDeviecManager.GetImmediateContext();
+	d3dcontext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+}
+
+void SwapChain::Clear()
+{
+	ID3D11DeviceContext*  d3dcontext = g_objDeviecManager.GetImmediateContext();
+
+	d3dcontext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	d3dcontext->ClearRenderTargetView(m_renderTargetView, this->GetBkgColor());
+}
 
 void SwapChain::Flip()
 {
@@ -191,3 +229,13 @@ void SwapChain::OnResize(int nWidth, int nHeight)
 	m_nHeight = nHeight;
 	CreateWindowSizeDependentResources();
 }
+
+ID3D11ShaderResourceView* SwapChain::GetResourceView()
+{
+	ID3D11Texture2D *backBuffer(NULL);
+	//获取后缓冲区地址
+	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
+	g_objDeviecManager.GetImmediateContext()->CopyResource(texEx, backBuffer);
+	return mSRV;
+}
+
