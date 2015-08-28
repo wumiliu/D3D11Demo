@@ -216,7 +216,8 @@ void QuatDemo::DrawScene()
 		const FVector ZAxis = mWorldTmp1.Backward();
 
 		//y z x
-		FRotator myR(0.0f, 20.0f, 20.0f);
+		FRotator myR(45.0f, 0.0f, 0.0f);
+		myR = myR.DXToUE();
 		FQuat myQ(myR);
 		FRotator myRTmp = myQ.Rotator();
 		FVector EulerTmp = myRTmp.Euler();
@@ -268,8 +269,20 @@ void QuatDemo::DrawScene()
 		//mWorld *= Matrix::CreateRotationY((XMConvertToRadians(-myR.Pitch)));
 		//mWorld *= Matrix::CreateRotationZ((XMConvertToRadians(myR.Yaw)));
 		m_Material->SetMatrix(mWorld3, mView, mProj);
-		m_MeshModel->render(m_Material.get(), 1);
+		//m_MeshModel->render(m_Material.get(), 1);
 
+
+
+
+		FEulerAngle FE(myR.Pitch, myR.Yaw, myR.Roll);
+		FE = FE.UEToDX();
+		FQuaternion FQ(FE);
+		FEulerAngle FE1 = FQ.EulerAngle();
+		mWorld1 = Matrix::CreateScale(0.98f, 0.98f, 0.98f);
+		mWorld1 = Matrix::CreateScale(1.0f, 1.0f, 1.0f);
+		mWorld1 = FQuaternion::Make(FQ, Vector3::Zero);
+		m_Material->SetMatrix(mWorld1, mView, mProj);
+		m_MeshModel->render(m_Material.get(), 1);
 	}
 	else
 	{

@@ -1,21 +1,14 @@
 #pragma once
 #include "CameraTypes.h"
 #include "HpD3D9Type.h"
-struct FRotator
-{
-	float Pitch;
 
-	float Yaw;
-
-	float Roll;
-};
 class CameraComponent
 {
 public:
 	CameraComponent();
 	~CameraComponent();
 	void LookAt(Vector3 pos, Vector3 target, Vector3 _up);
-	void LookAt(Vector3 pos, FRotator Rotation);
+
 
 	/** The horizontal field of view (in degrees) in perspective mode (ignored in Orthographic mode) */
 	float FieldOfView;

@@ -10,7 +10,7 @@ class FQuat;
 
 //roll()：横滚，将物体绕Z轴旋转（localRotationZ）
 
-
+//                                           x y z
 //这边是UE 的坐标系 （pitch : y, yaw: z,roll: x）
 struct FRotator
 {
@@ -53,6 +53,9 @@ public:
 	*/
 	explicit  FRotator(const FQuat& Quat);
 
+	FRotator(const FRotator& R);
+
+
 public:
 	/**
 	* Get Rotation as a quaternion.
@@ -69,12 +72,16 @@ public:
 	 FVector Euler() const;
 
 	 void Normalize();
+	 FRotator UEToDX();
+	 FRotator DXToUE();
 
 public:
 	static float ClampAxis(float Angle);
 
 	static float NormalizeAxis(float Angle);
 	static FRotator MakeFromEuler(const FVector& Euler);
+	static FRotator UEToDX(const FRotator& R);
+	static FRotator DXToUE(const FRotator& R);
 };
 
 

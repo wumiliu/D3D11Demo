@@ -68,6 +68,8 @@
     <ClCompile Include="BaseDemo.cpp" />
     <ClCompile Include="Diffuse Lighting\DiffuseLight.cpp" />
     <ClCompile Include="DynamicPrimitive.cpp" />
+    <ClCompile Include="FEulerAngle.cpp" />
+    <ClCompile Include="FQuaternion.cpp" />
     <ClCompile Include="LightMaps\LightMaps.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Quat.cpp" />
@@ -83,6 +85,9 @@
     <ClInclude Include="BaseDemo.h" />
     <ClInclude Include="Diffuse Lighting\DiffuseLight.h" />
     <ClInclude Include="DynamicPrimitive.h" />
+    <ClInclude Include="FEulerAngle.h" />
+    <ClInclude Include="FMath.h" />
+    <ClInclude Include="FQuaternion.h" />
     <ClInclude Include="LightMaps\LightMaps.h" />
     <ClInclude Include="Quat.h" />
     <ClInclude Include="Quaternions\AnimationHelper.h" />

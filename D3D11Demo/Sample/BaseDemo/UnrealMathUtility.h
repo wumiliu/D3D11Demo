@@ -58,5 +58,6 @@ Floating point constants.
 
 #include "UnrealMathDirectX.h"
 #include "UnrealMathVectorCommon.h"
+#include "FMath.h"
 
 

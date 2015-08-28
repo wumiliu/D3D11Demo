@@ -72,6 +72,12 @@
     <ClCompile Include="UnrealMath.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FQuaternion.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FEulerAngle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDemo.h">
@@ -120,6 +126,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="UnrealMath.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FQuaternion.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FMath.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FEulerAngle.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

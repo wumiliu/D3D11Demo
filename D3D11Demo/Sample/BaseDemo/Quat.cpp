@@ -41,7 +41,7 @@ FVector FQuat::RotateVector(FVector V) const
 	return vOut;
 #endif
 }
-
+//Yaw¡¢Pitch¡¢Roll 
 FRotator FQuat::Rotator() const
 {
 	const float SingularityTest = Z*X - W*Y;

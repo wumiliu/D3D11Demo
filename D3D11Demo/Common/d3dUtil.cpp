@@ -58,7 +58,7 @@ HRESULT D3DCompileShader(LPCSTR pFileName, LPCSTR pEntrypoint,
 	//ÐÐÖ÷Ðò¾ØÕó
 	DWORD shaderFlags = D3DCOMPILE_PACK_MATRIX_ROW_MAJOR;	
 #if defined( DEBUG ) || defined( _DEBUG )
-	shaderFlags |= D3DCOMPILE_DEBUG;
+	//shaderFlags |= D3DCOMPILE_DEBUG;
 //	shaderFlags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 //	shaderFlags |= D3DCOMPILE_WARNINGS_ARE_ERRORS;
 #endif

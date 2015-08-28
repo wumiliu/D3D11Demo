@@ -16,6 +16,12 @@ FRotator::FRotator(const FQuat& Quat)
 	*this = Quat.Rotator();
 }
 
+FRotator::FRotator(const FRotator& R)
+	: Pitch(R.Pitch), Yaw(R.Yaw), Roll(R.Roll)
+{
+
+}
+
 FQuat FRotator::Quaternion() const
 {
 	VectorRegister Angles = MakeVectorRegister(Roll, Pitch, Yaw, 0.0f);
@@ -89,4 +95,58 @@ float FRotator::ClampAxis(float Angle)
 FRotator FRotator::MakeFromEuler(const FVector& Euler)
 {
 	return FRotator(Euler.y, Euler.z, Euler.x);
+}
+
+
+
+FRotator FRotator::UEToDX()
+{
+	FRotator a(*this);
+	//Roll = -Pitch
+	//Pitch = -Yaw
+	//Yaw = Roll
+	//从DX--UE
+	a.Pitch = -Roll;
+	a.Yaw = -Pitch;
+	a.Roll = Yaw;
+	return a;
+}
+
+FRotator FRotator::UEToDX(const FRotator& R)
+{
+	FRotator a;
+	//Roll = -Pitch
+	//Pitch = -Yaw
+	//Yaw = Roll
+	//从DX--UE
+	a.Pitch = -R.Roll;
+	a.Yaw = -R.Pitch;
+	a.Roll = R.Yaw;
+	return a;
+}
+
+FRotator FRotator::DXToUE()
+{
+	FRotator a;
+	//Roll = -Pitch
+	//Pitch = -Yaw
+	//Yaw = Roll
+	//从DX--UE
+	a.Roll = -Pitch;
+	a.Pitch = -Yaw;
+	a.Yaw = Roll;
+	return a;
+}
+
+FRotator FRotator::DXToUE(const FRotator& R)
+{
+	FRotator a;
+	//Roll = -Pitch
+	//Pitch = -Yaw
+	//Yaw = Roll
+	//从DX--UE
+	a.Roll = -R.Pitch;
+	a.Pitch = -R.Yaw;
+	a.Yaw = R.Roll;
+	return a;
 }
